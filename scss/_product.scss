@@ -104,3 +104,86 @@ $color-orange: #ff7a00;
     }
 }
 
+//    GALERIE D'IMAGES
+.product-gallery-column {
+    width: 100%; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: flex-start;
+    
+    .main-image-preview-box {
+        position: relative; 
+        width: 100%; 
+        max-width: 450px; 
+        border-radius: $radius-lg; 
+        overflow: hidden; 
+        background: #fff; 
+        border: 1px solid $border-color; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        padding: 20px;
+        
+        .gallery-main-img { 
+            max-width: 100%; 
+            max-height: 380px; 
+            object-fit: contain; 
+            mix-blend-mode: multiply; 
+        }
+
+        .zoom-indicator-overlay { 
+            position: absolute; 
+            bottom: 20px; 
+            right: 20px; 
+            background: rgba(255, 255, 255, 0.95); 
+            color: $color-text; 
+            width: 44px; 
+            height: 45px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.15rem; 
+            border: 1px solid $border-color; 
+            cursor: pointer; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12); 
+            transition: all 0.2s; 
+            z-index: 10;
+            &:hover { 
+                background: $color-primary; 
+                color: #fff; 
+                border-color: $color-primary; 
+                transform: scale(1.08); 
+            }
+        }
+    }
+
+    .gallery-thumbnails-row {
+        display: flex; 
+        gap: 10px; 
+        margin-top: 15px; 
+        width: 100%; 
+        overflow-x: auto; 
+        padding-bottom: 5px;
+        
+        .thumb-item-box {
+            width: 70px; 
+            height: 70px; 
+            border: 2px solid $border-color; 
+            border-radius: $radius-sm; 
+            cursor: pointer; 
+            overflow: hidden; 
+            background: #fff; 
+            flex-shrink: 0; 
+            padding: 5px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: all 0.2s;
+            img { max-width: 100%; max-height: 100%; object-fit: contain; }
+            &.active, &:hover { border-color: $color-primary; box-shadow: 0 2px 6px rgba(59,91,219,0.2); }
+        }
+    }
+}
+
