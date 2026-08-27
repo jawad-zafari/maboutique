@@ -116,4 +116,19 @@ $activeTab = $data['activeTab'] ?? 'reviews';
             </div>
         </div>
 
-        
+        <div id="tab-qa" class="tab-pane <?= $activeTab === 'qa' ? 'active' : '' ?>" role="tabpanel" aria-labelledby="btn-tab-qa">
+            <div class="qa-section">
+                
+                <div class="qa-form-box">
+                    <h4><i class="fa-solid fa-comment-dots" aria-hidden="true"></i> Poser une question</h4>
+                    <form id="formQuestion" method="post">
+                        <label for="questionText" class="sr-only">Votre question :</label>
+                        <textarea id="questionText" name="question" class="form-control" rows="3" placeholder="Tapez votre question ici..." required aria-required="true"></textarea>
+                        
+                        <button type="button" id="btnSubmitQuestion" data-id="<?= $productId ?>" class="btn-action-outline margin-top-md">
+                            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Soumettre la question
+                        </button>
+                    </form>
+                </div>
+
+               
