@@ -8,6 +8,12 @@ class Index extends Controller
         Model::sessionInit();
     }
 
-    
+    public function index()
+    {
+      
+
+        // Affichage de la vue
+        $this->view('index/index', $data);
+    }
 }
 ?>
