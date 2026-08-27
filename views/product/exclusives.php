@@ -18,9 +18,34 @@ $exclusives = $data['exclusives'] ?? [];
                 $exId = (int)($row['id'] ?? 0);
                 $exTitle = htmlspecialchars($row['title'] ?? 'Produit', ENT_QUOTES, 'UTF-8');
                 
-                // RÈGLE MÉTIER : Affichage correct du prix avec remise (si calculé par le modèle)
+                // RÈGLE MÉTIER : Affichage correct du prix avec remise
                 $exPrice = (float)($row['price_total'] ?? $row['price'] ?? 0);
                 
                 $thumbUrl = URL . 'public/images/products/' . $exId . '/product_220.jpg';
             ?>
-                
+                <div class="exclusive-item-wrapper">
+                    
+                    <button type="button" class="btn-favorite-toggle btn-exclusive-fav" data-id="<?= $exId ?>" title="Ajouter aux favoris" aria-label="Ajouter <?= $exTitle ?> aux favoris">
+                        <i class="fa-regular fa-heart" aria-hidden="true"></i>
+                    </button>
+
+                    <a href="<?= URL ?>Product/index/<?= $exId ?>" class="exclusive-item" aria-label="Voir le produit <?= $exTitle ?>">
+                        <div class="exclusive-img-wrapper">
+                            <img src="<?= $thumbUrl ?>" alt="<?= $exTitle ?>" class="exclusive-img" onerror="this.src='https://placehold.co/220x220/f1f3f5/3b5bdb?text=Produit'">
+                            <span class="exclusive-badge">Spécial</span>
+                        </div>
+                        <div class="exclusive-info">
+                            <h4 class="exclusive-title"><?= $exTitle ?></h4>
+                            <span class="exclusive-price"><?= number_format($exPrice, 0, ',', ' ') ?> €</span>
+                        </div>
+                    </a>
+                </div>
+
+            <?php endforeach; else: ?>
+                <p class="empty-text">Aucun produit exclusif pour le moment.</p>
+            <?php endif; ?>
+        </div>
+        
+       
+    </div>
+</div>
