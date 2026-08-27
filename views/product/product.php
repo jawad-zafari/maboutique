@@ -102,4 +102,17 @@ if (!empty($gallery)) {
                         <i class="fa-<?= $isFavorite ? 'solid' : 'regular' ?> fa-heart" aria-hidden="true"></i>
                     </button>
                 </div>
-          
+            </div>
+        </div>
+
+    </div>
+
+    <div id="imageZoomModal" class="image-zoom-modal" role="dialog" aria-modal="true" aria-labelledby="zoomModalTitle">
+        <span class="close-zoom-modal" id="closeZoomModal" aria-label="Fermer le zoom" role="button" tabindex="0">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </span>
+        <h2 id="zoomModalTitle" class="sr-only">Zoom sur l'image du produit</h2>
+        <img class="zoom-modal-content" id="zoomedImage" alt="Image agrandie du produit">
+    </div>
+
+   
