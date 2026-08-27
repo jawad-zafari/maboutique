@@ -52,6 +52,13 @@ class Controller
     }
 
     
+    //   Échappe les données dynamiques avant l'affichage dans les vues (Protection XSS)
     
+    public function e(?string $value): string
+    {
+        return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
+    }
+
+
 }
 ?>
