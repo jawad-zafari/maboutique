@@ -135,5 +135,64 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    
+    // AJOUT AU PANIER (AJAX SÉCURISÉ & ROBUSTE)
+    const btnAddToCart = document.getElementById('btnAddToCart');
+
+    if (btnAddToCart) {
+        btnAddToCart.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const productId = this.getAttribute('data-id');
+            if (!productId) return;
+
+            // Feedback visuel de chargement
+            const originalIcon = this.innerHTML;
+            this.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Traitement...';
+            this.disabled = true;
+
+            try {
+                const formData = new URLSearchParams();
+                formData.append('quantity', '1');
+                formData.append('colorId', '0');
+                formData.append('guaranteeId', '0');
+                formData.append('csrf_token', csrfToken); //Validation de l'origine
+
+                const response = await fetch(`${baseUrl}Product/addToCart/${productId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData.toString()
+                });
+
+                // Gestion sécurisée du parsing JSON pour éviter les crashs de l'interface
+                let result;
+                try {
+                    result = await response.json();
+                } catch (jsonError) {
+                    throw new Error("Format de réponse inattendu du serveur (Erreur 500 possible).");
+                }
+
+                if (response.ok && result.status !== 'error') {
+                    showProductToast("Le produit a été ajouté à votre panier avec succès !");
+                    
+                    // Mise à jour de l'icône du panier dans le header
+                    const badge = document.getElementById('navCartCounterBadge');
+                    if (badge && result.totalItems !== undefined) {
+                        badge.textContent = result.totalItems;
+                        badge.style.display = 'inline-flex';
+                        badge.style.transform = "scale(1.4)";
+                        setTimeout(() => { badge.style.transform = "scale(1)"; }, 300);
+                    }
+                } else {
+                    showProductToast(result.message || "Action non autorisée.", "danger");
+                }
+            } catch (error) {
+                console.error("Erreur d'ajout au panier :", error);
+                showProductToast("Erreur de communication avec le serveur.", "danger");
+            } finally {
+                // Restauration de l'état du bouton
+                this.innerHTML = originalIcon;
+                this.disabled = false;
+            }
+        });
+    }
+
 });
