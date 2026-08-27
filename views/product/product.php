@@ -9,3 +9,11 @@ $userId = Model::sessionGet('userId');
 //  Récupération de l'état "Favori" calculé par le contrôleur 
 $isFavorite = $data['isFavorite'] ?? false;
 
+// Préparation de la galerie d'images (Image principale + images secondaires)
+$allImages = [];
+$productId = (int)($product['id'] ?? 0);
+$mainImage = URL . 'public/images/products/' . $productId . '/product_350.jpg';
+$allImages[] = [
+    'url' => $mainImage, 
+    'alt' => htmlspecialchars($product['title'] ?? 'Produit', ENT_QUOTES, 'UTF-8')
+];
