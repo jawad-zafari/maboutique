@@ -294,6 +294,11 @@ class Model
         return $prices;
     }
 
-    
+    public static function getCurrentDate($format = 'Y-m-d H:i:s') 
+    {
+        return date($format);
+    }
+
+   
 }
 ?>
