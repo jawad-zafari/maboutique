@@ -8,4 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // Récupération du jeton CSRF injecté dans la vue
     const homeWrapper = document.getElementById('homeMainWrapper');
     const csrfToken = homeWrapper ? homeWrapper.getAttribute('data-csrf') : '';
+
+    // 1. GESTION DU SLIDER PRINCIPAL
+    const sliderTrack = document.getElementById('sliderTrack');
+    const slides = document.querySelectorAll('.slide');
+    const btnNext = document.getElementById('btnNext');
+    const btnPrev = document.getElementById('btnPrev');
+    const dotsContainer = document.getElementById('sliderDots');
+
+   
 });
