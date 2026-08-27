@@ -131,4 +131,27 @@ $activeTab = $data['activeTab'] ?? 'reviews';
                     </form>
                 </div>
 
-               
+                <div class="qa-list">
+                    <?php if (!empty($questions)): foreach ($questions as $q): ?>
+                        <div class="qa-card">
+                            <div class="qa-question">
+                                <i class="fa-solid fa-circle-question" aria-hidden="true"></i> <strong>Question :</strong>
+                                <p><?= htmlspecialchars($q['content'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
+                            </div>
+                            <?php if (isset($answers[$q['id']])): ?>
+                                <div class="qa-answer">
+                                    <i class="fa-solid fa-reply" aria-hidden="true"></i> <strong>Réponse :</strong>
+                                    <p><?= htmlspecialchars($answers[$q['id']]['content'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; else: ?>
+                        <p class="empty-text">Aucune question posée pour l'instant.</p>
+                    <?php endif; ?>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+</div>
