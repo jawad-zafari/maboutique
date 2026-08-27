@@ -127,6 +127,18 @@ class Controller
             }
 
         // 2. Site public
+        } else {
+            if (file_exists('views/header.php') && $controllerName !== 'AdminLogin') {
+                require 'views/header.php';
+            }
+
+            if (file_exists('views/' . $viewName . '.php')) {
+                require 'views/' . $viewName . '.php';
+            }
+
+            if (file_exists('views/footer.php') && $controllerName !== 'AdminLogin') {
+                require 'views/footer.php';
+            }
         }
     }
 }
