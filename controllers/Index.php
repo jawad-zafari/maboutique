@@ -12,7 +12,12 @@ class Index extends Controller
     {
         // Récupération des données dynamiques via le modèle
         $slider1 = $this->model->getMainSliders();
-       
+        $slider2 = $this->model->getSpecialOffers();
+        $exclusives = $this->model->getExclusiveProducts();
+        $mostViewed = $this->model->getMostViewedProducts();
+        $latestProducts = $this->model->getLatestProducts();
+        
+        
 
         // Préparation du tableau de données à envoyer à la Vue
         $data = [
