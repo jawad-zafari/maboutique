@@ -31,6 +31,36 @@ class App
             die("Erreur de sécurité : Caractères non autorisés détectés dans l'URL.");
         }
 
-        
+        // Chargement sécurisé du contrôleur
+        $controllerPath = 'controllers/' . $this->controller . '.php';
+
+        if (file_exists($controllerPath)) {
+            require_once $controllerPath;
+
+            if (class_exists($this->controller)) {
+                $controllerObject = new $this->controller();
+
+                // Vérification de l'existence de la méthode dans le contrôleur enfant
+                if (method_exists($controllerObject, $this->method)) {
+                    $reflection = new ReflectionMethod($controllerObject, $this->method);
+
+                    // SÉCURITÉ : Empêcher l'exécution de méthodes héritées ou non publiques
+                    if ($reflection->isPublic() && $reflection->getDeclaringClass()->getName() === $this->controller) {
+                        call_user_func_array([$controllerObject, $this->method], $this->params);
+                    } else {
+                        die("Erreur de sécurité : Action non autorisée ou méthode inaccessible.");
+                    }
+                } else {
+                    die("Erreur système : La méthode '" . $this->method . "' n'existe pas dans le contrôleur " . $this->controller . ".");
+                }
+            } else {
+                die("Erreur système : La classe '" . $this->controller . "' est introuvable.");
+            }
+        } else {
+            die("Erreur système : Le contrôleur '" . $this->controller . ".php' est introuvable.");
+        }
     }
+
+    
+    
 }
