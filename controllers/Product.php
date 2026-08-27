@@ -16,8 +16,9 @@ class Product extends Controller
         // PROTECTION CSRF
         $csrf_token = $this->generateCsrfToken();
 
-       
-    }
+        $productId = (int)$id;
+        $productInfo = $this->model->productInfo($productId);
+        
 
     
     
