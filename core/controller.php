@@ -75,6 +75,12 @@ class Controller
                 $data['menuList'] = $baseModel->getMenu(0);
             }
 
+            if (!isset($data['cartItems']) || !isset($data['priceTotalAll'])) {
+                $cartData = $baseModel->getCart();
+                $data['cartItems'] = $cartData[0] ?? [];
+                $data['priceTotalAll'] = $cartData[1] ?? 0;
+            }
+
             
         }
 
