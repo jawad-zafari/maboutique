@@ -87,4 +87,33 @@ $activeTab = $data['activeTab'] ?? 'reviews';
                     </div>
                 </div>
 
-                
+                <div class="comments-list">
+                    <?php if (!empty($comments)): foreach ($comments as $com): ?>
+                        <div class="comment-item-card">
+                            <div class="comment-header-flex">
+                                <strong><?= htmlspecialchars($com['title'] ?? 'Avis Client', ENT_QUOTES, 'UTF-8') ?></strong>
+                                <span class="comment-date"><?= htmlspecialchars($com['created_at'] ?? '', ENT_QUOTES, 'UTF-8') ?></span>
+                            </div>
+                            <p class="comment-body-text"><?= htmlspecialchars($com['content'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
+                            
+                            <?php if (!empty($com['positive_points'])): ?>
+                                <div class="points-block positive">
+                                    <i class="fa-solid fa-plus" aria-hidden="true"></i> <?= htmlspecialchars($com['positive_points'], ENT_QUOTES, 'UTF-8') ?>
+                                </div>
+                            <?php endif; ?>
+                            
+                            <?php if (!empty($com['negative_points'])): ?>
+                                <div class="points-block negative">
+                                    <i class="fa-solid fa-minus" aria-hidden="true"></i> <?= htmlspecialchars($com['negative_points'], ENT_QUOTES, 'UTF-8') ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; else: ?>
+                        <p class="empty-text">Aucun avis client pour le moment.</p>
+                    <?php endif; ?>
+                </div>
+
+            </div>
+        </div>
+
+        
