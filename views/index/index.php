@@ -75,4 +75,15 @@
             </div>
         </section>
 
-        
+        <section class="brands-carousel-section glass-panel" aria-label="Nos marques">
+            <div class="section-header">
+                <div class="header-titles">
+                    <h3 class="section-title"><i class="fa-regular fa-star" aria-hidden="true"></i> Nos Marques Officielles</h3>
+                </div>
+                <div class="header-nav-buttons">
+                    <button type="button" class="nav-btn prev" id="brandsBtnPrev" aria-label="Marques précédentes"><i class="fa-solid fa-angle-left" aria-hidden="true"></i></button>
+                    <button type="button" class="nav-btn next" id="brandsBtnNext" aria-label="Marques suivantes"><i class="fa-solid fa-angle-right" aria-hidden="true"></i></button>
+                </div>
+            </div>
+
+           
