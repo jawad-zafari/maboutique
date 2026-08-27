@@ -109,6 +109,15 @@ class Controller
         // EXTR_SKIP empêche l'écrasement des variables internes de sécurité
         extract($data, EXTR_SKIP);
 
-        
+        // 1. Administration
+        if (strpos($controllerName, 'Admin') === 0 && $controllerName !== 'AdminLogin') {
+
+            $activeMenu = strtolower(str_replace('Admin', '', $controllerName));
+
+          
+
+        // 2. Site public
+        }
+    }
 }
 ?>
