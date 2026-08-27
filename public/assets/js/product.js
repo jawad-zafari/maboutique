@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.productScriptEventsBound) return;
     window.productScriptEventsBound = true;
 
-    
+    // Détermination dynamique de l'URL de base pour garantir le bon fonctionnement du routage
+    const baseTag = document.querySelector('base');
+    const baseUrl = baseTag ? baseTag.getAttribute('href') : '/';
 
-});
+    
