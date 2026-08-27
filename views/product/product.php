@@ -42,4 +42,25 @@ if (!empty($gallery)) {
         <span class="current-page-title" aria-current="page"><?= htmlspecialchars($product['title'] ?? 'Produit', ENT_QUOTES, 'UTF-8') ?></span>
     </nav>
 
-   
+    <div class="product-main-grid">
+        
+        <div class="product-gallery-column">
+            <div class="main-image-preview-box">
+                <img id="mainProductImageNode" src="<?= $mainImage ?>" alt="<?= htmlspecialchars($product['title'] ?? '', ENT_QUOTES, 'UTF-8') ?>" class="gallery-main-img">
+                <div class="zoom-indicator-overlay" id="btnTriggerImageZoom" title="Agrandir l'image">
+                    <i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i>
+                </div>
+            </div>
+            
+            <?php if (count($allImages) > 1): ?>
+                <div class="gallery-thumbnails-row">
+                    <?php foreach ($allImages as $index => $img): ?>
+                        <div class="thumb-item-box <?= $index === 0 ? 'active' : '' ?>" data-src="<?= $img['url'] ?>">
+                            <img src="<?= $img['url'] ?>" alt="<?= htmlspecialchars($img['alt'], ENT_QUOTES, 'UTF-8') ?>">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        
