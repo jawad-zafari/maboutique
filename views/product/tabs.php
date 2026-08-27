@@ -45,4 +45,23 @@ $activeTab = $data['activeTab'] ?? 'reviews';
             </div>
         </div>
 
-       
+        <div id="tab-specs" class="tab-pane <?= $activeTab === 'specs' ? 'active' : '' ?>" role="tabpanel" aria-labelledby="btn-tab-specs">
+            <div class="specs-table-wrapper">
+                <?php if (!empty($specs)): ?>
+                    <table class="specs-table" aria-label="Caractéristiques techniques du produit">
+                        <tbody>
+                            <?php foreach ($specs as $spec): ?>
+                                <tr>
+                                    <th scope="row"><?= htmlspecialchars($spec['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></th>
+                                    <td><?= htmlspecialchars($spec['value'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <p class="empty-text">Aucune spécification technique disponible.</p>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        
