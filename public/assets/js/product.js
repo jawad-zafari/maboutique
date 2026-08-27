@@ -63,5 +63,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 3000);
     }
 
+    // 2. GESTION DE LA GALERIE D'IMAGES
+    const mainImageNode = document.getElementById('mainProductImageNode');
+    const thumbnails = document.querySelectorAll('.thumb-item-box');
+
+    if (mainImageNode && thumbnails.length > 0) {
+        thumbnails.forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                const newSrc = this.getAttribute('data-src');
+                if (newSrc) {
+                    mainImageNode.src = newSrc;
+                    
+                    // Gestion de l'état visuel actif
+                    thumbnails.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+    }
+
    
-});
