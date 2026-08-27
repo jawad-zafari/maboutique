@@ -293,4 +293,65 @@
         </section>
         <?php endif; ?>
 
+        <?php 
+        $mostViewed = $data['most_viewed'] ?? [];
+        if(!empty($mostViewed)):
+        ?>
+        <section class="product-carousel-section" aria-label="Les plus vus">
+            <div class="section-header">
+                <div class="header-titles">
+                    <h3 class="section-title">Les plus vus</h3>
+                </div>
+                <a href="<?= URL ?>Collection/index/mostviewed" class="btn-see-all">Voir tout <i class="fa-solid fa-angle-right" aria-hidden="true"></i></a>
+            </div>
+            
+            <div class="carousel-track">
+                <?php foreach($mostViewed as $product): 
+                    $price = (float)($product['price'] ?? 0);
+                    $discount = (int)($product['discount_percent'] ?? 0);
+                    $hasDiscount = $discount > 0;
+                    $prodId = (int)($product['id'] ?? 0);
+                    $prodTitle = htmlspecialchars($product['title'] ?? '', ENT_QUOTES, 'UTF-8');
+                ?>
+                <div class="product-card hover-glow">
+                    <button type="button" class="btn-favorite-toggle" data-id="<?= $prodId ?>" aria-label="Ajouter aux favoris">
+                        <i class="fa-regular fa-heart" aria-hidden="true"></i>
+                    </button>
+                    <?php if($hasDiscount): ?>
+                        <div class="badge-item badge-discount">-<?= $discount ?>%</div>
+                    <?php else: ?>
+                        <div class="badge-item badge-new">Nouveau</div>
+                    <?php endif; ?>
+                    
+                    <a href="<?= URL ?>Product/index/<?= $prodId ?>" class="card-link-wrapper">
+                        <div class="image-wrapper">
+                            <img src="<?= URL ?>public/images/products/<?= $prodId ?>/product_220.jpg" alt="<?= $prodTitle ?>" class="product-img" onerror="this.src='https://placehold.co/220x220/f1f3f5/3b5bdb?text=Produit'">
+                        </div>
+                    </a>
+
+                    <div class="card-content">
+                        <a href="<?= URL ?>Product/index/<?= $prodId ?>" class="product-title-link">
+                            <h4 class="product-title"><?= $prodTitle ?></h4>
+                        </a>
+                        
+                        <div class="price-cart-row">
+                            <div class="product-price-container">
+                                <?php if($hasDiscount): ?>
+                                    <del class="price-old"><?= number_format($price, 0, ',', ' ') ?> €</del>
+                                    <span class="product-price price-danger"><?= number_format((float)($product['price_total'] ?? 0), 0, ',', ' ') ?> €</span>
+                                <?php else: ?>
+                                    <span class="product-price price-primary"><?= number_format($price, 0, ',', ' ') ?> €</span>
+                                <?php endif; ?>
+                            </div>
+                            <button type="button" class="btn-quick-add square-btn" data-id="<?= $prodId ?>" aria-label="Ajouter au panier">
+                                <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
+        <?php endif; ?>
+
        
