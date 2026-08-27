@@ -14,7 +14,13 @@ class Controller
         $modelName = 'Model' . $controllerName;
         $modelPath = 'models/' . $modelName . '.php';
 
-       
+        // Charger et instancier le modèle s'il existe
+        if (file_exists($modelPath)) {
+            require_once $modelPath;
+            if (class_exists($modelName)) {
+                $this->model = new $modelName();
+            }
+        }
     }
 
    
