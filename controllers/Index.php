@@ -22,7 +22,11 @@ class Index extends Controller
         $brands = $this->model->getBrands();
         $tvSettings = $this->model->getTvSettings();
         
-       
+        // Séparation des données du slider des offres spéciales
+        $slider2Items = $slider2[0] ?? [];
+        $dateEnd = $slider2[1] ?? '';
+
+
 
         // Préparation du tableau de données à envoyer à la Vue
         $data = [
