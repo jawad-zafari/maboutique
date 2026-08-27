@@ -104,6 +104,28 @@ class ModelProduct extends Model
         return $this->doSelect($sql, [(int)$productId, (int)$categoryId]);
     }
 
-   
+    //  Récupèrer les critères d'évaluation de la catégorie et calcule les scores moyens.
+     
+    public function getCommentParameters($categoryId, $productId)
+    {
+        $sqlParams = "SELECT * FROM review_parameters WHERE category_id = ?";
+        $params = $this->doSelect($sqlParams, [(int)$categoryId]);
+
+        $sqlScores = "SELECT parameter_id, AVG(score) as avg_score 
+                      FROM comment_scores cs 
+                      JOIN comments c ON cs.comment_id = c.id 
+                      WHERE c.product_id = ? 
+                      GROUP BY parameter_id";
+        $scoresRaw = $this->doSelect($sqlScores, [(int)$productId]);
+        
+        $scores = [];
+        foreach ($scoresRaw as $row) {
+            $scores[$row['parameter_id']] = $row['avg_score'];
+        }
+
+        return [$params, $scores];
+    }
+
+    
 }
 ?>
