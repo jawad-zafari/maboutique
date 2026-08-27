@@ -43,4 +43,24 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    
+    // GESTION DE LA RECHERCHE EN DIRECT (AUTOCOMPLETE) SÉCURISÉE
+    const headerKeyword = document.getElementById('headerKeyword');
+    const headerAutoSuggest = document.getElementById('headerAutoSuggest');
+    let headerTypingTimer;
+
+    if (headerKeyword && headerAutoSuggest) {
+        
+        headerKeyword.addEventListener('input', function() {
+            clearTimeout(headerTypingTimer);
+            const keyword = this.value.trim();
+            
+            if (keyword.length >= 2) {
+                // Attendre 400ms avant d'envoyer la requête
+                headerTypingTimer = setTimeout(() => fetchHeaderSuggestions(keyword), 400);
+            } else {
+                headerAutoSuggest.style.display = 'none';
+                headerAutoSuggest.innerHTML = '';
+            }
+        });
+
+       
