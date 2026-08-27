@@ -93,4 +93,13 @@ if (!empty($gallery)) {
                     <?php endif; ?>
                 </div>
 
-               
+                <div class="action-buttons-row">
+                    <button type="button" id="btnAddToCart" class="btn-add-cart" data-id="<?= $productId ?>" aria-label="Ajouter ce produit au panier">
+                        <i class="fa-solid fa-cart-plus" aria-hidden="true"></i> Ajouter au panier
+                    </button>
+                    
+                    <button type="button" class="btn-favorite-toggle <?= $isFavorite ? 'active' : '' ?>" data-id="<?= $productId ?>" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
+                        <i class="fa-<?= $isFavorite ? 'solid' : 'regular' ?> fa-heart" aria-hidden="true"></i>
+                    </button>
+                </div>
+          
