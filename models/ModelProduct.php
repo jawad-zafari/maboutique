@@ -159,6 +159,32 @@ class ModelProduct extends Model
         return [$questions, $answers];
     }
 
-    
+    //   Ajoute un produit au panier ou incrémente la quantité s'il existe déjà.
+     
+    public function addToCart($productId, $colorId, $guaranteeId)
+    {
+        $cookie = parent::getCartCookie();
+        
+        // SÉCURITÉ : Requête préparée pour vérifier l'existence exacte du produit
+        $sqlCheck = "SELECT * FROM cart_items WHERE session_cookie = ? AND product_id = ? AND color_id = ? AND guarantee_id = ?";
+        $params = [$cookie, (int)$productId, (int)$colorId, (int)$guaranteeId];
+        $result = $this->doSelect($sqlCheck, $params);
+
+        if (isset($result[0])) {
+            // Le produit existe avec les mêmes options, on incrémente la quantité
+            $sql = "UPDATE cart_items SET quantity = quantity + 1 WHERE session_cookie = ? AND product_id = ? AND color_id = ? AND guarantee_id = ?";
+        } else {
+            // Nouveau produit dans le panier
+            $sql = "INSERT INTO cart_items (session_cookie, product_id, quantity, color_id, guarantee_id) VALUES (?, ?, 1, ?, ?)";
+        }
+        $this->doQuery($sql, $params);
+
+        // Récupérer et retourner le nombre total d'articles pour la mise à jour du compteur
+        $sqlCount = "SELECT SUM(quantity) as total FROM cart_items WHERE session_cookie = ?";
+        $countResult = $this->doSelect($sqlCount, [$cookie], true);
+        return $countResult['total'] ?? 0;
+    }
+
+   
 }
 ?>
