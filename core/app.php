@@ -62,5 +62,12 @@ class App
     }
 
     
-    
+    // Nettoie et découpe l'URL passée en paramètre
+     
+    private function parseUrl($url)
+    {
+        $url = filter_var($url, FILTER_SANITIZE_URL);
+        $url = rtrim($url, '/');
+        return explode('/', $url);
+    }
 }
