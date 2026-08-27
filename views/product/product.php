@@ -17,3 +17,14 @@ $allImages[] = [
     'url' => $mainImage, 
     'alt' => htmlspecialchars($product['title'] ?? 'Produit', ENT_QUOTES, 'UTF-8')
 ];
+
+if (!empty($gallery)) {
+    foreach ($gallery as $g) {
+        $allImages[] = [
+            'url' => URL . 'public/images/products/' . $productId . '/gallery/large/' . htmlspecialchars($g['image_name'], ENT_QUOTES, 'UTF-8'),
+            'alt' => 'Galerie image ' . htmlspecialchars($product['title'] ?? '', ENT_QUOTES, 'UTF-8')
+        ];
+    }
+}
+?>
+
