@@ -121,4 +121,12 @@
                 <a href="<?= URL ?>Collection/index/special" class="btn-see-all">Voir tout <i class="fa-solid fa-angle-right" aria-hidden="true"></i></a>
             </div>
             
-            
+            <div class="carousel-track">
+                <?php foreach($specialOffers as $product): 
+                    $price = (float)($product['price'] ?? 0);
+                    $discount = (int)($product['discount_percent'] ?? 0);
+                    $hasDiscount = $discount > 0;
+                    $prodId = (int)($product['id'] ?? 0);
+                    $prodTitle = htmlspecialchars($product['title'] ?? '', ENT_QUOTES, 'UTF-8');
+                ?>
+                
