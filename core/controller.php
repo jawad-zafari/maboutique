@@ -81,6 +81,14 @@ class Controller
                 $data['priceTotalAll'] = $cartData[1] ?? 0;
             }
 
+            if (!isset($data['cartCount'])) {
+                $cartCount = 0;
+                foreach ($data['cartItems'] as $item) {
+                    $cartCount += (int)($item['quantity'] ?? 1);
+                }
+                $data['cartCount'] = $cartCount;
+            }
+
             
         }
 
