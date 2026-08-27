@@ -86,4 +86,26 @@
                 </div>
             </div>
 
-           
+            <div class="brands-carousel-wrapper">
+                <div class="brands-carousel-track" id="brandsCarouselTrack">
+                    <?php 
+                    $brands = $data['brands'] ?? [];
+                    if(!empty($brands)): foreach($brands as $brand): 
+                        $brandId = (int)($brand['id'] ?? 0);
+                        $brandName = htmlspecialchars($brand['title'] ?? '', ENT_QUOTES, 'UTF-8');
+                    ?>
+                    <div class="brands-carousel-item">
+                        <a href="<?= URL ?>Collection/index/category/<?= $brandId ?>/1" class="brand-item-circle" title="<?= $brandName ?>" aria-label="<?= $brandName ?>">
+                            <img src="<?= URL . htmlspecialchars($brand['image_path'] ?? '', ENT_QUOTES, 'UTF-8') ?>" 
+                                 alt="<?= $brandName ?>" 
+                                 onerror="this.outerHTML='<span class=\'brand-text-fallback\'><?= addslashes($brandName) ?></span>'">
+                        </a>
+                    </div>
+                    <?php endforeach; else: ?>
+                        <p class="text-empty-msg-center">Aucune marque définie.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </section>
+
+       
