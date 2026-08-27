@@ -101,7 +101,9 @@ class Controller
                 $data['userLevel'] = $userId ? Model::getUserLevel() : 0;
             }
 
-           
+            if (!isset($data['csrf_token'])) {
+                $data['csrf_token'] = $_SESSION['csrf_token'] ?? $this->generateCsrfToken();
+            }
         }
 
        
