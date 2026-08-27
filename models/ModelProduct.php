@@ -84,6 +84,15 @@ class ModelProduct extends Model
         return $this->doSelect($sql, [(int)$id]);
     }
 
+    //   Récupère les évaluations et avis rédigés par les experts.
+    
+    public function getExpertReviews($id)
+    {
+        $sql = "SELECT * FROM product_reviews WHERE product_id = ?";
+        return $this->doSelect($sql, [(int)$id]);
+    }
+
+    
     
 }
 ?>
