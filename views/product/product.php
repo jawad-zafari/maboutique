@@ -76,4 +76,21 @@ if (!empty($gallery)) {
                 <p><?= htmlspecialchars($product['description'] ?? 'Aucune description disponible pour ce produit.', ENT_QUOTES, 'UTF-8') ?></p>
             </div>
 
-           
+            <div class="product-purchase-box">
+                <div class="product-pricing">
+                    <?php 
+                    $price = (float)($product['price'] ?? 0);
+                    $discount = (int)($product['discount_percent'] ?? 0);
+                    $priceTotal = (float)($product['price_total'] ?? $price);
+                    
+                    if ($discount > 0): 
+                    ?>
+                        <del class="price-old-large"><?= number_format($price, 0, ',', ' ') ?> €</del>
+                        <span class="product-price-large price-danger"><?= number_format($priceTotal, 0, ',', ' ') ?> €</span>
+                        <span class="badge-discount-large">-<?= $discount ?>%</span>
+                    <?php else: ?>
+                        <span class="product-price-large price-primary"><?= number_format($price, 0, ',', ' ') ?> €</span>
+                    <?php endif; ?>
+                </div>
+
+               
