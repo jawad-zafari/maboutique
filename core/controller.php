@@ -59,6 +59,13 @@ class Controller
         return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
     }
 
+// Méthode responsable de l'affichage de l'ensemble des sections de la vue.
 
+    public function view(string $viewName, array $data = []): void
+    {
+        $controllerName = get_class($this);
+
+        
+    }
 }
 ?>
