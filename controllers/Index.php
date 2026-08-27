@@ -26,7 +26,11 @@ class Index extends Controller
         $slider2Items = $slider2[0] ?? [];
         $dateEnd = $slider2[1] ?? '';
 
-
+        // Calcul des prix et réductions via le modèle
+        $slider2Items = $this->model->calculateProductsPrices($slider2Items);
+        $latestProducts = $this->model->calculateProductsPrices($latestProducts);
+        $exclusives = $this->model->calculateProductsPrices($exclusives);
+        $mostViewed = $this->model->calculateProductsPrices($mostViewed);
 
         // Préparation du tableau de données à envoyer à la Vue
         $data = [
