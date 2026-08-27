@@ -209,6 +209,12 @@ class Model
         $_SESSION[$name] = $value;
     }
 
+    public static function sessionGet($name)
+    {
+        self::sessionInit();
+        return isset($_SESSION[$name]) ? $_SESSION[$name] : false;
+    }
+
     
 }
 ?>
