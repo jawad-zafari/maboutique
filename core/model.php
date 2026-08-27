@@ -66,6 +66,13 @@ class Model
         return $options_new;
     }
 
+    public function calculateDiscount($price, $discount)
+    {
+        $price_discount = ($discount * $price) / 100;
+        $price_total = $price - $price_discount;
+        return array($price_discount, $price_total);
+    }
+
     
 }
 ?>
