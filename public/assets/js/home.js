@@ -114,4 +114,34 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    
+    //  LECTURE VIDÉO INLINE (BOUTIQUE TV) - SÉCURISÉ (Création DOM)
+    document.addEventListener('click', (e) => {
+        const tvTrigger = e.target.closest('.tv-image-container');
+        if (tvTrigger) {
+            const parentItem = tvTrigger.closest('.tv-carousel-item');
+            let videoSrc = parentItem.getAttribute('data-video-src');
+            
+            if (videoSrc) {
+                if (videoSrc.includes('youtube.com') && !videoSrc.includes('autoplay=')) {
+                    videoSrc += (videoSrc.includes('?') ? '&' : '?') + 'autoplay=1';
+                }
+                
+                // Vider l'élément parent en toute sécurité
+                parentItem.innerHTML = '';
+                
+                // SÉCURITÉ : Création manuelle de l'iframe pour éviter toute injection HTML/JS
+                const iframe = document.createElement('iframe');
+                iframe.src = videoSrc;
+                iframe.setAttribute('frameborder', '0');
+                iframe.setAttribute('allowfullscreen', 'true');
+                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                iframe.style.width = '100%';
+                iframe.style.aspectRatio = '16/9';
+                iframe.style.borderRadius = '8px';
+                iframe.style.border = '1px solid #e2e8f0';
+                iframe.style.display = 'block';
+                
+                parentItem.appendChild(iframe);
+            }
+        }
+    });
