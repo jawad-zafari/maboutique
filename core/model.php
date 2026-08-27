@@ -235,6 +235,38 @@ class Model
         }
     }
 
-   
+    public function getCart()
+    {
+        $sql = "SELECT c.quantity AS quantity, c.id AS cartRow, p.*, cl.title AS colorTitle, g.title AS garanteeTitle
+         FROM cart_items c 
+         LEFT JOIN products p ON c.product_id = p.id
+         LEFT JOIN colors cl ON c.color_id = cl.id
+         LEFT JOIN guarantees g ON c.guarantee_id = g.id
+         WHERE c.session_cookie = ?";
+
+        $cookie = self::getCartCookie();
+        $params = array($cookie);
+        $result = $this->doSelect($sql, $params);
+        $discountTotalAll = 0;
+
+        foreach ($result as $key => $row) {
+            $discount = (($row['discount_percent'] ?? 0) * ($row['price'] ?? 0)) / 100;
+            $discountTotal = ($row['quantity'] ?? 1) * $discount;
+            $discountTotalAll = $discountTotalAll + $discountTotal;
+            $result[$key]['discountTotal'] = $discountTotal;
+        }
+
+        $priceTotalall = 0;
+        foreach ($result as $row) {
+            $price = $row['price'] ?? 0;
+            $quantity = $row['quantity'] ?? 1;
+            $priceTotal = $price * $quantity;
+            $priceTotalall = $priceTotalall + $priceTotal;
+        }
+
+        return array($result, $priceTotalall, $discountTotalAll);
+    }
+
+    
 }
 ?>
