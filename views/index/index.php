@@ -444,3 +444,5 @@
         </div>
     </div>
 </div>
+
+<script src="<?= URL ?>public/assets/js/home.js" defer></script>
