@@ -106,6 +106,9 @@ class Controller
             }
         }
 
-       
+        // EXTR_SKIP empêche l'écrasement des variables internes de sécurité
+        extract($data, EXTR_SKIP);
+
+        
 }
 ?>
