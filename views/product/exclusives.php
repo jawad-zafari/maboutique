@@ -1,0 +1,4 @@
+<?php
+
+$exclusives = $data['exclusives'] ?? [];
+?>
