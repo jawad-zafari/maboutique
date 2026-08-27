@@ -267,6 +267,33 @@ class Model
         return array($result, $priceTotalall, $discountTotalAll);
     }
 
+    // Calcule les frais de livraison (Méthodes locales uniquement)
+    public function calculatePostPrice($cityId = 0)
+    {
+        $sql = "SELECT id, price FROM shipping_methods";
+        $methods = $this->doSelect($sql);
+        
+        $prices = array(
+            'express' => 5.00, 
+            'standard' => 0.00
+        );
+
+        if (is_array($methods)) {
+            foreach ($methods as $method) {
+                $id = (int)$method['id'];
+                $price = (float)$method['price'];
+                
+                if ($id === 1) { 
+                    $prices['express'] = $price;
+                } elseif ($id === 2) { 
+                    $prices['standard'] = $price;
+                }
+            }
+        }
+
+        return $prices;
+    }
+
     
 }
 ?>
