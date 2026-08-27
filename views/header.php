@@ -35,4 +35,16 @@ $csrfToken = $csrf_token ?? '';
             </a>
         </div>
 
-      
+       <div class="search-container">
+            <form action="<?= URL ?>Search/index" method="POST" id="headerSearchForm" class="search-form-wrapper">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                <input type="text" id="headerKeyword" name="keyword" class="search-input" placeholder="Rechercher un produit..." autocomplete="off" aria-label="Champ de recherche">
+                <button type="submit" class="search-btn" aria-label="Lancer la recherche">
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                </button>
+            </form>
+            
+            <ul id="headerAutoSuggest" class="header-suggest-list" role="listbox"></ul>
+        </div>
+
+        
