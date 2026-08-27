@@ -145,3 +145,30 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     });
+
+    //  GESTION DU CAROUSEL DES ACTUALITÉS (NEWS)
+    
+    const newsCarouselTrack = document.getElementById('newsCarouselTrack');
+    const newsBtnNext = document.getElementById('newsBtnNext');
+    const newsBtnPrev = document.getElementById('newsBtnPrev');
+
+    if (newsCarouselTrack) {
+        const getNewsScrollStep = () => {
+            const firstNewsItem = newsCarouselTrack.querySelector('.news-card');
+            return firstNewsItem ? firstNewsItem.clientWidth + 20 : 350;
+        };
+
+        if (newsBtnNext) {
+            newsBtnNext.addEventListener('click', () => {
+                newsCarouselTrack.scrollBy({ left: getNewsScrollStep(), behavior: 'smooth' });
+            });
+        }
+
+        if (newsBtnPrev) {
+            newsBtnPrev.addEventListener('click', () => {
+                newsCarouselTrack.scrollBy({ left: -getNewsScrollStep(), behavior: 'smooth' });
+            });
+        }
+    }
+
+   
