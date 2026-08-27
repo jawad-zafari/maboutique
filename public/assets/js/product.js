@@ -109,4 +109,31 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // GESTION DYNAMIQUE DES ONGLETS (TABS)
+    const tabButtons = document.querySelectorAll('.btn-tab');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+
+    if (tabButtons.length > 0) {
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                
+                // Réinitialisation des états
+                tabButtons.forEach(b => {
+                    b.classList.remove('active');
+                    b.setAttribute('aria-selected', 'false');
+                });
+                tabPanes.forEach(p => p.classList.remove('active'));
+                
+                // Activation de la cible
+                this.classList.add('active');
+                this.setAttribute('aria-selected', 'true');
+                
+                const targetPane = document.getElementById(targetId);
+                if (targetPane) targetPane.classList.add('active');
+            });
+        });
+    }
+
     
+});
