@@ -38,5 +38,20 @@ class Controller
     }
 
     
+    //   Vérifie la validité du jeton CSRF reçu
     
+    public function checkCsrfToken(string $token): bool
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (empty($_SESSION['csrf_token']) || empty($token) || !hash_equals($_SESSION['csrf_token'], $token)) {
+            die("Erreur de sécurité : Jeton CSRF invalide ou expiré.");
+        }
+        return true;
+    }
+
+    
+    
+}
 ?>
