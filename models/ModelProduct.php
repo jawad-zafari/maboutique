@@ -75,6 +75,15 @@ class ModelProduct extends Model
     }
 
    
-   
+    // Récupère la galerie d'images secondaires du produit.
+     
+    public function getGallery($id)
+    {
+        // L'image principale (is_main) est affichée en premier
+        $sql = "SELECT * FROM product_galleries WHERE product_id = ? ORDER BY is_main DESC";
+        return $this->doSelect($sql, [(int)$id]);
+    }
+
+    
 }
 ?>
