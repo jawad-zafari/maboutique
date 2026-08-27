@@ -336,6 +336,16 @@ class Model
         return $data;
     }
 
-    
+    public static function getUserLevel()
+    {
+        self::sessionInit();
+        $userId = self::sessionGet('userId');
+        if (!$userId) return 0;
+
+        $sql = "SELECT * FROM users WHERE id = ?";
+        $model_instance = new Model();
+        $userInfo = $model_instance->doSelect($sql, array($userId), 1);
+        return $userInfo['role_id'] ?? 0;
+    }
 }
 ?>
