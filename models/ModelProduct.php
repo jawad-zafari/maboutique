@@ -185,6 +185,21 @@ class ModelProduct extends Model
         return $countResult['total'] ?? 0;
     }
 
-   
+    //   Enregistre une nouvelle question dans la base de données.
+     
+    public function addQuestion($productId, $userId, $questionText)
+    {
+        if ($userId <= 0) {
+            return;
+        }
+
+        $createdAt = date('Y-m-d H:i:s');
+        
+        //  Nettoyage strict des caractères spéciaux avant insertion en base
+        $safeContent = htmlspecialchars(trim($questionText), ENT_QUOTES, 'UTF-8');
+        
+        $sql = "INSERT INTO questions (content, product_id, user_id, parent_id, is_approved, created_at) VALUES (?, ?, ?, 0, 0, ?)";
+        $this->doQuery($sql, [$safeContent, (int)$productId, (int)$userId, $createdAt]);
+    }
 }
 ?>
