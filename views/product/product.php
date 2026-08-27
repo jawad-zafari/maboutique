@@ -115,4 +115,9 @@ if (!empty($gallery)) {
         <img class="zoom-modal-content" id="zoomedImage" alt="Image agrandie du produit">
     </div>
 
-   
+    <?php 
+    require 'tabs.php'; 
+    require 'exclusives.php'; 
+    ?>
+
+</div>
