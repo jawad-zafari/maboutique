@@ -391,4 +391,43 @@
             </div>
         </section>
 
-       
+        <section class="news-section full-width-panel" aria-label="Dernières actualités">
+            <div class="section-header">
+                <h3 class="section-title"><i class="fa-regular fa-newspaper" aria-hidden="true"></i> Dernières actualités</h3>
+                <div class="header-nav-buttons">
+                    <button type="button" class="nav-btn prev" id="newsBtnPrev" aria-label="Actualités précédentes"><i class="fa-solid fa-angle-left" aria-hidden="true"></i></button>
+                    <button type="button" class="nav-btn next" id="newsBtnNext" aria-label="Actualités suivantes"><i class="fa-solid fa-angle-right" aria-hidden="true"></i></button>
+                </div>
+            </div>
+            
+            <div class="news-carousel-track" id="newsCarouselTrack">
+                <?php 
+                $newsList = $data['latest_news'] ?? [];
+                if(!empty($newsList)): foreach($newsList as $news): 
+                    $newsTitle = htmlspecialchars($news['title'] ?? '', ENT_QUOTES, 'UTF-8');
+                    $newsDesc = htmlspecialchars($news['short_desc'] ?? '', ENT_QUOTES, 'UTF-8');
+                    $newsImg = URL . htmlspecialchars($news['image_path'] ?? '', ENT_QUOTES, 'UTF-8');
+                    
+                    // UTILISATION DE LA FONCTION STANDARD
+                    $newsDate = htmlspecialchars(Model::formatDateForDisplay($news['created_at'] ?? ''), ENT_QUOTES, 'UTF-8');
+                ?>
+                <div class="news-card clickable-news-item hover-glow" role="button" tabindex="0" data-title="<?= $newsTitle ?>" data-desc="<?= $newsDesc ?>" data-img="<?= $newsImg ?>" data-date="<?= $newsDate ?>">
+                    <div class="news-card-img">
+                        <img src="<?= $newsImg ?>" alt="<?= $newsTitle ?>" onerror="this.src='https://placehold.co/400x250/f1f3f5/3b5bdb?text=News'">
+                    </div>
+                    <div class="news-card-body">
+                        <span class="news-date"><?= $newsDate ?></span>
+                        <h4 class="news-title"><?= $newsTitle ?></h4>
+                        <p class="news-excerpt"><?= htmlspecialchars(mb_strimwidth($news['short_desc'] ?? '', 0, 80, '...'), ENT_QUOTES, 'UTF-8') ?></p>
+                        <span class="news-read-more">Lire la suite <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+                    </div>
+                </div>
+                <?php endforeach; else: ?>
+                    <p class="text-empty-msg-center">Aucune actualité pour le moment.</p>
+                <?php endif; ?>
+            </div>
+        </section>
+
+    </div>
+</div>
+
