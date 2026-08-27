@@ -104,6 +104,16 @@ class Model
         return $result;
     }
 
-    
+    // Exécute une requête INSERT, UPDATE ou DELETE
+    public function doQuery($sql, $values = array())
+    {
+        $stmt = self::$conn->prepare($sql);
+        foreach ($values as $key => $value) {
+            $stmt->bindValue($key + 1, $value);
+        }
+        $stmt->execute();
+    }
+
+   
 }
 ?>
