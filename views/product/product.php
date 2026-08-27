@@ -72,4 +72,8 @@ if (!empty($gallery)) {
                 </span>
             </div>
 
+            <div class="product-description-excerpt">
+                <p><?= htmlspecialchars($product['description'] ?? 'Aucune description disponible pour ce produit.', ENT_QUOTES, 'UTF-8') ?></p>
+            </div>
+
            
