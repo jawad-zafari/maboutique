@@ -138,6 +138,27 @@ class ModelProduct extends Model
         return $this->doSelect($sql, [(int)$id]);
     }
 
-   
+    //   Récupère les questions validées et leurs réponses associées.
+     
+    public function getQuestionsAndAnswers($id)
+    {
+        // Étape 1 : Récupérer les questions principales (parent_id = 0)
+        $sqlQ = "SELECT * FROM questions WHERE product_id = ? AND parent_id = 0 AND is_approved = 1 ORDER BY id DESC";
+        $questions = $this->doSelect($sqlQ, [(int)$id]);
+
+        // Étape 2 : Récupérer toutes les réponses associées à ce produit
+        $sqlA = "SELECT * FROM questions WHERE product_id = ? AND parent_id != 0 AND is_approved = 1";
+        $answersRaw = $this->doSelect($sqlA, [(int)$id]);
+        
+        $answers = [];
+        foreach ($answersRaw as $ans) {
+            // L'ID du parent sert de clé pour associer rapidement la réponse à la question
+            $answers[$ans['parent_id']] = $ans;
+        }
+
+        return [$questions, $answers];
+    }
+
+    
 }
 ?>
