@@ -124,4 +124,27 @@
         }
     }
 
-    
+    .cyber-btn {
+        position: absolute; 
+        top: 50%; 
+        transform: translateY(-50%); 
+        z-index: 10;
+        background: rgba(0, 0, 0, 0.4); 
+        border: none; 
+        -webkit-backdrop-filter: blur(4px); 
+        backdrop-filter: blur(4px);
+        width: 36px; 
+        height: 36px; 
+        border-radius: 50%; 
+        cursor: pointer; 
+        color: $bg-white; 
+        font-size: 1rem; 
+        transition: all $transition-fast; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        
+        &:hover { background: rgba(0, 0, 0, 0.7); transform: translateY(-50%) scale(1.05); }
+        &.prev { left: 10px; @media (min-width: $breakpoint-md) { left: 20px; } } 
+        &.next { right: 10px; @media (min-width: $breakpoint-md) { right: 20px; } }
+    }
