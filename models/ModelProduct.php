@@ -126,6 +126,18 @@ class ModelProduct extends Model
         return [$params, $scores];
     }
 
-    
+    //   Récupère les commentaires validés par les administrateurs (is_approved = 1).
+     
+    public function getProductComments($id)
+    {
+        $sql = "SELECT c.*, u.username as first_name, u.last_name 
+                FROM comments c 
+                LEFT JOIN users u ON c.user_id = u.id 
+                WHERE c.product_id = ? AND c.is_approved = 1 
+                ORDER BY c.id DESC";
+        return $this->doSelect($sql, [(int)$id]);
+    }
+
+   
 }
 ?>
