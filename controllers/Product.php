@@ -19,6 +19,14 @@ class Product extends Controller
         $productId = (int)$id;
         $productInfo = $this->model->productInfo($productId);
         
+        // Gestion d'erreur
+        if (empty($productInfo)) {
+            header('Location: ' . URL . 'Index/index');
+            exit;
+        }
+
+       
+    }
 
     
     
