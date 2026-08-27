@@ -195,4 +195,62 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // SOUMISSION DES QUESTIONS (AJAX SÉCURISÉ & ROBUSTE)
+    const btnSubmitQuestion = document.getElementById('btnSubmitQuestion');
+    const textareaQuestion = document.getElementById('questionText');
+
+    if (btnSubmitQuestion && textareaQuestion) {
+        btnSubmitQuestion.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const productId = this.getAttribute('data-id');
+            const questionText = textareaQuestion.value.trim();
+
+            if (!questionText) {
+                showProductToast("Veuillez saisir votre question avant de soumettre.", "danger");
+                textareaQuestion.focus();
+                return;
+            }
+
+            if (!productId) return;
+
+            try {
+                // Feedback utilisateur
+                btnSubmitQuestion.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...';
+                btnSubmitQuestion.disabled = true;
+
+                const formData = new URLSearchParams();
+                formData.append('question', questionText);
+                formData.append('csrf_token', csrfToken); // SÉCURITÉ : Protection CSRF
+
+                const response = await fetch(`${baseUrl}Product/addQuestion/${productId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData.toString()
+                });
+
+                //  Gestion sécurisée des erreurs serveur (HTML non désiré)
+                let result;
+                try {
+                    result = await response.json();
+                } catch (jsonError) {
+                    throw new Error("Erreur de format de réponse du serveur.");
+                }
+
+                if (response.ok && result.status === 'success') {
+                    textareaQuestion.value = '';
+                    showProductToast(result.message);
+                } else {
+                    showProductToast(result.message || "Erreur lors de l'envoi de la requête.", "danger");
+                }
+            } catch (error) {
+                console.error("Erreur Q&A:", error);
+                showProductToast(error.message || "Erreur de réseau.", "danger");
+            } finally {
+                // Restauration du bouton
+                btnSubmitQuestion.innerHTML = '<i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Soumettre la question';
+                btnSubmitQuestion.disabled = false;
+            }
+        });
+    }
+
 });
