@@ -111,3 +111,50 @@ $csrfToken = $csrf_token ?? '';
 </nav>
 
 <div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-sidebar" id="cartSidebar" role="dialog" aria-labelledby="cartSidebarTitle">
+    <div class="cart-header">
+        <h3 id="cartSidebarTitle">Votre Panier</h3>
+        <button type="button" class="close-cart-btn" id="closeCartBtn" aria-label="Fermer le panier"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    </div>
+    
+    <div class="cart-body" id="cartSidebarBody">
+        <?php 
+        $priceTotalAll = 0;
+        if(!empty($cartItems)): 
+            foreach($cartItems as $item): 
+                // Typage rigoureux pour les calculs financiers (suppression de la variable obsolète)
+                $qty = (int)($item['quantity'] ?? 1);
+                $price = (float)($item['price'] ?? 0);
+                $priceTotalAll += ($price * $qty);
+        ?>
+        <div class="cart-item-card">
+            <img src="<?= URL ?>public/images/products/<?= (int)($item['id'] ?? 0) ?>/product_220.jpg" alt="<?= htmlspecialchars($item['title'] ?? '', ENT_QUOTES, 'UTF-8') ?>" class="item-img" onerror="this.src='https://placehold.co/80x80/f5f5f5/111?text=Img'">
+            <div class="item-details">
+                <h4 class="item-title"><?= htmlspecialchars($item['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></h4>
+                <div class="item-price"><?= number_format($price, 2, '.', '') ?> €</div>
+                <div class="item-controls">
+                    <div class="qty-wrapper">
+                        <button type="button" class="btn-qty minus" data-row="<?= (int)($item['cartRow'] ?? 0) ?>" aria-label="Diminuer la quantité">-</button>
+                        <input type="text" class="input-qty" value="<?= $qty ?>" readonly aria-label="Quantité" data-row="<?= (int)($item['cartRow'] ?? 0) ?>">
+                        <button type="button" class="btn-qty plus" data-row="<?= (int)($item['cartRow'] ?? 0) ?>" aria-label="Augmenter la quantité">+</button>
+                    </div>
+                    <button type="button" class="btn-remove-item" data-row="<?= (int)($item['cartRow'] ?? 0) ?>" aria-label="Supprimer cet article"><i class="fa-solid fa-trash-can" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+        <?php endforeach; else: ?>
+            <div class="sidebar-empty-state">
+                <div class="empty-msg-text">Votre panier est vide.</div>
+                <div class="empty-bg-icon"><i class="fa-solid fa-cart-arrow-down" aria-hidden="true"></i></div>
+            </div>
+        <?php endif; ?>
+    </div>
+    
+    <div class="cart-footer">
+        <div class="total-row">
+            <span class="total-label">Total de la commande</span>
+            <span class="total-price" id="cartSidebarTotal"><?= number_format($priceTotalAll, 2, '.', '') ?> €</span>
+        </div>
+        <a href="<?= URL ?>Order/index" class="btn-checkout-sidebar">Passer la commande <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+    </div>
+</div>
