@@ -121,3 +121,5 @@ if (!empty($gallery)) {
     ?>
 
 </div>
+
+<script src="<?= URL ?>public/assets/js/product.js" defer></script>
