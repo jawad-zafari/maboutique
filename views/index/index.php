@@ -129,4 +129,20 @@
                     $prodId = (int)($product['id'] ?? 0);
                     $prodTitle = htmlspecialchars($product['title'] ?? '', ENT_QUOTES, 'UTF-8');
                 ?>
-                
+                <div class="product-card hover-glow">
+                    <button type="button" class="btn-favorite-toggle" data-id="<?= $prodId ?>" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
+                        <i class="fa-regular fa-heart" aria-hidden="true"></i>
+                    </button>
+                    <?php if($hasDiscount): ?>
+                        <div class="badge-item badge-discount">-<?= $discount ?>%</div>
+                    <?php else: ?>
+                        <div class="badge-item badge-new">Nouveau</div>
+                    <?php endif; ?>
+                    
+                    <a href="<?= URL ?>Product/index/<?= $prodId ?>" class="card-link-wrapper" aria-label="Voir le produit <?= $prodTitle ?>">
+                        <div class="image-wrapper">
+                            <img src="<?= URL ?>public/images/products/<?= $prodId ?>/product_220.jpg" alt="<?= $prodTitle ?>" class="product-img" onerror="this.src='https://placehold.co/220x220/f1f3f5/3b5bdb?text=Produit'">
+                        </div>
+                    </a>
+
+                    
