@@ -114,7 +114,17 @@ class Controller
 
             $activeMenu = strtolower(str_replace('Admin', '', $controllerName));
 
-          
+            if (file_exists('views/admin/layout.php')) {
+                require 'views/admin/layout.php';
+            }
+
+            if (file_exists('views/' . $viewName . '.php')) {
+                require 'views/' . $viewName . '.php';
+            }
+
+            if (file_exists('views/admin/footer.php')) {
+                require 'views/admin/footer.php';
+            }
 
         // 2. Site public
         }
