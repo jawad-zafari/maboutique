@@ -108,4 +108,17 @@
             </div>
         </section>
 
-       
+        <?php 
+        $specialOffers = $data['slider2_items'] ?? []; 
+        if(!empty($specialOffers)):
+        ?>
+        <section class="product-carousel-section promo-section" aria-label="Offres du moment">
+            <div class="section-header">
+                <div class="header-titles">
+                    <h3 class="section-title">Offres du moment</h3>
+                    <p class="section-subtitle">Ne manquez pas ces produits à prix réduit.</p>
+                </div>
+                <a href="<?= URL ?>Collection/index/special" class="btn-see-all">Voir tout <i class="fa-solid fa-angle-right" aria-hidden="true"></i></a>
+            </div>
+            
+            
