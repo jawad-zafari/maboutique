@@ -47,4 +47,39 @@ $csrfToken = $csrf_token ?? '';
             <ul id="headerAutoSuggest" class="header-suggest-list" role="listbox"></ul>
         </div>
 
+        <div class="header-actions">
+            
+            <?php if ((int)$userLevel === 1): ?>
+                <a href="<?= URL ?>AdminDashboard/index" class="btn-icon" aria-label="Administration" title="Administration">
+                    <i class="fa-solid fa-user-gear" aria-hidden="true"></i>
+                </a>
+            <?php endif; ?>
+
+            <a href="<?= URL ?>Account/favorites" class="btn-icon" aria-label="Mes favoris" title="Mes favoris">
+                <i class="fa-regular fa-heart" aria-hidden="true"></i>
+                <span class="cart-counter <?= (int)$favCount === 0 ? 'is-hidden' : '' ?>" id="navFavCounterBadge"><?= (int)$favCount ?></span>
+            </a>
+
+            <?php if ($userId == false): ?>
+                <a href="<?= URL ?>Login/index" class="btn-icon" aria-label="Se connecter ou s'inscrire" title="Se connecter / S'inscrire">
+                    <i class="fa-solid fa-user" aria-hidden="true"></i>
+                </a>
+            <?php else: ?>
+                <a href="<?= URL ?>Account/index" class="btn-icon" aria-label="Mon Espace Client" title="Mon Espace Client">
+                    <i class="fa-solid fa-user" aria-hidden="true"></i>
+                </a>
+            <?php endif; ?>
+
+            <a href="#" class="btn-icon cart-btn" aria-label="Voir mon panier" title="Mon panier">
+                <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i> 
+                <span class="cart-counter" id="navCartCounterBadge"><?= (int)$cartCount ?></span>
+            </a>
+
+            <button class="btn-mobile-menu" id="btnToggleNav" aria-label="Ouvrir le menu de navigation">
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            </button>
+        </div>
         
+    </div>
+</header>
+
