@@ -171,4 +171,37 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-   
+    //  GESTION DU MODAL DYNAMIQUE DES ACTUALITÉS - SÉCURISÉ (Anti-XSS)
+
+    const newsModal = document.getElementById('newsModal');
+    const closeNewsModal = document.getElementById('closeNewsModal');
+    const newsModalImg = document.getElementById('newsModalImg');
+    const newsModalTitle = document.getElementById('newsModalTitle');
+    const newsModalDate = document.getElementById('newsModalDate');
+    const newsModalDesc = document.getElementById('newsModalDesc');
+
+    document.addEventListener('click', (e) => {
+        const newsItem = e.target.closest('.clickable-news-item');
+        if (newsItem && newsModal) {
+            // SÉCURITÉ : Utilisation de textContent pour neutraliser l'injection de scripts malveillants
+            if (newsModalTitle) newsModalTitle.textContent = newsItem.getAttribute('data-title') || '';
+            if (newsModalDate) newsModalDate.textContent = newsItem.getAttribute('data-date') || '';
+            if (newsModalDesc) newsModalDesc.textContent = newsItem.getAttribute('data-desc') || '';
+            if (newsModalImg) newsModalImg.src = newsItem.getAttribute('data-img') || '';
+
+            newsModal.classList.add('show');
+        }
+    });
+
+    const closeNewsModalWindow = () => {
+        if (newsModal) newsModal.classList.remove('show');
+    };
+
+    if (closeNewsModal) closeNewsModal.addEventListener('click', closeNewsModalWindow);
+    if (newsModal) {
+        newsModal.addEventListener('click', (e) => {
+            if (e.target === newsModal) closeNewsModalWindow();
+        });
+    }
+
+    
