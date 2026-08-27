@@ -1,0 +1,16 @@
+
+$color-orange: #ff7a00; 
+
+.product-page-container { 
+    width: 100%;
+    max-width: 1200px; 
+    margin: 10px auto; 
+    padding: 10px; 
+    font-family: $font-main; 
+    
+    @media (min-width: $breakpoint-md) { 
+        margin: 20px auto; 
+        padding: 15px; 
+    } 
+}
+
