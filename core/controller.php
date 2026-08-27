@@ -71,6 +71,10 @@ class Controller
             $baseModel = new Model();
             $userId = Model::sessionGet('userId');
 
+            if (!isset($data['menuList'])) {
+                $data['menuList'] = $baseModel->getMenu(0);
+            }
+
             
         }
 
