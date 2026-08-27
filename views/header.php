@@ -83,3 +83,30 @@ $csrfToken = $csrf_token ?? '';
     </div>
 </header>
 
+<nav class="main-nav" id="mainNavigation">
+    <div class="nav-carousel-wrapper">
+        <button type="button" class="nav-arrow left" id="btnNavPrev" aria-label="Faire défiler à gauche"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+        <div class="nav-scroll-container" id="navScrollContainer">
+            <ul class="menu-level-1" role="menubar">
+                <li class="menu-item all-products-link" role="none"><a href="<?= URL ?>Collection/index/latest" role="menuitem">TOUT</a></li>            
+                <?php if(!empty($menuList)): foreach ($menuList as $menu1): ?>
+                    <li class="menu-item" role="none">
+                        <a href="<?= URL ?>Collection/index/category/<?= (int)$menu1['id'] ?>/1" role="menuitem">
+                            <?= htmlspecialchars($menu1['title'], ENT_QUOTES, 'UTF-8') ?>
+                            <?php if (!empty($menu1['children'])): ?><i class="fa-solid fa-angle-down nav-dropdown-icon" aria-hidden="true"></i><?php endif; ?>
+                        </a>
+                        <?php if (!empty($menu1['children'])): ?>
+                            <ul class="menu-level-2" role="menu">
+                                <?php foreach ($menu1['children'] as $menu2): ?>
+                                    <li role="none"><a href="<?= URL ?>Collection/index/category/<?= (int)$menu2['id'] ?>/1" role="menuitem"><?= htmlspecialchars($menu2['title'], ENT_QUOTES, 'UTF-8') ?></a></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                    </li>
+                <?php endforeach; endif; ?>
+            </ul>
+        </div>
+        <button type="button" class="nav-arrow right" id="btnNavNext" aria-label="Faire défiler à droite"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+    </div>
+</nav>
+
