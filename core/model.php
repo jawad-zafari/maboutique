@@ -310,6 +310,17 @@ class Model
         }
     }
 
-   
+    public static function formatDateForDisplay($dateStr, $format = '/')
+    {
+        try {
+            $cleanDate = str_replace('/', '-', $dateStr);
+            $date = new DateTime($cleanDate);
+            return $date->format('d' . $format . 'm' . $format . 'Y');
+        } catch (Exception $e) {
+            return date('d/m/Y');
+        }
+    }
+
+    
 }
 ?>
