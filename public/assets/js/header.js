@@ -26,4 +26,21 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    //  LOGIQUE DU DEFILEMENT DU CARROUSEL (DESKTOP) 
+    const scrollContainer = document.getElementById('navScrollContainer');
+    const btnNext = document.getElementById('btnNavNext');
+    const btnPrev = document.getElementById('btnNavPrev');
+
+    if (scrollContainer && btnNext && btnPrev) {
+        const scrollStep = 250;
+
+        btnNext.addEventListener('click', () => {
+            scrollContainer.scrollLeft += scrollStep;
+        });
+
+        btnPrev.addEventListener('click', () => {
+            scrollContainer.scrollLeft -= scrollStep;
+        });
+    }
+
     
