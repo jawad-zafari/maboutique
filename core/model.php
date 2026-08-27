@@ -203,6 +203,12 @@ class Model
         }
     }
 
-   
+    public static function sessionSet($name, $value)
+    {
+        self::sessionInit();
+        $_SESSION[$name] = $value;
+    }
+
+    
 }
 ?>
