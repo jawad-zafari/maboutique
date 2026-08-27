@@ -114,6 +114,19 @@ class Model
         $stmt->execute();
     }
 
-   
+    // Récupère le nombre total de favoris pour un utilisateur spécifique
+    public function getFavoriteCount($userId)
+    {
+        if (!$userId) {
+            return 0;
+        }
+
+        $sql = "SELECT COUNT(*) as total FROM favorites WHERE user_id = ?";
+        $result = $this->doSelect($sql, [$userId], 1);
+
+        return isset($result['total']) ? (int)$result['total'] : 0;
+    }
+
+    
 }
 ?>
