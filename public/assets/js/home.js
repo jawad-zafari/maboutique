@@ -66,4 +66,52 @@ document.addEventListener("DOMContentLoaded", () => {
         if (totalSlides > 1) startAutoPlay();
     }
 
+    //  GESTION DYNAMIQUE DU CAROUSEL DES MARQUES
+    const brandsCarouselTrack = document.getElementById('brandsCarouselTrack');
+    const brandsBtnNext = document.getElementById('brandsBtnNext');
+    const brandsBtnPrev = document.getElementById('brandsBtnPrev');
+
+    if (brandsCarouselTrack) {
+        const getBrandScrollStep = () => {
+            const firstBrandItem = brandsCarouselTrack.querySelector('.brands-carousel-item');
+            return firstBrandItem ? firstBrandItem.clientWidth + 15 : 120;
+        };
+
+        if (brandsBtnNext) {
+            brandsBtnNext.addEventListener('click', () => {
+                brandsCarouselTrack.scrollBy({ left: getBrandScrollStep(), behavior: 'smooth' });
+            });
+        }
+
+        if (brandsBtnPrev) {
+            brandsBtnPrev.addEventListener('click', () => {
+                brandsCarouselTrack.scrollBy({ left: -getBrandScrollStep(), behavior: 'smooth' });
+            });
+        }
+    }
+
+    //gestion dynamique du carousel boutique tv
+    const tvCarouselTrack = document.getElementById('tvCarouselTrack');
+    const tvBtnNext = document.getElementById('tvBtnNext');
+    const tvBtnPrev = document.getElementById('tvBtnPrev');
+
+    if (tvCarouselTrack) {
+        const getTvScrollStep = () => {
+            const firstTvItem = tvCarouselTrack.querySelector('.tv-carousel-item');
+            return firstTvItem ? firstTvItem.clientWidth + 20 : 300;
+        };
+
+        if (tvBtnNext) {
+            tvBtnNext.addEventListener('click', () => {
+                tvCarouselTrack.scrollBy({ left: getTvScrollStep(), behavior: 'smooth' });
+            });
+        }
+
+        if (tvBtnPrev) {
+            tvBtnPrev.addEventListener('click', () => {
+                tvCarouselTrack.scrollBy({ left: -getTvScrollStep(), behavior: 'smooth' });
+            });
+        }
+    }
+
     
