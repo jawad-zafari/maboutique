@@ -38,6 +38,14 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-       
+        const updateSliderPosition = () => {
+            sliderTrack.style.transform = `translateX(-${currentIndex * 100}%)`;
+            if (dotsContainer) {
+                document.querySelectorAll('.slider-dots .dot').forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
+                });
+            }
+        };
 
+       
 });
