@@ -93,6 +93,17 @@ class ModelProduct extends Model
     }
 
     
+    //  Récupère les spécifications techniques du produit selon sa catégorie.
     
+    public function getTechnicalSpecs($categoryId, $productId)
+    {
+        $sql = "SELECT a.title, av.value 
+                FROM attributes a 
+                LEFT JOIN attribute_values av ON a.id = av.attribute_id AND av.product_id = ? 
+                WHERE a.category_id = ?";
+        return $this->doSelect($sql, [(int)$productId, (int)$categoryId]);
+    }
+
+   
 }
 ?>
