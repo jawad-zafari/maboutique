@@ -93,7 +93,11 @@ class Controller
                 $data['favCount'] = $userId ? $baseModel->getFavoriteCount($userId) : 0;
             }
 
-            
+            if (!isset($data['userId'])) {
+                $data['userId'] = $userId ?: false;
+            }
+
+           
         }
 
        
