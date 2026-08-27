@@ -17,7 +17,12 @@ class Index extends Controller
         $mostViewed = $this->model->getMostViewedProducts();
         $latestProducts = $this->model->getLatestProducts();
         
+        // Actualités, Marques, Boutique TV
+        $latestNews = $this->model->getLatestNews();
+        $brands = $this->model->getBrands();
+        $tvSettings = $this->model->getTvSettings();
         
+       
 
         // Préparation du tableau de données à envoyer à la Vue
         $data = [
