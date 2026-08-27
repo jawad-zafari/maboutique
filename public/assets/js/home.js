@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const homeWrapper = document.getElementById('homeMainWrapper');
     const csrfToken = homeWrapper ? homeWrapper.getAttribute('data-csrf') : '';
 
-    // 1. GESTION DU SLIDER PRINCIPAL
+    // GESTION DU SLIDER PRINCIPAL
     const sliderTrack = document.getElementById('sliderTrack');
     const slides = document.querySelectorAll('.slide');
     const btnNext = document.getElementById('btnNext');
@@ -47,5 +47,23 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         };
 
-       
-});
+        const moveToNextSlide = () => {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            updateSliderPosition();
+        };
+
+        const moveToPrevSlide = () => {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            updateSliderPosition();
+        };
+
+        if (btnNext) btnNext.addEventListener('click', () => { moveToNextSlide(); resetAutoPlay(); });
+        if (btnPrev) btnPrev.addEventListener('click', () => { moveToPrevSlide(); resetAutoPlay(); });
+
+        const startAutoPlay = () => { autoPlayInterval = setInterval(moveToNextSlide, 6000); };
+        const resetAutoPlay = () => { clearInterval(autoPlayInterval); startAutoPlay(); };
+
+        if (totalSlides > 1) startAutoPlay();
+    }
+
+    
