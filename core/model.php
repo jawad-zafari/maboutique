@@ -321,6 +321,21 @@ class Model
         }
     }
 
+    public function getMenu($parentId = 0)
+    {
+        $data = array();
+        $sql = "SELECT * FROM categories WHERE parent_id = ?";
+        $result = $this->doSelect($sql, array($parentId));
+        foreach ($result as $row) {
+            $children = $this->getMenu($row['id']);
+            if (is_array($children) && count($children) > 0) {
+                $row['children'] = $children;
+            }
+            $data[] = $row;
+        }
+        return $data;
+    }
+
     
 }
 ?>
