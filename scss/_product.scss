@@ -332,3 +332,212 @@ $color-orange: #ff7a00;
     }
 }
 
+//    SECTION ONGLETS (TABS)
+.product-tabs-wrapper { 
+    margin-top: 40px; 
+    background-color: $bg-white; 
+    border: 1px solid $border-color; 
+    border-radius: $radius-lg; 
+    overflow: hidden; 
+    box-shadow: $shadow-sm; 
+}
+
+.tabs-nav {
+    display: flex; 
+    flex-direction: column; 
+    background-color: $bg-light; 
+    border-bottom: 1px solid $border-color;
+    
+    @media (min-width: $breakpoint-md) { flex-direction: row; }
+    
+    .btn-tab { 
+        flex: 1; 
+        padding: 15px; 
+        background: transparent; 
+        border: none; 
+        border-bottom: 1px solid $border-color; 
+        font-size: $font-size-sm; 
+        font-weight: 800; 
+        color: $color-muted; 
+        cursor: pointer; 
+        text-align: left; 
+        transition: all 0.2s; 
+        
+        @media (min-width: $breakpoint-md) { 
+            text-align: center; 
+            border-bottom: 3px solid transparent; 
+            border-left: 1px solid $border-color; 
+            font-size: 0.95rem; 
+        } 
+        
+        i { margin-right: 8px; } 
+        
+        &.active { background-color: $bg-white; color: $color-primary; border-bottom-color: $color-primary; } 
+        &:hover:not(.active) { color: $color-text; background: rgba(255,255,255,0.5); } 
+    }
+}
+
+.tab-content-wrapper { 
+    padding: 20px; 
+    background: $bg-white; 
+    
+    @media (min-width: $breakpoint-md) { padding: 30px; } 
+    
+    .tab-pane { 
+        display: none; 
+        color: $color-text; 
+        &.active { display: block; animation: fadeIn 0.3s; } 
+    } 
+}
+
+/* Tab : Expert */
+.expert-review-card { 
+    padding: 20px; 
+    background: #f8f9fa; 
+    border-left: 4px solid $color-primary; 
+    margin-bottom: 20px; 
+    border-radius: 0 8px 8px 0; 
+    h4 { margin-top: 0; color: $color-secondary; font-size: 1.1rem; } 
+    p { line-height: 1.6; color: #555; } 
+}
+
+/* Tab : Specifications */
+.specs-table-wrapper {
+    .specs-table {
+        width: 100%; 
+        border-collapse: collapse; 
+        border-radius: $radius-sm; 
+        overflow: hidden;
+        th, td { padding: 12px 15px; border: 1px solid $border-color; font-size: 0.95rem; }
+        th { background: $bg-light; font-weight: 800; width: 35%; color: $color-muted; text-align: left; }
+        td { background: $bg-white; color: $color-text; font-weight: 500; }
+    }
+}
+
+/* Tab : Avis (Reviews) */
+.reviews-section-grid {
+    display: grid; 
+    grid-template-columns: 1fr; 
+    gap: 30px;
+    @media(min-width: $breakpoint-md) { grid-template-columns: 350px 1fr; }
+}
+
+.reviews-summary-scores {
+    background: #fafbff; 
+    border: 1px solid $border-color; 
+    padding: 25px; 
+    border-radius: $radius-lg; 
+    height: fit-content;
+    h5 { margin: 0 0 20px 0; font-size: 1.2rem; color: $color-text; }
+    
+    .score-row-item {
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between; 
+        margin-bottom: 12px; 
+        font-size: 0.85rem; 
+        font-weight: bold; 
+        color: $color-muted;
+        span:first-child { width: 45%; }
+        .progress-bar-bg { flex: 1; height: 8px; background: #e9ecef; border-radius: 10px; margin: 0 15px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: #2b8a3e; border-radius: 10px; }
+        span:last-child { width: 40px; text-align: right; color: $color-text; font-weight: 900; }
+    }
+    
+    .add-review-shortcut-box { margin-top: 20px; }
+    
+    .btn-action-primary { 
+        display: block; 
+        width: 100%; 
+        text-align: center; 
+        padding: 12px; 
+        background: $color-primary; 
+        color: #fff; 
+        font-weight: bold; 
+        text-decoration: none; 
+        border-radius: $radius-sm; 
+        transition: all 0.2s; 
+        &:hover { background: #2b45a6; } 
+    }
+}
+
+.comments-list {
+    .comment-item-card {
+        padding: 20px 0; 
+        border-bottom: 1px dashed $border-color; 
+        &:last-child{ border-bottom: none; }
+        
+        .comment-header-flex { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 10px; 
+            strong { font-size: 1.1rem; color: $color-text; } 
+            .comment-date { font-size: 0.85rem; color: $color-muted; } 
+        }
+        
+        .comment-body-text { line-height: 1.6; color: #555; margin: 0 0 10px 0; }
+        
+        .points-block { 
+            font-size: 0.9rem; 
+            margin-top: 5px; 
+            font-weight: 600; 
+            i { margin-right: 5px; } 
+            &.positive { color: #2b8a3e; } 
+            &.negative { color: #e03131; } 
+        }
+    }
+}
+
+/* Tab : QA (Questions) */
+.qa-section {
+    .qa-form-box {
+        margin-bottom: 35px; 
+        border-bottom: 1px solid $border-color; 
+        padding-bottom: 25px;
+        h4 { margin-top: 0; color: $color-text; margin-bottom: 15px; i { color: $color-primary; } }
+        .form-control { 
+            width: 100%; 
+            min-height: 100px; 
+            padding: 15px; 
+            border: 1px solid $border-color; 
+            border-radius: $radius-sm; 
+            font-family: $font-main; 
+            font-size: 0.95rem; 
+            resize: vertical; 
+            &:focus{ border-color:$color-primary; outline:none; } 
+        }
+        .btn-action-outline { 
+            padding: 10px 20px; 
+            border: 2px solid $color-secondary; 
+            color: $color-secondary; 
+            background: transparent; 
+            font-weight: bold; 
+            border-radius: $radius-sm; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            &:hover{ background:$color-secondary; color:$bg-white; } 
+        }
+    }
+}
+
+.qa-list {
+    .qa-card {
+        background: $bg-light; 
+        border-radius: $radius-lg; 
+        padding: 20px; 
+        margin-bottom: 20px; 
+        border: 1px solid $border-color;
+        .qa-question { 
+            font-weight: bold; color: $color-text; margin-bottom: 15px; 
+            i { color: $color-primary; margin-right: 8px; } 
+            p { font-weight: normal; margin: 5px 0 0 25px; line-height: 1.5; color: #444; } 
+        }
+        .qa-answer { 
+            background: $bg-white; padding: 15px; border-left: 4px solid #2b8a3e; border-radius: 0 8px 8px 0; margin-left: 25px; 
+            i { color: #2b8a3e; margin-right: 8px; } 
+            p { margin: 5px 0 0 25px; line-height: 1.5; color: #555; } 
+        }
+    }
+}
+
