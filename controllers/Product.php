@@ -45,7 +45,24 @@ class Product extends Controller
         $questions = $qaData[0] ?? [];
         $answers = $qaData[1] ?? [];
 
-        
+        // Préparation des données pour la vue 
+        $data = [
+            'productInfo'    => $productInfo,
+            'exclusives'     => $exclusives,
+            'gallery'        => $gallery,
+            'reviews'        => $expertReviews,
+            'specs'          => $specifications,
+            'comment_params' => $commentParamNames,
+            'comment_scores' => $commentParamScores,
+            'comments'       => $comments,
+            'questions'      => $questions,
+            'answers'        => $answers,
+            // Protection XSS sur la variable de l'onglet actif
+            'activeTab'      => htmlspecialchars($activeTab, ENT_QUOTES, 'UTF-8'),
+            'csrf_token'     => $csrf_token
+        ];
+
+       
     }
 
     
