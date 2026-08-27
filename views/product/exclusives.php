@@ -46,6 +46,8 @@ $exclusives = $data['exclusives'] ?? [];
             <?php endif; ?>
         </div>
         
-       
+        <button type="button" class="nav-btn next" id="btnExclusiveNext" aria-label="Produits suivants">
+            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        </button>
     </div>
 </div>
