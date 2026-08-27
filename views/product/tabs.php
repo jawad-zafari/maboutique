@@ -30,4 +30,19 @@ $activeTab = $data['activeTab'] ?? 'reviews';
         </button>
     </nav>
 
-   
+    <div class="tab-content-wrapper">
+        
+        <div id="tab-expert" class="tab-pane <?= $activeTab === 'expert' ? 'active' : '' ?>" role="tabpanel" aria-labelledby="btn-tab-expert">
+            <div class="expert-reviews-container">
+                <?php if (!empty($reviews)): foreach ($reviews as $rev): ?>
+                    <div class="expert-review-card">
+                        <h4><?= htmlspecialchars($rev['title'] ?? 'Avis Expert', ENT_QUOTES, 'UTF-8') ?></h4>
+                        <p><?= htmlspecialchars($rev['description'] ?? $rev['content'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
+                    </div>
+                <?php endforeach; else: ?>
+                    <p class="empty-text">Aucune évaluation d'expert disponible pour ce produit.</p>
+                <?php endif; ?>
+            </div>
+        </div>
+
+       
