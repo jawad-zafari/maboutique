@@ -195,6 +195,14 @@ class Model
         return true;
     }
 
-    
+    // Gestion propre du démarrage de la session
+    public static function sessionInit()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+
+   
 }
 ?>
