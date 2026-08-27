@@ -10,7 +10,21 @@ class Index extends Controller
 
     public function index()
     {
-      
+       
+        // Préparation du tableau de données à envoyer à la Vue
+        $data = [
+            'slider1'         => $slider1, 
+            'slider2_items'   => $slider2Items,
+            'date_end'        => $dateEnd,
+            'exclusives'      => $exclusives,
+            'most_viewed'     => $mostViewed,
+            'latest_products' => $latestProducts,
+            'latest_news'     => $latestNews,
+            'brands'          => $brands,
+            'tv_settings'     => $tvSettings,
+            // Génération du jeton pour protéger les actions sur la page d'accueil
+            'csrf_token'      => $this->generateCsrfToken()
+        ];
 
         // Affichage de la vue
         $this->view('index/index', $data);
