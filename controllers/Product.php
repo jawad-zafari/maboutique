@@ -9,6 +9,17 @@ class Product extends Controller
     }
 
     
-   
+    //  Affiche la page principale d'un produit
+    
+    public function index($id, $activeTab = 'reviews')
+    {
+        // PROTECTION CSRF
+        $csrf_token = $this->generateCsrfToken();
+
+       
+    }
+
+    
+    
 }
 ?>
