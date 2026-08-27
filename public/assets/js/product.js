@@ -9,4 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const baseTag = document.querySelector('base');
     const baseUrl = baseTag ? baseTag.getAttribute('href') : '/';
 
+    // SÉCURITÉ : Récupération du jeton CSRF injecté de manière sécurisée dans la vue
+    const productWrapper = document.getElementById('mainProductWrapper');
+    const csrfToken = productWrapper ? productWrapper.getAttribute('data-csrf') : '';
+
     
