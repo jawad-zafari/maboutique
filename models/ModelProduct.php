@@ -58,7 +58,11 @@ class ModelProduct extends Model
         $sqlColors = "SELECT * FROM product_colors pc JOIN colors c ON pc.color_id = c.id WHERE pc.product_id = ?";
         $result['colors'] = $this->doSelect($sqlColors, [$id]);
 
-        
+        // Récupération des garanties disponibles
+        $sqlGuarantees = "SELECT * FROM product_guarantees pg JOIN guarantees g ON pg.guarantee_id = g.id WHERE pg.product_id = ?";
+        $result['guarantees'] = $this->doSelect($sqlGuarantees, [$id]);
+
+        return $result;
     }
 
     
