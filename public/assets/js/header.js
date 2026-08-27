@@ -9,6 +9,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnToggleNav = document.getElementById('btnToggleNav');
     const mainNavigation = document.getElementById('mainNavigation');
 
-   
+    if (btnToggleNav && mainNavigation) {
+        btnToggleNav.addEventListener('click', function() {
+            mainNavigation.classList.toggle('active');
+            
+            const icon = this.querySelector('i');
+            if (icon) {
+                if (mainNavigation.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                } else {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            }
+        });
+    }
 
-});
+    
