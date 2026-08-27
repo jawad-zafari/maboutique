@@ -22,6 +22,46 @@ class ModelProduct extends Model
     }
 
    
+    //   Récupèrer toutes les informations d'un produit spécifique et calcule les prix.
+     
+    public function productInfo($id)
+    {
+        // SÉCURITÉ : Forçage du type
+        $id = (int)$id; 
+        
+        // Incrémentation du compteur de vues du produit
+        $sqlUpdateView = "UPDATE products SET views = views + 1 WHERE id = ?";
+        $this->doQuery($sqlUpdateView, [$id]);
+
+        $sql = "SELECT * FROM products WHERE id = ?";
+        $result = $this->doSelect($sql, [$id], true);
+        
+        if (!$result) return [];
+
+        // Calcul des prix et des remises
+        $price = $result['price'] ?? 0;
+        $discount = $result['discount_percent'] ?? 0;
+        $priceCalculate = $this->calculateDiscount($price, $discount);
+        $result['price_discount'] = $priceCalculate[0];
+        $result['price_total'] = $priceCalculate[1];
+
+        // Calculer la date d'expiration si c'est une offre spéciale
+        $timeSpecial = $result['special_offer_expires_at'] ?? 0;
+        $options = self::getoption();
+        $durationSpecial = $options['special_time'] ?? 0;
+        $timeEnd = $timeSpecial + $durationSpecial;
+        
+        date_default_timezone_set('Europe/Paris');
+        $result['date_special'] = date('F d,Y H:i:s', $timeEnd);
+
+        // Récupération des couleurs disponibles
+        $sqlColors = "SELECT * FROM product_colors pc JOIN colors c ON pc.color_id = c.id WHERE pc.product_id = ?";
+        $result['colors'] = $this->doSelect($sqlColors, [$id]);
+
+        
+    }
+
     
+   
 }
 ?>
