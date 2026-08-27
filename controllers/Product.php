@@ -40,6 +40,11 @@ class Product extends Controller
         
         $comments = $this->model->getProductComments($productId);
         
+        // Récupération des questions et des réponses associées
+        $qaData = $this->model->getQuestionsAndAnswers($productId);
+        $questions = $qaData[0] ?? [];
+        $answers = $qaData[1] ?? [];
+
         
     }
 
