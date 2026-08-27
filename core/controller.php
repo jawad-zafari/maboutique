@@ -65,7 +65,15 @@ class Controller
     {
         $controllerName = get_class($this);
 
-        
-    }
+        // Injection des données globales pour le site public (Non-Admin)
+        if (strpos($controllerName, 'Admin') !== 0 || $controllerName === 'AdminLogin') {
+            Model::sessionInit();
+            $baseModel = new Model();
+            $userId = Model::sessionGet('userId');
+
+            
+        }
+
+       
 }
 ?>
