@@ -39,4 +39,40 @@
         <div class="slider-dots" id="sliderDots" role="tablist"></div>
     </section>
 
-    
+    <div class="home-container">
+        
+        <section class="features-row modern-shadow">
+            <div class="feature-item">
+                <div class="icon-wrapper"><i class="fa-solid fa-truck-fast" aria-hidden="true"></i></div>
+                <div class="feature-text">
+                    <span class="feature-title">Livraison Gratuite</span>
+                    <span class="feature-subtitle">Dès 50€ d'achat</span>
+                </div>
+            </div>
+            
+            <div class="feature-item">
+                <div class="icon-wrapper"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i></div>
+                <div class="feature-text">
+                    <span class="feature-title">Retours Faciles</span>
+                    <span class="feature-subtitle">Sous 30 jours</span>
+                </div>
+            </div>
+            
+            <div class="feature-item">
+                <div class="icon-wrapper"><i class="fa-solid fa-lock" aria-hidden="true"></i></div>
+                <div class="feature-text">
+                    <span class="feature-title">Paiement Sécurisé</span>
+                    <span class="feature-subtitle">100% garanti</span>
+                </div>
+            </div>
+            
+            <div class="feature-item">
+                <div class="icon-wrapper"><i class="fa-solid fa-headset" aria-hidden="true"></i></div>
+                <div class="feature-text">
+                    <span class="feature-title">Support 24/7</span>
+                    <span class="feature-subtitle">À votre écoute</span>
+                </div>
+            </div>
+        </section>
+
+        
