@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 3000);
     }
 
-    // 2. GESTION DE LA GALERIE D'IMAGES
+    //  GESTION DE LA GALERIE D'IMAGES
     const mainImageNode = document.getElementById('mainProductImageNode');
     const thumbnails = document.querySelectorAll('.thumb-item-box');
 
@@ -82,4 +82,31 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-   
+    //  GESTION DU MODAL DE ZOOM (ACCESSIBILITÉ)
+    const zoomModal = document.getElementById('imageZoomModal');
+    const zoomedImage = document.getElementById('zoomedImage');
+    const btnTriggerImageZoom = document.getElementById('btnTriggerImageZoom');
+    const closeZoomModal = document.getElementById('closeZoomModal');
+
+    if (zoomModal && zoomedImage && mainImageNode) {
+        const openZoom = () => {
+            zoomedImage.src = mainImageNode.src;
+            zoomModal.classList.add('active');
+            zoomModal.style.display = 'flex';
+        };
+
+        if (btnTriggerImageZoom) btnTriggerImageZoom.addEventListener('click', openZoom);
+        mainImageNode.addEventListener('click', openZoom);
+
+        const closeZoom = () => { 
+            zoomModal.classList.remove('active');
+            zoomModal.style.display = 'none'; 
+        };
+        
+        if (closeZoomModal) closeZoomModal.addEventListener('click', closeZoom);
+        zoomModal.addEventListener('click', (e) => {
+            if (e.target === zoomModal) closeZoom(); // Ferme si on clique à l'extérieur
+        });
+    }
+
+    
