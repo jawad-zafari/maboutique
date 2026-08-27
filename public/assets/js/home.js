@@ -16,5 +16,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnPrev = document.getElementById('btnPrev');
     const dotsContainer = document.getElementById('sliderDots');
 
-   
+    if (sliderTrack && slides.length > 0) {
+        const totalSlides = slides.length;
+        let currentIndex = 0;
+        let autoPlayInterval;
+
+        if (dotsContainer) {
+            slides.forEach((_, index) => {
+                const dot = document.createElement('button');
+                dot.classList.add('dot');
+                dot.setAttribute('role', 'tab');
+                dot.setAttribute('aria-label', `Slide ${index + 1}`);
+                if (index === 0) dot.classList.add('active');
+                
+                dot.addEventListener('click', () => {
+                    currentIndex = index;
+                    updateSliderPosition();
+                    resetAutoPlay();
+                });
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+       
+
 });
