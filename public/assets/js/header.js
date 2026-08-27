@@ -123,7 +123,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                     headerAutoSuggest.appendChild(li);
                 });
+            } else {
+                const li = document.createElement('li');
+                li.className = 'empty-suggest';
+                
+                const span = document.createElement('span');
+                span.textContent = "Aucun produit trouvé.";
+                
+                li.appendChild(span);
+                headerAutoSuggest.appendChild(li);
             }
+            
+            headerAutoSuggest.style.display = 'block';
         } catch (error) {
             console.error("Erreur de recherche en direct :", error);
         }
