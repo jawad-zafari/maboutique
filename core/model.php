@@ -127,6 +127,74 @@ class Model
         return isset($result['total']) ? (int)$result['total'] : 0;
     }
 
+    // Redimensionne et sauvegarde une image
+    public function create_thumbnail($file, $pathToSave, $w, $h = '', $crop = false)
+    {
+        if (!file_exists($file)) return false;
+
+        $new_height = $h;
+        list($width, $height) = getimagesize($file);
+        if (!$width || !$height) return false;
+
+        $r = $width / $height;
+
+        if ($crop) {
+            if ($width > $height) {
+                $width = (int) round($width - ($width * abs($r - $w / $h)));
+            } else {
+                $height = (int) round($height - ($height * abs($r - $w / $h)));
+            }
+            $newwidth = (int) $w;
+            $newheight = (int) $h;
+        } else {
+            if ($w / $h > $r) {
+                $newwidth = (int) round($h * $r);
+                $newheight = (int) $h;
+            } else {
+                $newheight = (int) round($w / $r);
+                $newwidth = (int) $w;
+            }
+        }
+
+        $what = getimagesize($file);
+
+        switch (strtolower($what['mime'])) {
+            case 'image/png': $src = imagecreatefrompng($file); break;
+            case 'image/jpeg': $src = imagecreatefromjpeg($file); break;
+            case 'image/gif': $src = imagecreatefromgif($file); break;
+            case 'image/webp': $src = imagecreatefromwebp($file); break;
+            default: return false;
+        }
+
+        if ($new_height != '') {
+            $newheight = (int) $new_height;
+        }
+
+        $dst = imagecreatetruecolor($newwidth, $newheight);
+
+        if (strtolower($what['mime']) == 'image/png' || strtolower($what['mime']) == 'image/webp') {
+            imagealphablending($dst, false);
+            imagesavealpha($dst, true);
+            $transparent = imagecolorallocatealpha($dst, 255, 255, 255, 127);
+            imagefilledrectangle($dst, 0, 0, $newwidth, $newheight, $transparent);
+        }
+
+        imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, (int) $width, (int) $height);
+
+        $ext = strtolower(pathinfo($pathToSave, PATHINFO_EXTENSION));
+        switch ($ext) {
+            case 'png': imagepng($dst, $pathToSave); break;
+            case 'webp': imagewebp($dst, $pathToSave, 90); break;
+            case 'gif': imagegif($dst, $pathToSave); break;
+            default: imagejpeg($dst, $pathToSave, 95);
+        }
+
+        unset($src);
+        unset($dst);
+
+        return true;
+    }
+
     
 }
 ?>
