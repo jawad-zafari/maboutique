@@ -63,4 +63,28 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-       
+        // Fermer la liste si l'utilisateur clique ailleurs
+        document.addEventListener('click', (e) => {
+            if (!headerKeyword.contains(e.target) && !headerAutoSuggest.contains(e.target)) {
+                headerAutoSuggest.style.display = 'none';
+            }
+        });
+    }
+
+    async function fetchHeaderSuggestions(keyword) {
+        const params = new URLSearchParams();
+        params.append('keyword', keyword);
+
+        try {
+            // SÉCURITÉ : Utilisation de l'URL de base dynamique
+            const response = await fetch(`${baseUrl}Search/autoSuggest`, {
+                method: 'POST',
+                body: params
+            });
+           
+        } catch (error) {
+            console.error("Erreur de recherche en direct :", error);
+        }
+    }
+
+});
