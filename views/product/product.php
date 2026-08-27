@@ -63,4 +63,13 @@ if (!empty($gallery)) {
             <?php endif; ?>
         </div>
 
-        
+        <div class="product-details-column">
+            <h1 class="product-page-title"><?= htmlspecialchars($product['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></h1>
+            
+            <div class="product-meta-row">
+                <span class="product-views-count">
+                    <i class="fa-solid fa-eye" aria-hidden="true"></i> <?= (int)($product['views'] ?? 0) ?> vues
+                </span>
+            </div>
+
+           
