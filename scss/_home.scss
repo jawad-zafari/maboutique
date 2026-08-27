@@ -1,0 +1,35 @@
+.home-container {
+    width: 100%; 
+    max-width: 1200px; 
+    margin: 0 auto;
+    padding: 15px 10px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 25px; 
+
+    @media (min-width: $breakpoint-md) {
+        padding: 25px 15px;
+        gap: 35px;
+    }
+}
+
+.glass-panel {
+    background: $bg-white; 
+    border: 1px solid $border-color;
+    border-radius: $radius-lg; 
+    box-shadow: $shadow-sm;
+    padding: 10px;
+
+    @media (min-width: $breakpoint-md) {
+        padding: 15px;
+    }
+}
+
+.hover-glow {
+    transition: transform $transition-fast, box-shadow $transition-fast;
+    &:hover { 
+        transform: translateY(-5px); 
+        box-shadow: $shadow-glow; 
+    }
+}
+
