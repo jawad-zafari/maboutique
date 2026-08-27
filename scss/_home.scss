@@ -170,3 +170,49 @@
     }
 }
 
+//    EN-TÊTES DE SECTION (COMMUNS)
+
+.section-header {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 15px; 
+    width: 100%;
+    color: $color-primary;
+
+    .header-titles {
+        display: flex; 
+        flex-direction: column;
+        
+        .section-title { margin: 0; font-size: 1.1rem; color: $color-primary; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+        .section-subtitle { margin: 0; font-size: 0.75rem; color: $color-muted; }
+    }
+
+    .btn-see-all {
+        font-size: 0.8rem; font-weight: 700; color: $color-primary; display: flex; align-items: center; gap: 4px;
+        &:hover { color: $color-secondary; }
+    }
+
+    .header-nav-buttons {
+        display: flex; 
+        gap: 8px;
+        
+        .nav-btn {
+            width: 32px; 
+            height: 32px; 
+            background: $bg-white; 
+            border: 1px solid $border-color;
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            color: $color-text; 
+            font-size: 0.9rem; 
+            cursor: pointer; 
+            transition: all $transition-fast;
+            
+            &:hover { background: $color-primary; color: #fff; border-color: $color-primary; }
+        }
+    }
+}
+
