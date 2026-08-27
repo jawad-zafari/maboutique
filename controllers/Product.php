@@ -62,7 +62,8 @@ class Product extends Controller
             'csrf_token'     => $csrf_token
         ];
 
-       
+        // Chargement de la vue
+        $this->view('product/product', $data);
     }
 
     
