@@ -256,3 +256,51 @@
     }
 }
 
+/* =============================================================================
+   CAROUSEL DES MARQUES
+   ============================================================================= */
+.brands-carousel-section {
+    width: 100%;
+    margin-top: -15px; 
+
+    .section-header { margin-bottom: 5px; }
+
+    .brands-carousel-wrapper {
+        position: relative; 
+        width: 100%; 
+        overflow: hidden; 
+        display: flex; 
+        align-items: center;
+    }
+
+    .brands-carousel-track {
+        display: flex; 
+        gap: 15px; 
+        overflow-x: auto; 
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        scrollbar-width: none; 
+        &::-webkit-scrollbar { display: none; } 
+        -webkit-overflow-scrolling: touch;
+        width: 100%; 
+        padding: 15px 20px; 
+        margin: -10px; 
+    }
+
+    .brands-carousel-item { 
+        flex: 0 0 auto; 
+        scroll-snap-align: start; 
+    }
+
+    .brand-item-circle {
+        width: 65px; height: 65px; border-radius: 50%; background: $bg-white; border: 1px solid $border-color;
+        display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: $shadow-sm; transition: all $transition-normal; padding: 10px;
+        @media (min-width: $breakpoint-md) { width: 80px; height: 80px; padding: 12px; }
+
+        img { max-width: 100%; height: auto; max-height: 100%; object-fit: contain; filter: grayscale(100%); transition: all $transition-fast; }
+        .brand-text-fallback { font-size: 0.7rem; font-weight: 800; color: $color-secondary; text-transform: uppercase; text-align: center; @media (min-width: $breakpoint-md) { font-size: 0.85rem; } }
+
+        &:hover { border-color: $color-primary; box-shadow: $shadow-glow; transform: scale(1.1); img { filter: grayscale(0%); } }
+    }
+}
+
