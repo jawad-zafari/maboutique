@@ -110,3 +110,4 @@ $csrfToken = $csrf_token ?? '';
     </div>
 </nav>
 
+<div class="cart-overlay" id="cartOverlay"></div>
