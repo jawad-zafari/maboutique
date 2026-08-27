@@ -145,4 +145,29 @@
                         </div>
                     </a>
 
-                    
+                    <div class="card-content">
+                        <a href="<?= URL ?>Product/index/<?= $prodId ?>" class="product-title-link">
+                            <h4 class="product-title"><?= $prodTitle ?></h4>
+                        </a>
+                        
+                        <div class="price-cart-row">
+                            <div class="product-price-container">
+                                <?php if($hasDiscount): ?>
+                                    <del class="price-old"><?= number_format($price, 0, ',', ' ') ?> €</del>
+                                    <span class="product-price price-danger"><?= number_format((float)($product['price_total'] ?? 0), 0, ',', ' ') ?> €</span>
+                                <?php else: ?>
+                                    <span class="product-price price-primary"><?= number_format($price, 0, ',', ' ') ?> €</span>
+                                <?php endif; ?>
+                            </div>
+                            <button type="button" class="btn-quick-add square-btn" data-id="<?= $prodId ?>" aria-label="Ajouter au panier" title="Ajouter au panier">
+                                <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
+        <?php endif; ?>
+
+       
