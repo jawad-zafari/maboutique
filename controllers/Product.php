@@ -25,6 +25,14 @@ class Product extends Controller
             exit;
         }
 
+        // Récupération des données associées au produit
+        $exclusives = $this->model->getExclusiveProducts();
+        $gallery = $this->model->getGallery($productId);
+
+        $idCategory = (int)($productInfo['category_id'] ?? 0);
+        $expertReviews = $this->model->getExpertReviews($productId);
+        $specifications = $this->model->getTechnicalSpecs($idCategory, $productId);
+        
        
     }
 
