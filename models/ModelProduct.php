@@ -66,6 +66,15 @@ class ModelProduct extends Model
     }
 
     
+    //  Récupère une liste de produits marqués comme exclusifs (Limite à 5).
+    
+    public function getExclusiveProducts()
+    {
+        $sql = "SELECT * FROM products WHERE is_exclusive = 1 ORDER BY id DESC LIMIT 5";
+        return $this->doSelect($sql);
+    }
+
+   
    
 }
 ?>
