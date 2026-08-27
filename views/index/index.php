@@ -354,4 +354,41 @@
         </section>
         <?php endif; ?>
 
+        <section class="media-widget dark-cyber-panel" aria-label="Boutique TV">
+            <div class="section-header">
+                <h3 class="section-title"><i class="fa-solid fa-tv" aria-hidden="true"></i> Boutique TV</h3>
+                <div class="header-nav-buttons">
+                    <button type="button" class="nav-btn prev" id="tvBtnPrev" aria-label="Vidéo précédente"><i class="fa-solid fa-angle-left" aria-hidden="true"></i></button>
+                    <button type="button" class="nav-btn next" id="tvBtnNext" aria-label="Vidéo suivante"><i class="fa-solid fa-angle-right" aria-hidden="true"></i></button>
+                </div>
+            </div>
+            
+            <div class="tv-carousel-track" id="tvCarouselTrack">
+                <?php
+                $tvSettings = $data['tv_settings'] ?? [];
+                $tvCover = !empty($tvSettings['tv_cover_image']) ? URL . htmlspecialchars($tvSettings['tv_cover_image'], ENT_QUOTES, 'UTF-8') : 'https://placehold.co/600x400/1a1a2e/ffffff?text=Boutique+TV+1';
+                $tvLink = !empty($tvSettings['tv_video_link']) ? htmlspecialchars($tvSettings['tv_video_link'], ENT_QUOTES, 'UTF-8') : 'https://www.youtube.com/embed/tgbNymZ7vqY';
+                
+                $tvItems = $data['tv_items'] ?? [
+                    ['video_link' => $tvLink, 'cover_image' => $tvCover, 'title' => 'Présentation de notre Boutique'],
+                    ['video_link' => 'https://www.youtube.com/embed/dQw4w9WgXcQ', 'cover_image' => 'https://placehold.co/600x400/0f172a/ffffff?text=Review+Smartphones+2026', 'title' => 'Focus Technologies 2026'],
+                    ['video_link' => 'https://www.youtube.com/embed/tgbNymZ7vqY', 'cover_image' => 'https://placehold.co/600x400/311010/ffffff?text=Offres+Exclusives+Boutique', 'title' => 'Guide d\'Achat et Garanties']
+                ];
+
+                foreach($tvItems as $item):
+                    $vLink = htmlspecialchars($item['video_link'] ?? '', ENT_QUOTES, 'UTF-8');
+                    $vCover = htmlspecialchars($item['cover_image'] ?? '', ENT_QUOTES, 'UTF-8');
+                    $vTitle = htmlspecialchars($item['title'] ?? 'Vidéo TV', ENT_QUOTES, 'UTF-8');
+                ?>
+                <div class="tv-carousel-item" data-video-src="<?= $vLink ?>">
+                    <div class="tv-image-container hover-zoom" role="button" aria-label="Lire la vidéo <?= $vTitle ?>" tabindex="0">
+                        <img src="<?= $vCover ?>" alt="<?= $vTitle ?>">
+                        <div class="play-btn glowing-circle"><i class="fa-solid fa-play" aria-hidden="true"></i></div>
+                        <div class="tv-item-caption"><?= $vTitle ?></div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
+
        
