@@ -87,6 +87,23 @@ class Model
         return $products;
     }
 
+    // Exécute une requête SELECT de manière sécurisée
+    public function doSelect($sql, $values = array(), $fetch = '', $fetchStyle = PDO::FETCH_ASSOC)
+    {
+        $stmt = self::$conn->prepare($sql);
+        foreach ($values as $key => $value) {
+            $stmt->bindValue($key + 1, $value);
+        }
+        $stmt->execute();
+
+        if ($fetch == '') {
+            $result = $stmt->fetchAll($fetchStyle);
+        } else {
+            $result = $stmt->fetch($fetchStyle);
+        }
+        return $result;
+    }
+
     
 }
 ?>
