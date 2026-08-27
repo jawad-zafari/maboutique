@@ -81,7 +81,49 @@ document.addEventListener("DOMContentLoaded", () => {
                 method: 'POST',
                 body: params
             });
-           
+            const products = await response.json();
+            
+            headerAutoSuggest.innerHTML = '';
+            
+            if (products.length > 0) {
+                products.forEach(product => {
+                    const price = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2 }).format(product.price);
+                    
+                    // SÉCURITÉ (Anti-XSS) : Création des nœuds DOM manuellement (Pas de innerHTML)
+                    const li = document.createElement('li');
+                    
+                    const img = document.createElement('img');
+                    img.src = `${baseUrl}public/images/products/${product.id}/product_220.jpg`;
+                    img.className = 'suggest-img';
+                    img.alt = product.title;
+                    img.onerror = function() { this.src = 'https://placehold.co/50x50/f1f3f5/3b5bdb?text=Img'; };
+                    
+                    const detailsDiv = document.createElement('div');
+                    detailsDiv.className = 'suggest-details';
+                    
+                    const titleSpan = document.createElement('span');
+                    titleSpan.className = 'suggest-title';
+                    // textContent bloque toute balise HTML malveillante
+                    titleSpan.textContent = product.title; 
+                    
+                    const priceSpan = document.createElement('span');
+                    priceSpan.className = 'suggest-price';
+                    priceSpan.textContent = `${price} €`;
+                    
+                    detailsDiv.appendChild(titleSpan);
+                    detailsDiv.appendChild(priceSpan);
+                    
+                    li.appendChild(img);
+                    li.appendChild(detailsDiv);
+                    
+                    // Redirection directe vers la page du produit lors du clic
+                    li.addEventListener('click', () => {
+                        window.location.href = `${baseUrl}Product/index/${product.id}`;
+                    });
+                    
+                    headerAutoSuggest.appendChild(li);
+                });
+            }
         } catch (error) {
             console.error("Erreur de recherche en direct :", error);
         }
