@@ -89,6 +89,10 @@ class Controller
                 $data['cartCount'] = $cartCount;
             }
 
+            if (!isset($data['favCount'])) {
+                $data['favCount'] = $userId ? $baseModel->getFavoriteCount($userId) : 0;
+            }
+
             
         }
 
