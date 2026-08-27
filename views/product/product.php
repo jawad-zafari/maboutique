@@ -28,3 +28,18 @@ if (!empty($gallery)) {
 }
 ?>
 
+<div id="mainProductWrapper" class="product-page-container" data-csrf="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+
+    <nav class="breadcrumb-navigation" aria-label="Fil d'Ariane">
+        <button type="button" class="btn-go-back js-back-button" aria-label="Retourner à la page précédente">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour
+        </button>
+        <span class="divider-icon" aria-hidden="true">|</span>
+        <a href="<?= URL ?>Index/index" class="link-home">
+            <i class="fa-solid fa-house" aria-hidden="true"></i> Accueil
+        </a>
+        <i class="fa-solid fa-angle-right divider-icon" aria-hidden="true"></i>
+        <span class="current-page-title" aria-current="page"><?= htmlspecialchars($product['title'] ?? 'Produit', ENT_QUOTES, 'UTF-8') ?></span>
+    </nav>
+
+   
