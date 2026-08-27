@@ -299,6 +299,17 @@ class Model
         return date($format);
     }
 
+    public static function formatDateForDB($dateStr, $format = '/')
+    {
+        try {
+            $cleanDate = str_replace('/', '-', $dateStr);
+            $date = new DateTime($cleanDate);
+            return $date->format('Y-m-d');
+        } catch (Exception $e) {
+            return date('Y-m-d');
+        }
+    }
+
    
 }
 ?>
