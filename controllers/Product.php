@@ -33,7 +33,14 @@ class Product extends Controller
         $expertReviews = $this->model->getExpertReviews($productId);
         $specifications = $this->model->getTechnicalSpecs($idCategory, $productId);
         
-       
+        // Récupération des paramètres et des scores pour les avis clients
+        $commentParam = $this->model->getCommentParameters($idCategory, $productId);
+        $commentParamNames = $commentParam[0] ?? [];
+        $commentParamScores = $commentParam[1] ?? [];
+        
+        $comments = $this->model->getProductComments($productId);
+        
+        
     }
 
     
