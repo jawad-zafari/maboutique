@@ -64,4 +64,27 @@ $activeTab = $data['activeTab'] ?? 'reviews';
             </div>
         </div>
 
-        
+        <div id="tab-reviews" class="tab-pane <?= $activeTab === 'reviews' ? 'active' : '' ?>" role="tabpanel" aria-labelledby="btn-tab-reviews">
+            <div class="reviews-section-grid">
+                
+                <div class="reviews-summary-scores">
+                    <h5>Critères d'évaluation</h5>
+                    <?php if (!empty($paramNames)): foreach ($paramNames as $pId => $pName): 
+                        // SÉCURITÉ : Forçage du typage pour le calcul de la barre de progression
+                        $score = isset($paramScores[$pId]) ? (float)$paramScores[$pId] : 3.0;
+                    ?>
+                        <div class="score-row-item">
+                            <span><?= htmlspecialchars(is_array($pName) ? ($pName['title'] ?? '') : $pName, ENT_QUOTES, 'UTF-8') ?></span>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" style="width: <?= min(100, max(0, ($score / 5) * 100)) ?>%"></div>
+                            </div>
+                            <span><?= number_format($score, 1) ?>/5</span>
+                        </div>
+                    <?php endforeach; endif; ?>
+                    
+                    <div class="add-review-shortcut-box">
+                        <a href="<?= URL ?>AddComment/index/<?= $productId ?>" class="btn-action-primary">Laisser un avis</a>
+                    </div>
+                </div>
+
+                
