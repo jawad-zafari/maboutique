@@ -215,6 +215,26 @@ class Model
         return isset($_SESSION[$name]) ? $_SESSION[$name] : false;
     }
 
-    
+    // Génère un identifiant unique pour le panier
+    public static function getCartCookie()
+    {
+        if (isset($_COOKIE['cart']) && !empty($_COOKIE['cart'])) {
+            return $_COOKIE['cart'];
+        } else {
+            $expire = time() + 7 * 24 * 3600;
+            $value = bin2hex(random_bytes(16));
+
+            setcookie('cart', $value, [
+                'expires' => $expire,
+                'path' => '/',
+                'httponly' => true,
+                'samesite' => 'Lax'
+            ]);
+
+            return $value;
+        }
+    }
+
+   
 }
 ?>
