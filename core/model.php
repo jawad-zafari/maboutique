@@ -73,6 +73,20 @@ class Model
         return array($price_discount, $price_total);
     }
 
+    public function calculateProductsPrices($products)
+    {
+        if (!is_array($products)) return array();
+        foreach ($products as $key => $product) {
+            $price = $product['price'] ?? 0;
+            $discount = $product['discount_percent'] ?? 0;
+            $prices = $this->calculateDiscount($price, $discount);
+
+            $products[$key]['price_discount'] = $prices[0];
+            $products[$key]['price_total'] = $prices[1];
+        }
+        return $products;
+    }
+
     
 }
 ?>
