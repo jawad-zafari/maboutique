@@ -46,6 +46,26 @@ class Model
         }
     }
 
+    // Récupère les paramètres globaux du système depuis la base de données
+    public static function getoption()
+    {
+        if (self::$conn === null) {
+            new self();
+        }
+        $sql = "SELECT * FROM settings";
+        $stmt = self::$conn->prepare($sql);
+        $stmt->execute();
+        $optionsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $options_new = array();
+
+        foreach ($optionsList as $option) {
+            $setting = $option['setting_key'];
+            $value = $option['setting_value'];
+            $options_new[$setting] = $value;
+        }
+        return $options_new;
+    }
+
     
 }
 ?>
