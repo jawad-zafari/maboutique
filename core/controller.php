@@ -97,6 +97,10 @@ class Controller
                 $data['userId'] = $userId ?: false;
             }
 
+            if (!isset($data['userLevel'])) {
+                $data['userLevel'] = $userId ? Model::getUserLevel() : 0;
+            }
+
            
         }
 
