@@ -1,0 +1,98 @@
+.site-header {
+    background-color: $bg-white;
+    box-shadow: $shadow-sm;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    
+    height: 125px; 
+    display: flex;
+    align-items: center;
+
+    @media (min-width: $breakpoint-md) {
+        height: 75px; 
+    }
+}
+
+.header-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: 
+        "logo actions"
+        "search search";
+    gap: 10px;
+    align-items: center;
+
+    @media (min-width: $breakpoint-md) {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        gap: 30px;
+    }
+}
+
+.logo-container {
+    font-size: 1.8rem; 
+    color: $color-primary; 
+    font-weight:bolder;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+
+    .site-logo { 
+        display: block; 
+        transition: transform $transition-fast;
+        
+        @media (min-width: $breakpoint-md) { 
+            max-height: 50px; 
+            font-weight: bolder !important;
+        } 
+    }
+    &:hover .site-logo { transform: scale(1.02); }
+}
+
+.search-container {
+    grid-area: search; 
+    width: 100%;
+    position: relative; /* Très important pour le menu déroulant */
+
+    @media (min-width: $breakpoint-md) {
+        width: 320px; 
+        margin: 0;
+    }
+
+    .search-form-wrapper {
+        display: flex; 
+        align-items: center;
+        border: 1.5px solid $border-color;
+        border-radius: 50px; 
+        background-color: $bg-light;
+        overflow: hidden;
+        transition: all $transition-normal;
+
+        &:focus-within { 
+            border-color: $color-primary; 
+            background-color: $bg-white; 
+            box-shadow: $shadow-glow; 
+        }
+    }
+
+    .search-input {
+        border: none; background: transparent; padding: 8px 18px;
+        width: 100%; font-size: $font-size-sm; outline: none; color: $color-text;
+        font-family: $font-main;
+    }
+
+    .search-btn {
+        border: none; background: transparent; color: $color-primary;
+        padding: 8px 18px; cursor: pointer; transition: transform $transition-fast;
+        font-size: $font-size-md;
+
+        &:hover { transform: scale(1.1); }
+    }
+
+    
