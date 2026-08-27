@@ -216,3 +216,43 @@
     }
 }
 
+/* =============================================================================
+   TRUST BADGES (FEATURES ROW)
+   ============================================================================= */
+.features-row {
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 10px;
+    background: $bg-white; 
+    border-radius: $radius-md; 
+    box-shadow: $shadow-sm; 
+    padding: 10px 5px; 
+    border: 1px solid $border-color;
+
+    @media (min-width: $breakpoint-md) { 
+        grid-template-columns: repeat(4, 1fr); 
+        padding: 12px 15px; 
+        gap: 15px; 
+    }
+
+    .feature-item {
+        display: flex; 
+        align-items: center; 
+        gap: 8px; 
+        transition: transform $transition-fast;
+        
+        &:hover { transform: translateY(-2px); .icon-wrapper { background: rgba(59, 91, 219, 0.12); } }
+        
+        .icon-wrapper { 
+            width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; background: rgba(59, 91, 219, 0.06); 
+            display: flex; align-items: center; justify-content: center; font-size: 1rem; color: $color-primary; transition: background $transition-fast;
+            @media (min-width: $breakpoint-md) { width: 40px; height: 40px; font-size: 1.1rem; } 
+        }
+        .feature-text { 
+            display: flex; flex-direction: column; overflow: hidden;
+            .feature-title { font-size: 0.75rem; font-weight: 800; color: $color-text; margin-bottom: 0px; white-space: nowrap; @media (min-width: $breakpoint-md) { font-size: 0.9rem; } }
+            .feature-subtitle { font-size: 0.65rem; color: $color-muted; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; @media (min-width: $breakpoint-md) { font-size: 0.8rem; } }
+        }
+    }
+}
+
