@@ -431,3 +431,16 @@
     </div>
 </div>
 
+<div id="newsModal" class="news-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="newsModalTitle">
+    <div class="news-modal-content">
+        <button class="close-news-modal" id="closeNewsModal" aria-label="Fermer la fenêtre"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        <div class="news-modal-body">
+            <img id="newsModalImg" src="" alt="Image de l'actualité" class="modal-news-img">
+            <div class="news-modal-text-content">
+                <span id="newsModalDate" class="modal-news-date"></span>
+                <h3 id="newsModalTitle" class="modal-news-title"></h3>
+                <div id="newsModalDesc" class="modal-news-desc"></div>
+            </div>
+        </div>
+    </div>
+</div>
