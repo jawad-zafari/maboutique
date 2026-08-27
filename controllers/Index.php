@@ -10,7 +10,10 @@ class Index extends Controller
 
     public function index()
     {
+        // Récupération des données dynamiques via le modèle
+        $slider1 = $this->model->getMainSliders();
        
+
         // Préparation du tableau de données à envoyer à la Vue
         $data = [
             'slider1'         => $slider1, 
