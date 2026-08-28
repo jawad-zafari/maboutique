@@ -69,7 +69,16 @@ class Register extends Controller
             'created_at' => date('Y-m-d H:i:s')
         ];
 
-       
+        // Appel au modèle pour insérer les données nettoyées
+        $isRegistered = $this->model->insertUser($cleanData);
+        
+        if ($isRegistered) {
+            // Redirection vers la page de connexion après une inscription réussie
+            header('Location: ' . URL . 'Login/index?success=registered');
+            exit;
+        } else {
+            
+        }
     }
 }
 ?>
