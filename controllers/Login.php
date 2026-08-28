@@ -37,6 +37,12 @@ class Login extends Controller
         $password = $_POST['password'] ?? '';
         $backUrl  = trim($_POST['back_url'] ?? '');
 
+        // Validation basique des entrées
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || empty($password)) {
+            $this->reloadViewWithError($email, $backUrl, 'validation');
+            return;
+        }
+
         
     }
 }
