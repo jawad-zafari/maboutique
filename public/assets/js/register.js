@@ -104,6 +104,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 headerBox.appendChild(titleElement);
                 errorContainer.appendChild(headerBox);
 
+                // Construction d'une liste HTML pour présenter chaque erreur
+                const ul = document.createElement('ul');
+                ul.className = 'error-list';
+
                 
             }
         });
