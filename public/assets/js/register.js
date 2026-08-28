@@ -108,6 +108,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 const ul = document.createElement('ul');
                 ul.className = 'error-list';
 
+                errors.forEach(msg => {
+                    const li = document.createElement('li');
+                    // SÉCURITÉ : textContent empêche l'injection de scripts (XSS)
+                    li.textContent = msg; 
+                    ul.appendChild(li);
+                });
+
+                errorContainer.appendChild(ul);
+                errorContainer.classList.remove('is-hidden');
+
                 
             }
         });
