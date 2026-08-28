@@ -22,3 +22,10 @@ $backUrl = $oldInput['back_url'] ?? ($_GET['back'] ?? '');
                 <li><i class="fa-solid fa-heart" aria-hidden="true"></i> Créez vos listes d'envies et suivez leurs évolutions</li>
             </ul>
         </div>
+
+        <div class="login-form-section">
+            <h3><i class="fa-solid fa-arrow-right-to-bracket" aria-hidden="true"></i> Connexion à votre compte</h3>
+            
+            <div id="jsLoginErrorMessage" class="alert-message alert-danger-modern is-hidden" role="alert"></div>
+            
+           
