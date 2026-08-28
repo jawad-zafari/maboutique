@@ -32,7 +32,12 @@ class Login extends Controller
         // SÉCURITÉ : Vérification obligatoire du jeton CSRF
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
-       
+        // SÉCURITÉ (Anti Mass-Assignment) : Extraction manuelle et nettoyage
+        $email    = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
+        $password = $_POST['password'] ?? '';
+        $backUrl  = trim($_POST['back_url'] ?? '');
+
+        
     }
 }
 ?>
