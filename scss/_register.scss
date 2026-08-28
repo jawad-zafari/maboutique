@@ -277,4 +277,27 @@
         }
     }
 
-   
+    /* REDIRECT CONNEXION */
+    .login-redirect {
+        margin-top: 25px;
+        text-align: center;
+        font-size: 0.85rem;
+        color: $color-muted;
+
+        @media (min-width: 768px) {
+            font-size: 0.95rem;
+        }
+
+        .login-link {
+            color: $color-secondary;
+            font-weight: bold;
+            text-decoration: none;
+            transition: color $transition-fast;
+
+            &:hover {
+                text-decoration: underline;
+                color: $color-primary;
+            }
+        }
+    }
+}
