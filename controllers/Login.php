@@ -34,7 +34,27 @@ class Login extends Controller
         // SÉCURITÉ : Vérification obligatoire du jeton CSRF
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
+        $formData = $_POST;
+        $isLoggedIn = $this->model->checkUser($formData);
         
+        if ($isLoggedIn) {
+            // SÉCURITÉ : Protection contre les redirections ouvertes (Open Redirect)
+            $backUrl = isset($_POST['back_url']) ? trim($_POST['back_url']) : '';
+            
+            if (!empty($backUrl) && strpos($backUrl, 'http') === false && strpos($backUrl, '//') === false) {
+                header('Location: ' . URL . ltrim($backUrl, '/'));
+            } else {
+                header('Location: ' . URL . 'Index/index');
+            }
+        } else {
+            $backParam = isset($_POST['back_url']) ? '&back=' . urlencode($_POST['back_url']) : '';
+            header('Location: ' . URL . 'Login/index?error=1' . $backParam);
+        }
+        exit;
     }
+
+    
+   
+    
 }
 ?>
