@@ -29,7 +29,10 @@ class Login extends Controller
             exit;
         }
 
-        
+        // SÉCURITÉ : Vérification obligatoire du jeton CSRF
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+       
     }
 }
 ?>
