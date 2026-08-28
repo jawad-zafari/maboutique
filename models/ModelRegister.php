@@ -33,7 +33,12 @@ class ModelRegister extends Model
         $city = '';
         $postalCode = '';
         
-       
+        // Gestion de la date 
+        $createdAt = date('Y-m-d H:i:s'); 
+        if (method_exists($this, 'getCurrentDate')) {
+            $createdAt = self::getCurrentDate('Y-m-d H:i:s'); 
+        }
+
     }
 }
 ?>
