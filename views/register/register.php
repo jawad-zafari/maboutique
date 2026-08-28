@@ -29,4 +29,12 @@ $csrfToken = $data['csrf_token'] ?? '';
             </ul>
         </div>
 
-        
+        <div class="register-form-section">
+            <h3>
+                <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> 
+                <span>Inscription</span>
+            </h3>
+
+            <div id="jsRegisterErrorMessage" class="alert-message alert-danger-modern is-hidden" role="alert"></div>
+
+           
