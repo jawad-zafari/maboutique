@@ -19,6 +19,9 @@ class ModelRegister extends Model
         $mobile = htmlspecialchars(trim($data['mobile'] ?? ''), ENT_QUOTES, 'UTF-8');
         $newsletter = isset($data['newsletter']) ? 1 : 0;
         
+        // Hachage robuste du mot de passe avec l'algorithme par défaut
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
        
     }
 }
