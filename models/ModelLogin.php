@@ -20,7 +20,14 @@ class ModelLogin extends Model
             return false;
         }
 
+        // Prévention de l'injection SQL grâce aux requêtes préparées PDO
+        $sql = "SELECT id, password FROM users WHERE email = ?";
+        $user = $this->doSelect($sql, [$email], 'fetch', PDO::FETCH_ASSOC);
+
+       
+        }
         
+        return false;
     }
 }
 ?>
