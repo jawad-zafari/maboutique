@@ -79,7 +79,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (passwordConfirmInput) passwordConfirmInput.classList.add('is-invalid');
             }
 
-           
+            //  Validation des Conditions Générales
+            if (!rulesCheckbox || !rulesCheckbox.checked) {
+                isValid = false;
+                errors.push("Vous devez accepter les conditions générales avant de continuer.");
+            }
+
+            
         });
     }
 
