@@ -48,7 +48,31 @@ class ModelRegister extends Model
             return false; 
         }
 
-       
+        // SÉCURITÉ : Insertion des données avec requête préparée (PDO) pour contrer les injections SQL
+        $sqlInsert = "INSERT INTO users (email, username, password, last_name, national_id, phone, mobile, birth_date, address, city, postal_code, gender, newsletter, role_id, created_at) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        $values = [
+            $email, 
+            $username, 
+            $hashedPassword, 
+            $lastName, 
+            $nationalId, 
+            $phone, 
+            $mobile, 
+            $birthDate, 
+            $address, 
+            $city, 
+            $postalCode, 
+            $gender, 
+            $newsletter, 
+            $roleId, 
+            $createdAt
+        ];
+
+        $this->doQuery($sqlInsert, $values);
+        
+        return true;
     }
 }
 ?>
