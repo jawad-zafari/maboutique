@@ -36,7 +36,12 @@ class Register extends Controller
         // SÉCURITÉ : Vérification du jeton CSRF
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
         
+        // SÉCURITÉ : Validation stricte de l'e-mail côté serveur
+        $email = filter_var($_POST['email'] ?? '', FILTER_VALIDATE_EMAIL);
+        $password = $_POST['password'] ?? '';
+        $passwordConfirm = $_POST['password_confirm'] ?? '';
         
+       
     }
 }
 ?>
