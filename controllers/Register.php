@@ -58,6 +58,17 @@ class Register extends Controller
             return;
         }
 
+        // Préparation d'un tableau de données propre et sécurisé pour le Model
+        $cleanData = [
+            'email'      => $email,
+            'password'   => password_hash($password, PASSWORD_DEFAULT), // Hachage du mot de passe
+            'last_name'  => $lastName,
+            'mobile'     => $mobile,
+            'newsletter' => $newsletter,
+            'role_id'    => 3, // Rôle client standard par défaut
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+
        
     }
 }
