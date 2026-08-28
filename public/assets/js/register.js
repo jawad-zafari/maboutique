@@ -118,7 +118,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 errorContainer.appendChild(ul);
                 errorContainer.classList.remove('is-hidden');
 
-                
+                // Défilement fluide vers la boîte de message pour une meilleure expérience utilisateur
+                errorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         });
     }
