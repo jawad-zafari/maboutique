@@ -86,3 +86,5 @@ $backUrl = $oldInput['back_url'] ?? ($_GET['back'] ?? '');
 
     </div>
 </div>
+
+<script src="<?= URL ?>public/assets/js/login.js" defer></script>
