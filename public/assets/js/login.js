@@ -46,7 +46,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (passwordInput) passwordInput.classList.add('input-error');
             }
 
-            
+            // 4. Affichage des erreurs et blocage de l'envoi
+            if (!isValid) {
+                event.preventDefault(); 
+                
+                // SÉCURITÉ (Anti-XSS) : Création sécurisée des éléments DOM
+                const icon = document.createElement('i');
+                icon.className = "fa-solid fa-circle-exclamation";
+                icon.setAttribute('aria-hidden', 'true');
+                errorContainer.appendChild(icon);
+
+                const textSpan = document.createElement('span');
+                // SÉCURITÉ : Utilisation de textContent pour éviter l'injection de code
+                textSpan.textContent = " " + errorMessages.join(" ");
+                errorContainer.appendChild(textSpan);
+                
+                // Activation visuelle
+                errorContainer.classList.remove('is-hidden');
+                errorContainer.classList.add('show-error');
+            }
         });
     }
 });
