@@ -88,3 +88,31 @@
     }
 }
 
+/* SECTION FORMULAIRE D'INSCRIPTION */
+.register-form-section {
+    padding: 25px 15px;
+    background-color: $bg-white;
+
+    @media (min-width: 768px) {
+        padding: 40px 30px;
+    }
+
+    h3 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+        color: $color-text;
+        border-bottom: 2px solid $border-color;
+        padding-bottom: 8px;
+
+        @media (min-width: 768px) {
+            font-size: 1.3rem;
+        }
+
+        i {
+            color: $color-primary;
+            margin-right: 5px;
+        }
+    }
+
+   
