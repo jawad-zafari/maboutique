@@ -39,6 +39,16 @@ class ModelRegister extends Model
             $createdAt = self::getCurrentDate('Y-m-d H:i:s'); 
         }
 
+        // Vérification de l'existence de l'e-mail pour éviter les doublons
+        $sqlCheck = "SELECT id FROM users WHERE email = ?";
+        $result = $this->doSelect($sqlCheck, [$email], 'fetch', PDO::FETCH_ASSOC);
+
+        if (!empty($result)) {
+            // Un compte avec cet e-mail existe déjà
+            return false; 
+        }
+
+       
     }
 }
 ?>
