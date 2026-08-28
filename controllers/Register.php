@@ -47,7 +47,18 @@ class Register extends Controller
             $isValid = false;
         }
 
-        
+        // Si la validation échoue, on recharge la vue avec les anciennes données
+        if (!$isValid) {
+            $data = [
+                'csrf_token' => $this->generateCsrfToken(),
+                'old_input'  => $_POST,
+                'error_msg'  => 'validation'
+            ];
+            $this->view('register/register', $data);
+            return;
+        }
+
+       
     }
 }
 ?>
