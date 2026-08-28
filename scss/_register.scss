@@ -1,0 +1,28 @@
+
+.register-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 15px auto;
+    padding: 10px;
+    font-family: $font-main;
+
+    @media (min-width: 768px) {
+        margin: 40px auto;
+        padding: 15px;
+    }
+}
+
+.register-box {
+    display: grid;
+    grid-template-columns: 1fr;
+    background-color: $bg-white;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-sm;
+    overflow: hidden;
+    border: 1px solid $border-color;
+
+    @media (min-width: 768px) {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
