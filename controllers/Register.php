@@ -77,7 +77,13 @@ class Register extends Controller
             header('Location: ' . URL . 'Login/index?success=registered');
             exit;
         } else {
-            
+            // L'utilisateur existe déjà, on recharge la vue avec un message d'erreur
+            $data = [
+                'csrf_token' => $this->generateCsrfToken(),
+                'old_input'  => $_POST,
+                'error_msg'  => 'exists'
+            ];
+            $this->view('register/register', $data);
         }
     }
 }
