@@ -85,7 +85,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 errors.push("Vous devez accepter les conditions générales avant de continuer.");
             }
 
-            
+            //  Affichage des erreurs si la validation échoue
+            if (!isValid) {
+                event.preventDefault(); // Bloque la soumission du formulaire vers le serveur
+
+                // SÉCURITÉ : Création sécurisée de l'en-tête d'erreur (DOM Building)
+                const headerBox = document.createElement('div');
+                headerBox.className = 'error-header';
+
+                const icon = document.createElement('i');
+                icon.className = 'fa-solid fa-circle-exclamation';
+                icon.setAttribute('aria-hidden', 'true');
+
+                const titleElement = document.createElement('strong');
+                titleElement.textContent = " Attention : Veuillez corriger les erreurs ci-dessous";
+
+                headerBox.appendChild(icon);
+                headerBox.appendChild(titleElement);
+                errorContainer.appendChild(headerBox);
+
+                
+            }
         });
     }
 
