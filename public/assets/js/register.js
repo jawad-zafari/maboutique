@@ -28,7 +28,15 @@ document.addEventListener("DOMContentLoaded", () => {
             // SÉCURITÉ : Utilisation de textContent au lieu de innerHTML pour vider l'élément
             errorContainer.textContent = ''; 
 
+            // Validation du Nom Complet
+            if (!lastNameInput || lastNameInput.value.trim() === '') {
+                isValid = false;
+                errors.push("Le nom complet est obligatoire.");
+                if (lastNameInput) lastNameInput.classList.add('is-invalid');
+            }
+
             
+        });
     }
 
 });
