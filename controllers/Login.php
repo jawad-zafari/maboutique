@@ -21,7 +21,16 @@ class Login extends Controller
     }
 
     
-   
-    
+    //  Traite l soumission du formulaire de connexion
+     
+    public function checkUser(): void
+    {
+        // SÉCURITÉ : Bloquer les requêtes qui ne sont pas envoyées en POST
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit;
+        }
+
+       
 }
 ?>
