@@ -27,6 +27,11 @@ class ModelLogin extends Model
         // Vérification du mot de passe haché 
         if ($user && password_verify($password, $user['password'])) {
             
+            Model::sessionInit();
+            
+            // Régénération de l'ID de session contre la fixation de session
+            session_regenerate_id(true);
+            
            
             
             return true;
