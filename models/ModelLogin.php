@@ -32,7 +32,9 @@ class ModelLogin extends Model
             // Régénération de l'ID de session contre la fixation de session
             session_regenerate_id(true);
             
-           
+            // Forçage du typage en entier
+            Model::sessionSet('userId', (int)$user['id']);
+            Model::sessionSet('loggedIn', true);
             
             return true;
         }
