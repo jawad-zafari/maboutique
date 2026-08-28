@@ -50,7 +50,14 @@ class Register extends Controller
         // Appel au modèle pour insérer les données
         $isRegistered = $this->model->insertUser($_POST);
         
-       
+        if ($isRegistered) {
+            // Redirection vers la page de connexion après une inscription réussie
+            header('Location: ' . URL . 'Login/index?success=registered');
+        } else {
+            // L'utilisateur existe déjà ou une erreur SQL s'est produite
+            header('Location: ' . URL . 'Register/index?error=exists');
+        }
+        exit;
     }
 }
 ?>
