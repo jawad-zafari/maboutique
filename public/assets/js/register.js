@@ -35,7 +35,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (lastNameInput) lastNameInput.classList.add('is-invalid');
             }
 
-            
+            // Validation du Numéro de Mobile (Expression régulière)
+            if (!mobileInput || mobileInput.value.trim() === '') {
+                isValid = false;
+                errors.push("Le numéro de mobile est obligatoire.");
+                if (mobileInput) mobileInput.classList.add('is-invalid');
+            } else if (!/^[0-9]{10,14}$/.test(mobileInput.value.trim())) {
+                isValid = false;
+                errors.push("Le format du numéro de mobile est invalide (uniquement des chiffres, entre 10 et 14).");
+                if (mobileInput) mobileInput.classList.add('is-invalid');
+            }
+
+           
         });
     }
 
