@@ -115,4 +115,43 @@
         }
     }
 
-   
+    /* MESSAGES D'ALERTE ET D'ERREUR  */
+    .alert-message {
+        padding: 12px 15px;
+        border-radius: $radius-sm;
+        margin-bottom: 20px;
+        font-size: 0.88rem;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        line-height: 1.4;
+
+        &.alert-danger {
+            background-color: #fdf2f2;
+            color: #d9534f;
+            border: 1px solid #f5c6cb;
+        }
+
+        .error-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+        }
+
+        .error-list {
+            margin: 5px 0 0 20px;
+            padding: 0;
+            list-style-type: disc;
+
+            li {
+                margin-bottom: 4px;
+            }
+        }
+
+        &.is-hidden {
+            display: none !important;
+        }
+    }
+
+    
