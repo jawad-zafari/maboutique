@@ -109,3 +109,5 @@ $csrfToken = $data['csrf_token'] ?? '';
 
     </div>
 </div>
+
+<script src="<?= URL ?>public/assets/js/register.js" defer></script>
