@@ -37,4 +37,18 @@ $csrfToken = $data['csrf_token'] ?? '';
 
             <div id="jsRegisterErrorMessage" class="alert-message alert-danger-modern is-hidden" role="alert"></div>
 
-           
+            <?php if (isset($_GET['error']) && $_GET['error'] === 'exists'): ?>
+                <div class="alert-message alert-danger-modern" role="alert">
+                    <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+                    <span>Un compte existe déjà avec cette adresse e-mail.</span>
+                </div>
+            <?php endif; ?>
+
+            <?php if (isset($_GET['error']) && $_GET['error'] === 'validation'): ?>
+                <div class="alert-message alert-danger-modern" role="alert">
+                    <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+                    <span>Veuillez vérifier les informations saisies dans le formulaire.</span>
+                </div>
+            <?php endif; ?>
+
+        
