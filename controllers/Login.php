@@ -63,6 +63,15 @@ class Login extends Controller
         // Vider toutes les variables de la session actuelle
         $_SESSION = array();
         
+        // SÉCURITÉ : Suppression sécurisée du cookie de session côté client
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+        
         
         exit;
     }
