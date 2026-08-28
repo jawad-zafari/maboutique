@@ -28,4 +28,18 @@ $backUrl = $oldInput['back_url'] ?? ($_GET['back'] ?? '');
             
             <div id="jsLoginErrorMessage" class="alert-message alert-danger-modern is-hidden" role="alert"></div>
             
-           
+            <!-- Gestion des erreurs côté serveur -->
+            <?php if ($currentError === 'credentials' || $currentError == 1): ?>
+                <div class="alert-message alert-danger-modern show-error" role="alert">
+                    <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+                    <span> Identifiants incorrects. Veuillez réessayer.</span>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($currentError === 'validation'): ?>
+                <div class="alert-message alert-danger-modern show-error" role="alert">
+                    <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+                    <span> Veuillez remplir correctement tous les champs.</span>
+                </div>
+            <?php endif; ?>
+
