@@ -1,7 +1,10 @@
 <?php
+// SÉCURITÉ : Récupération des données passées par le contrôleur
+$csrfToken = $csrf_token ?? '';
+$oldInput  = $old_input ?? [];
 
-// SÉCURITÉ : Récupération et nettoyage du jeton CSRF transmis par le contrôleur
-$csrfToken = $data['csrf_token'] ?? '';
+// Gestion d'erreur unifiée (depuis le contrôleur ou l'URL)
+$currentError = $error_msg ?? ($_GET['error'] ?? null);
 ?>
 
 <div class="register-container">
@@ -37,14 +40,14 @@ $csrfToken = $data['csrf_token'] ?? '';
 
             <div id="jsRegisterErrorMessage" class="alert-message alert-danger-modern is-hidden" role="alert"></div>
 
-            <?php if (isset($_GET['error']) && $_GET['error'] === 'exists'): ?>
+            <?php if ($currentError === 'exists'): ?>
                 <div class="alert-message alert-danger-modern" role="alert">
                     <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
                     <span>Un compte existe déjà avec cette adresse e-mail.</span>
                 </div>
             <?php endif; ?>
 
-            <?php if (isset($_GET['error']) && $_GET['error'] === 'validation'): ?>
+            <?php if ($currentError === 'validation'): ?>
                 <div class="alert-message alert-danger-modern" role="alert">
                     <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
                     <span>Veuillez vérifier les informations saisies dans le formulaire.</span>
@@ -53,23 +56,26 @@ $csrfToken = $data['csrf_token'] ?? '';
 
             <form action="<?= URL ?>Register/save" method="post" id="formRegister" class="modern-form" autocomplete="off">
                 
-                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                <!-- SÉCURITÉ : Jeton CSRF -->
+                <input type="hidden" name="csrf_token" value="<?= $this->e($csrfToken) ?>">
 
+                <!-- SÉCURITÉ & UX : Utilisation de $this->e() pour prévenir les failles XSS lors du repeuplement -->
                 <div class="form-group">
                     <label for="lastName">Nom complet * :</label>
-                    <input type="text" id="lastName" name="last_name" class="form-control" placeholder="Jean Dupont" autocomplete="name" required aria-required="true">
+                    <input type="text" id="lastName" name="last_name" class="form-control" placeholder="Jean Dupont" autocomplete="name" required aria-required="true" value="<?= $this->e($oldInput['last_name'] ?? '') ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="mobile">Numéro de mobile * :</label>
-                    <input type="tel" id="mobile" name="mobile" class="form-control" dir="ltr" placeholder="0612345678" autocomplete="tel" required aria-required="true">
+                    <input type="tel" id="mobile" name="mobile" class="form-control" dir="ltr" placeholder="0612345678" autocomplete="tel" required aria-required="true" value="<?= $this->e($oldInput['mobile'] ?? '') ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="email">Adresse E-mail * :</label>
-                    <input type="email" id="email" name="email" class="form-control" dir="ltr" placeholder="exemple@email.com" autocomplete="email" required aria-required="true">
+                    <input type="email" id="email" name="email" class="form-control" dir="ltr" placeholder="exemple@email.com" autocomplete="email" required aria-required="true" value="<?= $this->e($oldInput['email'] ?? '') ?>">
                 </div>
 
+                <!-- SÉCURITÉ : Les mots de passe ne sont jamais repeuplés -->
                 <div class="form-group">
                     <label for="password">Mot de passe (min. 6 caractères) * :</label>
                     <input type="password" id="password" name="password" class="form-control" dir="ltr" placeholder="••••••••" autocomplete="new-password" required aria-required="true">
@@ -88,7 +94,7 @@ $csrfToken = $data['csrf_token'] ?? '';
                 </div>
 
                 <div class="checkbox-group">
-                    <input type="checkbox" id="newsletter" name="newsletter" value="1">
+                    <input type="checkbox" id="newsletter" name="newsletter" value="1" <?= isset($oldInput['newsletter']) ? 'checked' : '' ?>>
                     <label for="newsletter">S'abonner à la newsletter pour recevoir nos offres</label>
                 </div>
 
