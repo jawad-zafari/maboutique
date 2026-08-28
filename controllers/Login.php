@@ -72,7 +72,9 @@ class Login extends Controller
             );
         }
         
-        
+        // Destruction de la session sur le serveur
+        session_destroy();
+        header('Location: ' . URL . 'Index/index');
         exit;
     }
 }
