@@ -22,6 +22,17 @@ class ModelRegister extends Model
         // Hachage robuste du mot de passe avec l'algorithme par défaut
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
+        // Valeurs par défaut pour le profil d'un nouvel inscrit
+        $roleId = 3; // 3 correspond au rôle client/utilisateur standard
+        $nationalId = '';
+        $phone = '';
+        $birthDate = '';
+        $address = '';
+        $gender = 1; 
+        $username = '';
+        $city = '';
+        $postalCode = '';
+        
        
     }
 }
