@@ -46,6 +46,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (mobileInput) mobileInput.classList.add('is-invalid');
             }
 
+            // Validation de l'E-mail
+            if (!emailInput || emailInput.value.trim() === '') {
+                isValid = false;
+                errors.push("L'adresse e-mail est obligatoire.");
+                if (emailInput) emailInput.classList.add('is-invalid');
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
+                isValid = false;
+                errors.push("Le format de l'adresse e-mail est invalide.");
+                if (emailInput) emailInput.classList.add('is-invalid');
+            }
+
            
         });
     }
