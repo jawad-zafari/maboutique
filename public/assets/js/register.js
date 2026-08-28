@@ -68,7 +68,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (passwordInput) passwordInput.classList.add('is-invalid');
             }
 
-            
+            //  Validation de la Confirmation du Mot de passe
+            if (!passwordConfirmInput || passwordConfirmInput.value.trim() === '') {
+                isValid = false;
+                errors.push("La confirmation du mot de passe est obligatoire.");
+                if (passwordConfirmInput) passwordConfirmInput.classList.add('is-invalid');
+            } else if (passwordInput.value.trim() !== passwordConfirmInput.value.trim()) {
+                isValid = false;
+                errors.push("Les deux mots de passe ne correspondent pas.");
+                if (passwordConfirmInput) passwordConfirmInput.classList.add('is-invalid');
+            }
+
+           
         });
     }
 
