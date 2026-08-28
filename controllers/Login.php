@@ -93,6 +93,19 @@ class Login extends Controller
         exit;
     }
 
-    
+    // Méthode utilitaire pour recharger la vue avec un message d'erreur
+    private function reloadViewWithError(string $email, string $backUrl, string $errorType): void
+    {
+        $data = [
+            'csrf_token' => $this->generateCsrfToken(),
+            'old_input'  => [
+                'email'    => $email,
+                'back_url' => $backUrl
+            ],
+            'error_msg'  => $errorType
+        ];
+        
+        $this->view('login/login', $data);
+    }
 }
 ?>
