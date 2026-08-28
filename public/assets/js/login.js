@@ -22,7 +22,23 @@ document.addEventListener("DOMContentLoaded", () => {
             errorContainer.classList.remove('show-error');
             errorContainer.classList.add('is-hidden');
 
-            
+            // 2. Validation de l'E-mail
+            const emailValue = emailInput ? emailInput.value.trim() : '';
+            if (emailValue === "") {
+                isValid = false;
+                errorMessages.push("L'adresse e-mail est requise.");
+                if (emailInput) emailInput.classList.add('input-error');
+            } else {
+                // Expression régulière standard pour valider l'e-mail
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(emailValue)) {
+                    isValid = false;
+                    errorMessages.push("Le format de l'adresse e-mail n'est pas valide.");
+                    if (emailInput) emailInput.classList.add('input-error');
+                }
+            }
+
+           
         });
     }
 });
