@@ -66,7 +66,11 @@ class Login extends Controller
             exit;
         } 
 
-       
+        // Si l'authentification échoue (E-mail ou mot de passe incorrect)
+        $this->reloadViewWithError($email, $backUrl, 'credentials');
+    }
+
+   
     }
 }
 ?>
