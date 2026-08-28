@@ -23,6 +23,17 @@ class Register extends Controller
     }
 
     
-   
+    //   Traiter les données soumises pour créer un compte utilisateur
+     
+    public function save(): void 
+    {
+        // SÉCURITÉ : N'accepter que les requêtes de type POST
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit;
+        }
+
+       
+    }
 }
 ?>
