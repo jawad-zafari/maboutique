@@ -43,6 +43,9 @@ class Login extends Controller
             return;
         }
 
+        // Appel au modèle pour récupérer les données de l'utilisateur
+        $user = $this->model->getUserByEmail($email);
+        
         
     }
 }
