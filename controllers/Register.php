@@ -41,7 +41,13 @@ class Register extends Controller
         $password = $_POST['password'] ?? '';
         $passwordConfirm = $_POST['password_confirm'] ?? '';
         
-       
+        // Validation basique côté serveur (Longueur et correspondance des mots de passe)
+        if (!$email || strlen($password) < 6 || $password !== $passwordConfirm) {
+            header('Location: ' . URL . 'Register/index?error=validation');
+            exit;
+        }
+
+        
     }
 }
 ?>
