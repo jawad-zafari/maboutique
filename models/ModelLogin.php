@@ -24,7 +24,12 @@ class ModelLogin extends Model
         $sql = "SELECT id, password FROM users WHERE email = ?";
         $user = $this->doSelect($sql, [$email], 'fetch', PDO::FETCH_ASSOC);
 
-       
+        // Vérification du mot de passe haché 
+        if ($user && password_verify($password, $user['password'])) {
+            
+           
+            
+            return true;
         }
         
         return false;
