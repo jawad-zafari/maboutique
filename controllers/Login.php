@@ -70,7 +70,29 @@ class Login extends Controller
         $this->reloadViewWithError($email, $backUrl, 'credentials');
     }
 
-   
+    // Déconnecte l'utilisateur et détruit la session de manière sécurisée
+    public function logout(): void
+    {
+        Model::sessionInit();
+        
+        // Vider toutes les variables de la session actuelle
+        $_SESSION = array();
+        
+        // SÉCURITÉ : Suppression sécurisée du cookie de session
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+        
+        // Destruction de la session sur le serveur
+        session_destroy();
+        header('Location: ' . URL . 'Index/index');
+        exit;
     }
+
+    
 }
 ?>
