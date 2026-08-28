@@ -43,3 +43,46 @@ $backUrl = $oldInput['back_url'] ?? ($_GET['back'] ?? '');
                 </div>
             <?php endif; ?>
 
+            <!-- Action mise à jour vers la nouvelle méthode "authenticate" -->
+            <form action="<?= URL ?>Login/authenticate" method="POST" id="formLogin" class="modern-form">
+                
+                <!-- SÉCURITÉ : Jeton CSRF -->
+                <input type="hidden" name="csrf_token" value="<?= $this->e($csrfToken) ?>">
+                
+                <!-- Redirection post-connexion -->
+                <?php if(!empty($backUrl)): ?>
+                    <input type="hidden" name="back_url" value="<?= $this->e($backUrl) ?>">
+                <?php endif; ?>
+
+                <div class="form-group">
+                    <label for="email"><i class="fa-solid fa-envelope" aria-hidden="true"></i> Adresse E-mail :</label>
+                    <!-- SÉCURITÉ & UX : Repeuplement sécurisé de l'e-mail -->
+                    <input type="email" id="email" name="email" class="form-control" dir="ltr" placeholder="exemple@email.com" autocomplete="email" required value="<?= $this->e($oldInput['email'] ?? '') ?>">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password"><i class="fa-solid fa-lock" aria-hidden="true"></i> Mot de passe :</label>
+                    <!-- Le mot de passe n'est jamais repeuplé -->
+                    <input type="password" id="password" name="password" class="form-control" dir="ltr" placeholder="••••••••" autocomplete="current-password" required>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="rememberMe" name="remember_me" value="1">
+                    <label for="rememberMe">Se souvenir de moi</label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-action" aria-label="Se connecter au site">
+                        Se connecter <i class="fa-solid fa-check" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <div class="register-redirect">
+                    Nouveau client ? <a href="<?= URL ?>Register/index" class="register-link">Créer un compte</a>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
