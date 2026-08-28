@@ -1,4 +1,9 @@
 <?php
-// SÉCURITÉ : Récupération du paramètre de retour (Intended URL) de manière propre et protégée contre XSS
-$backUrl = isset($_GET['back']) ? htmlspecialchars($_GET['back'], ENT_QUOTES, 'UTF-8') : '';
+// SÉCURITÉ : Récupération des données passées par le contrôleur
+$csrfToken    = $csrf_token ?? '';
+$oldInput     = $old_input ?? [];
+$currentError = $error_msg ?? ($_GET['error'] ?? null);
+
+// Récupération de l'URL de retour (Intended URL)
+$backUrl = $oldInput['back_url'] ?? ($_GET['back'] ?? '');
 ?>
