@@ -33,7 +33,10 @@ class Register extends Controller
             exit;
         }
 
-       
+        // SÉCURITÉ : Vérification du jeton CSRF
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+        
+        
     }
 }
 ?>
