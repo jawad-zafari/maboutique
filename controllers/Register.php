@@ -41,7 +41,13 @@ class Register extends Controller
         $mobile          = trim($_POST['mobile'] ?? '');
         $newsletter      = isset($_POST['newsletter']) ? 1 : 0;
         
-       
+        // Validation des données côté serveur
+        $isValid = true;
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($password) < 6 || $password !== $passwordConfirm || empty($lastName) || empty($mobile)) {
+            $isValid = false;
+        }
+
+        
     }
 }
 ?>
