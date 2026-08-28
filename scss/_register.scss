@@ -154,4 +154,52 @@
         }
     }
 
-    
+    /* GROUPES DE CHAMPS DE FORMULAIRE */
+    .form-group {
+        margin-bottom: 15px;
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: $color-text;
+            font-size: 0.85rem;
+
+            @media (min-width: 768px) {
+                font-size: 0.95rem;
+            }
+
+            i {
+                color: $color-muted;
+                margin-right: 4px;
+            }
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid $border-color;
+            border-radius: $radius-sm;
+            transition: border-color $transition-fast, box-shadow $transition-fast;
+            font-size: 0.9rem;
+            font-family: $font-main;
+
+            @media (min-width: 768px) {
+                padding: 12px 15px;
+                font-size: 1rem;
+            }
+
+            &:focus {
+                border-color: $color-primary;
+                box-shadow: 0 0 0 3px rgba(59, 91, 219, 0.15);
+                outline: none;
+            }
+
+            &.is-invalid {
+                border-color: #d9534f !important;
+                background-color: #fff8f8;
+            }
+        }
+    }
+
+   
