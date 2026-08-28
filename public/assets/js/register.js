@@ -16,14 +16,19 @@ document.addEventListener("DOMContentLoaded", () => {
             let isValid = true;
             let errors = []; 
 
-            // 1. Réinitialisation des styles d'erreur sur les champs de saisie
+            //  Réinitialisation des styles d'erreur sur les champs de saisie
             [lastNameInput, mobileInput, emailInput, passwordInput, passwordConfirmInput].forEach(input => {
                 if (input) {
                     input.classList.remove('is-invalid');
                 }
             });
             
-           
+            // Masquer et vider le conteneur de messages d'erreur
+            errorContainer.classList.add('is-hidden');
+            // SÉCURITÉ : Utilisation de textContent au lieu de innerHTML pour vider l'élément
+            errorContainer.textContent = ''; 
+
+            
     }
 
 });
