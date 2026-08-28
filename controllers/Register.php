@@ -47,7 +47,10 @@ class Register extends Controller
             exit;
         }
 
+        // Appel au modèle pour insérer les données
+        $isRegistered = $this->model->insertUser($_POST);
         
+       
     }
 }
 ?>
