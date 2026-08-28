@@ -202,4 +202,34 @@
         }
     }
 
+    /* CASES À COCHER */
+    .checkbox-group {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 15px;
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: $color-primary;
+            flex-shrink: 0;
+        }
+
+        label {
+            margin-bottom: 0;
+            font-weight: normal;
+            font-size: 0.8rem;
+            color: $color-muted;
+            cursor: pointer;
+            line-height: 1.4;
+
+            @media (min-width: 768px) {
+                font-size: 0.9rem;
+            }
+        }
+    }
+
    
