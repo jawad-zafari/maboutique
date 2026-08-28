@@ -54,7 +54,17 @@ class Login extends Controller
     }
 
     
-   
-    
+    //   Déconnecte l'utilisateur et détruit la session de manière sécurisée
+     
+    public function logout(): void
+    {
+        Model::sessionInit();
+        
+        // Vider toutes les variables de la session actuelle
+        $_SESSION = array();
+        
+        
+        exit;
+    }
 }
 ?>
