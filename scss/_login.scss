@@ -62,3 +62,26 @@
         .register-link { color: $color-primary; font-weight: bold; text-decoration: none; transition: all $transition-fast; &:hover { text-shadow: $shadow-glow; } }
     }
 }
+.alert-danger-modern {
+    display: none; 
+    color: #d9534f;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #d9534f;
+    border-radius: 4px;
+    background-color: #fdf7f7;
+    font-weight: 500;
+}
+/* Si l'erreur vient du PHP (URL param), on l'affiche directement */
+div.alert-danger-modern:not(:empty), 
+div.alert-danger-modern[role="alert"]:not(#jsLoginErrorMessage) {
+    display: block;
+}
+/* Classes d'erreur pour les formulaires (SoC) */
+.input-error {
+    border-color: #d9534f !important;
+    box-shadow: 0 0 0 3px rgba(217, 83, 79, 0.1);
+}
+.show-error {
+    display: block !important;
+}
