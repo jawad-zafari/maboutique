@@ -232,4 +232,49 @@
         }
     }
 
+    /* ACTIONS ET BOUTON DE SOUMISSION */
+    .form-actions {
+        margin-top: 20px;
+
+        .btn-action {
+            width: 100%;
+            padding: 12px;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            background-color: $color-primary;
+            color: $bg-white;
+            border: none;
+            border-radius: $radius-sm;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all $transition-fast;
+
+            @media (min-width: 768px) {
+                padding: 14px;
+                font-size: 1.1rem;
+            }
+
+            &:hover {
+                background-color: darken(#3b5bdb, 8%);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(59, 91, 219, 0.3);
+            }
+        }
+    }
+
+    .terms-link {
+        color: $color-secondary;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color $transition-fast;
+
+        &:hover {
+            text-decoration: underline;
+            color: $color-primary;
+        }
+    }
+
    
