@@ -8,5 +8,19 @@ class ModelLogin extends Model
     }
 
     
+    //  Vérifie les identifiants de l'utilisateur
+    
+    public function checkUser(array $form): bool
+    {
+        // SÉCURITÉ : Nettoyage et validation de l'adresse e-mail
+        $email = filter_var($form['email'] ?? '', FILTER_SANITIZE_EMAIL);
+        $password = $form['password'] ?? '';
+
+        if (empty($email) || empty($password)) {
+            return false;
+        }
+
+        
+    }
 }
 ?>
