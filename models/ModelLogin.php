@@ -7,39 +7,11 @@ class ModelLogin extends Model
         parent::__construct();
     }
 
-    
-    //  Vérifie les identifiants de l'utilisateur
-    
-    public function checkUser(array $form): bool
+    // Récupère les données de l'utilisateur basé sur son e-mail
+    public function getUserByEmail(string $email): array|false
     {
-        // SÉCURITÉ : Nettoyage et validation de l'adresse e-mail
-        $email = filter_var($form['email'] ?? '', FILTER_SANITIZE_EMAIL);
-        $password = $form['password'] ?? '';
+        // SÉCURITÉ : Requête préparée (PDO) pour éviter les injections SQL
 
-        if (empty($email) || empty($password)) {
-            return false;
-        }
-
-        // Prévention de l'injection SQL grâce aux requêtes préparées PDO
-        $sql = "SELECT id, password FROM users WHERE email = ?";
-        $user = $this->doSelect($sql, [$email], 'fetch', PDO::FETCH_ASSOC);
-
-        // Vérification du mot de passe haché 
-        if ($user && password_verify($password, $user['password'])) {
-            
-            Model::sessionInit();
-            
-            // Régénération de l'ID de session contre la fixation de session
-            session_regenerate_id(true);
-            
-            // Forçage du typage en entier
-            Model::sessionSet('userId', (int)$user['id']);
-            Model::sessionSet('loggedIn', true);
-            
-            return true;
-        }
-        
-        return false;
     }
 }
 ?>
