@@ -38,7 +38,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
 
-           
+            // 3. Validation du Mot de passe
+            const passwordValue = passwordInput ? passwordInput.value.trim() : '';
+            if (passwordValue === "") {
+                isValid = false;
+                errorMessages.push("Le mot de passe est requis.");
+                if (passwordInput) passwordInput.classList.add('input-error');
+            }
+
+            
         });
     }
 });
