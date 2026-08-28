@@ -57,7 +57,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (emailInput) emailInput.classList.add('is-invalid');
             }
 
-           
+            // Validation du Mot de passe
+            if (!passwordInput || passwordInput.value.trim() === '') {
+                isValid = false;
+                errors.push("Le mot de passe est obligatoire.");
+                if (passwordInput) passwordInput.classList.add('is-invalid');
+            } else if (passwordInput.value.trim().length < 6) {
+                isValid = false;
+                errors.push("Le mot de passe doit contenir au moins 6 caractères pour des raisons de sécurité.");
+                if (passwordInput) passwordInput.classList.add('is-invalid');
+            }
+
+            
         });
     }
 
