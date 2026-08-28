@@ -46,7 +46,27 @@ class Login extends Controller
         // Appel au modèle pour récupérer les données de l'utilisateur
         $user = $this->model->getUserByEmail($email);
         
-        
+        // Vérification du mot de passe haché
+        if ($user && password_verify($password, $user['password'])) {
+            
+            // SÉCURITÉ : Régénération de l'ID de session contre la fixation de session
+            session_regenerate_id(true);
+            
+            // Configuration des variables de session
+            Model::sessionSet('userId', (int)$user['id']);
+            Model::sessionSet('loggedIn', true);
+            
+            // SÉCURITÉ : Protection stricte contre les redirections ouvertes (Open Redirect)
+            // L'URL doit commencer par "/" mais pas par "//" (ex: //hacker.com)
+            if (!empty($backUrl) && str_starts_with($backUrl, '/') && !str_starts_with($backUrl, '//')) {
+                header('Location: ' . URL . ltrim($backUrl, '/'));
+            } else {
+                header('Location: ' . URL . 'Index/index');
+            }
+            exit;
+        } 
+
+       
     }
 }
 ?>
