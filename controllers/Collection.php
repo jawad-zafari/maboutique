@@ -69,7 +69,15 @@ class Collection extends Controller
             'limit'        => $limit
         ];
 
-       
+        // Appel au modèle avec des données 100% sécurisées
+        $productsData = $this->model->getCollectionProducts($type, $limit, $offset, $categoryId, $filters);
+        
+        $totalProducts = $productsData['total'] ?? 0;
+        $categoryTitle = $productsData['category_title'] ?? '';
+        
+        
+
+        
     }
 }
 ?>
