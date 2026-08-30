@@ -50,4 +50,12 @@ $productId     = (int)($productInfo['id'] ?? 0);
 
             <hr class="divider">
 
+            <h4 class="section-title"><i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Rédigez votre avis</h4>
+
+            <div class="form-group">
+                <input type="text" id="commentTitle" name="title" aria-label="Titre de votre avis" value="<?= $this->e($commentInfo['title'] ?? '') ?>" placeholder="Titre de votre avis (ex: Excellent produit !)" class="form-control" required>
+            </div>
             
+            
+
+<script src="<?= URL ?>public/assets/js/comment.js" defer></script>
