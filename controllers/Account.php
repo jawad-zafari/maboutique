@@ -87,7 +87,12 @@ class Account extends Controller
             exit;
         }
 
-       
+        $this->model->updateProfile($cleanData, $userId);
+        
+        header('Location: ' . URL . 'Account/index?success=profile');
+        exit;
     }
+
+    
 }
 ?>
