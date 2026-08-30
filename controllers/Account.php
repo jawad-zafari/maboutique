@@ -21,6 +21,38 @@ class Account extends Controller
         return $userId;
     }
 
-   
+    // Affiche le tableau de bord du client
+    public function index(): void
+    {
+        // SÉCURITÉ : Vérification de l'authentification
+        $userId = $this->requireAuthentication();
+        
+        $userInfo = $this->model->getUserInfo($userId);
+        $orders = $this->model->getOrders($userId);
+        
+        $totalOrdersCount = count($orders);
+        $totalSpent = 0.0;
+        
+        foreach($orders as $order) {
+            if(isset($order['is_paid']) && (int)$order['is_paid'] === 1) {
+                $totalSpent += (float)($order['total_amount'] ?? 0);
+            }
+        }
+        
+        $latestOrder = $orders[0] ?? null;
+
+        $data = [
+            'userInfo'         => $userInfo,
+            'orders'           => $orders,
+            'totalOrdersCount' => $totalOrdersCount,
+            'totalSpent'       => $totalSpent,
+            'latestOrder'      => $latestOrder,
+            'csrf_token'       => $this->generateCsrfToken()
+        ];
+        
+        $this->view('account/account', $data);
+    }
+
+    
 }
 ?>
