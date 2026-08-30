@@ -41,6 +41,11 @@ class ModelCollection extends Model
             $whereClauses[] = "stock_quantity > 0";
         }
 
+        $whereSql = "";
+        if (count($whereClauses) > 0) {
+            $whereSql = "WHERE " . implode(" AND ", $whereClauses);
+        }
+
        
     }
 }
