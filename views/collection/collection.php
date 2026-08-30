@@ -47,4 +47,31 @@ elseif ($type === 'category') { $pageTitle = $data['categoryTitle'] ? $data['cat
         <?php endif; ?>
     </div>
 
-    
+    <form id="collectionFilterForm" aria-label="Filtres de la collection">
+        <div class="search-toolbar glass-panel">
+            <label class="toggle-switch" title="Afficher uniquement les produits en stock">
+                <input type="checkbox" id="toggleInStock" name="in_stock" value="1" <?= $inStock === 1 ? 'checked' : '' ?>>
+                <span class="slider round"></span>
+                <span class="toggle-label">En stock</span>
+            </label>
+
+            <select name="orderType1" class="form-control" aria-label="Trier par">
+                <option value="3" <?= $order1 === 3 ? 'selected' : '' ?>>Plus récents</option>
+                <option value="1" <?= $order1 === 1 ? 'selected' : '' ?>>Prix</option>
+                <option value="2" <?= $order1 === 2 ? 'selected' : '' ?>>Vues</option>
+            </select>
+            
+            <select name="orderType2" class="form-control" aria-label="Ordre du tri">
+                <option value="2" <?= $order2 === 2 ? 'selected' : '' ?>>Décroissant</option>
+                <option value="1" <?= $order2 === 1 ? 'selected' : '' ?>>Croissant</option>
+            </select>
+            
+            <select name="limit" class="form-control" aria-label="Nombre de produits par page">
+                <option value="20" <?= $limitVal === 20 ? 'selected' : '' ?>>20 / page</option>
+                <option value="40" <?= $limitVal === 40 ? 'selected' : '' ?>>40 / page</option>
+                <option value="60" <?= $limitVal === 60 ? 'selected' : '' ?>>60 / page</option>
+            </select>
+        </div>
+    </form>
+
+   
