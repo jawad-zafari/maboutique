@@ -231,3 +231,18 @@ $latestOrder      = $latestOrder ?? ($ordersList[0] ?? null);
     </main>
 </div>
 
+<!-- Modales de gestion (Déconnexion, Suppression, Détails commande) -->
+<div id="darkOverlay" class="action-modal-overlay"></div>
+
+<div id="logoutModal" class="action-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="logoutModalTitle">
+    <div class="action-modal-box">
+        <h4 id="logoutModalTitle" class="modal-warning-title"><i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i> Déconnexion</h4>
+        <p class="modal-text">Êtes-vous sûr(e) de vouloir vous déconnecter de votre compte ? Vous devrez entrer vos identifiants lors de votre prochaine visite.</p>
+        
+        <div class="modal-actions">
+            <button type="button" class="btn-account-secondary" id="btnCancelLogout">Annuler</button>
+            <a href="<?= URL ?>Login/logout" class="btn-account-submit bg-danger-btn text-decoration-none-btn">Oui, me déconnecter</a>
+        </div>
+    </div>
+</div>
+
