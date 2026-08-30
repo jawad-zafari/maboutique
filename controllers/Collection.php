@@ -9,6 +9,17 @@ class Collection extends Controller
         Model::sessionInit(); 
     }
 
-    
+    //  Gère l'affichage des collections et des catégories
+     
+    public function index(string $type = 'latest', string $param1 = '1', string $param2 = '1'): void
+    {
+        // Validation stricte du type de collection
+        $allowedTypes = ['latest', 'special', 'exclusive', 'mostviewed', 'category'];
+        if (!in_array($type, $allowedTypes, true)) {
+            $type = 'latest'; 
+        }
+
+       
+    }
 }
 ?>
