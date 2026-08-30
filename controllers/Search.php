@@ -84,6 +84,8 @@ class Search extends Controller
         // Assainissement de l'entrée
         $keyword = isset($_POST['keyword']) ? trim(strip_tags($_POST['keyword'])) : '';
         
+        $results = $this->model->suggestProducts($keyword);
+        
         
     }
 }
