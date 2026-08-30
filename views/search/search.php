@@ -50,3 +50,19 @@ $csrfToken   = $data['csrf_token'] ?? '';
             </select>
             <?php endforeach; endif; ?>
 
+            <?php if(!empty($colors)): ?>
+            <select name="colors[]" class="form-control filter-select" aria-label="Filtrer par couleur du produit">
+                <option value="">Couleurs (Toutes)</option>
+                <?php foreach ($colors as $color): ?>
+                <option value="<?= (int)($color['id'] ?? 0) ?>"><?= $this->e($color['title'] ?? '') ?></option>
+                <?php endforeach; ?>
+            </select>
+            <?php endif; ?>
+            
+        </div>
+        
+       
+    </form>
+</div>
+
+<script src="<?= URL ?>public/assets/js/search.js" defer></script>
