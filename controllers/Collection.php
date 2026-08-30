@@ -78,7 +78,10 @@ class Collection extends Controller
         // Calcul des prix finaux
         $products = $this->model->calculateProductsPrices($productsData['products'] ?? []);
 
-        
+        // Calcul de la pagination
+        $totalPages = ($totalProducts > 0) ? (int)ceil($totalProducts / $limit) : 1;
+
+       
     }
 }
 ?>
