@@ -81,7 +81,18 @@ class Collection extends Controller
         // Calcul de la pagination
         $totalPages = ($totalProducts > 0) ? (int)ceil($totalProducts / $limit) : 1;
 
-       
+        $data = [
+            'type'          => $type,
+            'products'      => $products,
+            'currentPage'   => $page,
+            'totalPages'    => $totalPages,
+            'categoryId'    => $categoryId,
+            'categoryTitle' => $categoryTitle,
+            'filters'       => $filters,
+            // Jeton pour les requêtes AJAX (Ajout au panier, Favoris)
+            'csrf_token'    => $this->generateCsrfToken() 
+        ];
+
     }
 }
 ?>
