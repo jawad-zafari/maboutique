@@ -20,4 +20,34 @@ $productId     = (int)($productInfo['id'] ?? 0);
             <p class="product-desc">Partagez votre expérience pour aider les autres utilisateurs.</p>
         </aside>
 
-       
+        <main class="evaluation-section">
+            
+            <h4 class="section-title"><i class="fa-solid fa-star-half-stroke" aria-hidden="true"></i> Vos critères d'évaluation</h4>
+            
+            <div class="sliders-grid">
+                <?php foreach ($params as $row): 
+                    $paramId = (int)($row['id'] ?? 0);
+                    // Récupération de la note précédente ou 3 par défaut
+                    $defaultValue = isset($commentParams[$paramId]) ? (int)$commentParams[$paramId] : 3;
+                ?>
+                    <div class="slider-group">
+                        <label for="param_<?= $paramId ?>"><?= $this->e($row['title'] ?? '') ?></label>
+                        <div class="range-wrapper">
+                            <input type="range" 
+                                   id="param_<?= $paramId ?>" 
+                                   name="param<?= $paramId ?>" 
+                                   min="1" max="5" step="1" 
+                                   value="<?= $defaultValue ?>" 
+                                   class="native-range"
+                                   aria-valuemin="1"
+                                   aria-valuemax="5"
+                                   aria-valuenow="<?= $defaultValue ?>">
+                            <span class="range-badge"><?= $defaultValue ?></span>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+            <hr class="divider">
+
+            
