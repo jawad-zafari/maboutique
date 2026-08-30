@@ -1,0 +1,37 @@
+
+.collection-container {
+    width: 100%; max-width: 1200px; margin: 0 auto; padding: 20px 15px;
+    display: flex; flex-direction: column; gap: 25px; font-family: $font-main;
+
+    /* Style du bouton de retour et fil d'Ariane */
+    .breadcrumb-navigation {
+        display: flex; align-items: center; gap: 10px; font-size: $font-size-sm; flex-wrap: wrap;
+        
+        .btn-go-back {
+            background-color: $color-primary; color: $bg-white; border: none; padding: 6px 15px;
+            border-radius: $radius-sm; cursor: pointer; font-weight: bold; font-size: $font-size-sm;
+            display: flex; align-items: center; gap: 6px; transition: all $transition-fast;
+            &:hover { background-color: $color-text; transform: translateX(-3px); box-shadow: $shadow-glow; }
+        }
+
+        .link-home {
+            color: $color-text; font-weight: bold; text-decoration: none; display: flex; align-items: center; gap: 5px; transition: color $transition-fast;
+            &:hover { color: $color-primary; }
+        }
+        
+        .divider-icon { color: $color-muted; font-size: 12px; }
+        .current-page-title { color: $color-muted; font-weight: 500; }
+    }
+
+    .collection-header-box {
+        border-bottom: 1px solid $border-color; padding-bottom: 15px;
+        .main-title { margin: 0 0 5px 0; font-size: $font-size-xl; color: $color-primary; font-weight: 800; text-transform: uppercase; }
+        .subtitle { margin: 0; font-size: $font-size-sm; color: $color-muted; }
+    }
+
+    /* Grille d'affichage responsive pour 15 cartes */
+    .products-grid-layout {
+        display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; width: 100%;
+        .empty-collection-text { grid-column: 1 / -1; text-align: center; color: $color-muted; padding: 40px; font-weight: bold; }
+        
+       
