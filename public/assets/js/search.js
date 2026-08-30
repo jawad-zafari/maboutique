@@ -51,5 +51,48 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    
+    // MOTEUR DE RECHERCHE AJAX
+    async function executeSearch(page) {
+        if (!searchForm || !productsContainer) return;
+
+        currentPage = page;
+        const formData = new FormData(searchForm);
+        formData.append('current_page', currentPage);
+
+        productsContainer.innerHTML = `
+            <li class="loading-state" role="status">
+                <i class="fa-solid fa-circle-notch fa-spin fa-2x loading-icon" aria-hidden="true"></i>
+                <p>Recherche en cours...</p>
+            </li>
+        `;
+
+        try {
+            const response = await fetch(`${baseUrl}Search/doSearch`, {
+                method: 'POST',
+                body: formData
+            });
+
+            let data;
+            try {
+                data = await response.json();
+            } catch (jsonError) {
+                throw new Error("Format de réponse inattendu du serveur.");
+            }
+
+            if (response.ok && !data.error) {
+                const products = data[0] || [];
+                const totalPages = data[1] || 1;
+                
+                renderProducts(products);
+                renderPagination(totalPages);
+            } else {
+                productsContainer.innerHTML = `<li class="empty-state">${data.message || data.error || 'Erreur.'}</li>`;
+            }
+        } catch (error) {
+            console.error("Erreur de recherche :", error);
+            productsContainer.innerHTML = '<li class="error-state">Erreur de connexion au serveur.</li>';
+        }
+    }
+
+   
 });
