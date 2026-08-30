@@ -40,4 +40,46 @@ $latestOrder      = $latestOrder ?? ($ordersList[0] ?? null);
         </ul>
     </aside>
 
-    
+    <main class="account-main-content">
+        
+        <section id="tabDashboard" class="account-tab-content active">
+            <div class="dashboard-header">
+                <h2>Bienvenue, <?= $this->e($userName) ?> !</h2>
+                <p>Depuis votre <span>tableau de bord</span>, vous pouvez avoir un aperçu de vos activités récentes.</p>
+            </div>
+
+            <div class="dashboard-stats-row">
+                <div class="stat-card">
+                    <div class="stat-icon bg-blue-light"><i class="fa-solid fa-bag-shopping color-blue" aria-hidden="true"></i></div>
+                    <div class="stat-details"><span class="stat-title">COMMANDES TOTALES</span><span class="stat-value"><?= $totalOrdersCount ?></span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-green-light"><i class="fa-solid fa-wallet color-green" aria-hidden="true"></i></div>
+                    <div class="stat-details"><span class="stat-title">TOTAL DES DÉPENSES</span><span class="stat-value"><?= number_format($totalSpentAmount, 2, ',', ' ') ?> €</span></div>
+                </div>
+            </div>
+
+            <div class="recent-order-section">
+                <div class="section-title-row">
+                    <h3>Votre dernière commande</h3>
+                    <button class="link-btn" id="btnViewAllOrdersShortcut">Voir tout</button>
+                </div>
+                <?php if($latestOrder): ?>
+                    <div class="recent-order-card modern-order-card-box">
+                        <div class="recent-order-flex-row">
+                            <div>
+                                <strong class="order-ref-highlight">Commande #<?= (int)$latestOrder['id'] ?></strong><br>
+                                <span class="order-date-label">Passée le <?= $this->e($latestOrder['created_date'] ?? '') ?></span>
+                            </div>
+                            <div class="order-amount-large"><?= number_format((float)($latestOrder['total_amount'] ?? 0), 2, ',', ' ') ?> €</div>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <div class="recent-order-card empty-order">
+                        <div class="order-info"><span class="order-number">Aucune commande récente.</span></div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </section>
+
+        
