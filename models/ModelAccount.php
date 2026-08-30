@@ -65,6 +65,15 @@ class ModelAccount extends Model
         return $this->doSelect($sql, [$userId]);
     }
 
+    // Récupère les détails d'une commande spécifique (Vérification stricte de l'ID utilisateur)
+    public function getOrderById(int $orderId, int $userId): array|false
+    {
+        $sql = "SELECT * FROM orders WHERE id = ? AND user_id = ?";
+        $result = $this->doSelect($sql, [$orderId, $userId], 'fetch');
+        
+        return $result ?: false;
+    }
+
     
 }
 ?>
