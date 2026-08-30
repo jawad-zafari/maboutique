@@ -139,4 +139,95 @@ $latestOrder      = $latestOrder ?? ($ordersList[0] ?? null);
             </div>
         </section>
 
-       
+        <section id="tabInfo" class="account-tab-content">
+            <div class="dashboard-header">
+                <h2>Mes informations</h2>
+                <p>Gérer vos données personnelles, adresses et paramètres de sécurité.</p>
+            </div>
+
+            <!-- Gestion unifiée des messages de retour -->
+            <?php if (isset($_GET['success'])): ?>
+                <div class="alert-sticky success" role="alert" aria-live="polite">
+                    <i class="fa-solid fa-circle-check" aria-hidden="true"></i> 
+                    <span>
+                        <?php
+                        if($_GET['success'] === 'profile') echo "Vos coordonnées personnelles ont été mises à jour avec succès !";
+                        if($_GET['success'] === 'password') echo "Votre mot de passe a été modifié et sécurisé avec succès !";
+                        ?>
+                    </span>
+                </div>
+            <?php endif; ?>
+
+            <?php if (isset($_GET['error'])): ?>
+                <div class="alert-sticky danger" role="alert" aria-live="assertive">
+                    <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> 
+                    <span>
+                        <?php
+                        if($_GET['error'] === 'password') echo "Erreur : Le mot de passe actuel saisi est incorrect.";
+                        if($_GET['error'] === 'password_mismatch') echo "Erreur : Les deux nouveaux mots de passe ne correspondent pas.";
+                        if($_GET['error'] === 'delete') echo "Erreur : Mot de passe incorrect. Impossible de valider la suppression du compte.";
+                        if($_GET['error'] === 'validation') echo "Erreur : Veuillez vérifier les informations saisies (E-mail ou Pseudo invalide).";
+                        ?>
+                    </span>
+                </div>
+            <?php endif; ?>
+            
+            <div class="profile-forms-grid">
+                
+                <div class="form-card">
+                    <h3>Données personnelles</h3>
+                    <form action="<?= URL ?>Account/saveProfile" method="post" autocomplete="off">
+                        
+                        <!-- SÉCURITÉ : Jeton CSRF -->
+                        <input type="hidden" name="csrf_token" value="<?= $this->e($csrf_token ?? '') ?>">
+
+                        <div class="form-group"><label for="profileUser">Pseudo *</label><input type="text" id="profileUser" name="username" class="form-control" value="<?= $this->e($userInfo['username'] ?? '') ?>" required aria-required="true"></div>
+                        <div class="form-group"><label for="profileName">Nom Complet</label><input type="text" id="profileName" name="last_name" class="form-control" value="<?= $this->e($userInfo['last_name'] ?? '') ?>"></div>
+                        <div class="form-group"><label for="profileEmail">E-mail *</label><input type="email" id="profileEmail" name="email" class="form-control" value="<?= $this->e($userEmail) ?>" required aria-required="true" autocomplete="email"></div>
+                        <div class="form-group"><label for="profileMobile">Mobile</label><input type="text" id="profileMobile" name="mobile" class="form-control" dir="ltr" value="<?= $this->e($userInfo['mobile'] ?? '') ?>" autocomplete="tel"></div>
+                        <div class="form-group"><label for="profileAddress">Adresse</label><textarea id="profileAddress" name="address" class="form-control" rows="2"><?= $this->e($userInfo['address'] ?? '') ?></textarea></div>
+                        <div class="form-group"><label for="profileCity">Ville</label><input type="text" id="profileCity" name="city" class="form-control" value="<?= $this->e($userInfo['city'] ?? '') ?>"></div>
+                        <div class="form-group"><label for="profileZip">Code postal</label><input type="text" id="profileZip" name="postal_code" class="form-control" value="<?= $this->e($userInfo['postal_code'] ?? '') ?>"></div>
+                        
+                        <button type="submit" class="btn-account-submit btn-account-submit-full">Mettre à jour le profil</button>
+                    </form>
+                </div>
+                
+                <div class="form-card">
+                    <h3>Sécurité</h3>
+                    <form action="<?= URL ?>Account/updatePassword" method="post" autocomplete="off">
+                        
+                        <!-- SÉCURITÉ : Jeton CSRF -->
+                        <input type="hidden" name="csrf_token" value="<?= $this->e($csrf_token ?? '') ?>">
+
+                        <div class="form-group">
+                            <label for="passOld">Ancien mot de passe</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="passOld" name="pass_old" class="form-control" autocomplete="new-password" required aria-required="true">
+                                <button type="button" class="toggle-password" aria-label="Afficher/Masquer"><i class="fa-solid fa-eye" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="passNew">Nouveau mot de passe</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="passNew" name="pass_new" class="form-control" autocomplete="new-password" required aria-required="true">
+                                <button type="button" class="toggle-password" aria-label="Afficher/Masquer"><i class="fa-solid fa-eye" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="passConfirm">Confirmer le nouveau mot de passe</label>
+                            <div class="password-input-wrapper">
+                                <input type="password" id="passConfirm" name="pass_confirm" class="form-control" autocomplete="new-password" required aria-required="true">
+                                <button type="button" class="toggle-password" aria-label="Afficher/Masquer"><i class="fa-solid fa-eye" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-password-submit btn-account-submit btn-account-submit-full">Changer le mot de passe</button>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+</div>
+
