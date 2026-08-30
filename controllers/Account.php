@@ -67,6 +67,21 @@ class Account extends Controller
         // SÉCURITÉ : Vérification stricte du jeton CSRF
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
+        // SÉCURITÉ (Anti Mass-Assignment) : Extraction et nettoyage des données
+        $cleanData = [
+            'username'    => trim($_POST['username'] ?? ''),
+            'email'       => filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL),
+            'last_name'   => trim($_POST['last_name'] ?? ''),
+            'mobile'      => trim($_POST['mobile'] ?? ''),
+            'phone'       => trim($_POST['phone'] ?? ''),
+            'address'     => trim($_POST['address'] ?? ''),
+            'city'        => trim($_POST['city'] ?? ''),
+            'postal_code' => trim($_POST['postal_code'] ?? ''),
+            'gender'      => (int) ($_POST['gender'] ?? 1),
+            'newsletter'  => isset($_POST['newsletter']) ? 1 : 0
+        ];
+
        
+    }
 }
 ?>
