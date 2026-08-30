@@ -93,6 +93,7 @@ class Collection extends Controller
             'csrf_token'    => $this->generateCsrfToken() 
         ];
 
+        $this->view('collection/collection', $data);
     }
 }
 ?>
