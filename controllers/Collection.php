@@ -46,7 +46,20 @@ class Collection extends Controller
         
         $offset = ($page - 1) * $limit;
 
-        
+        // Définition sécurisée des colonnes de tri (Whitelisting)
+        $orderCol = 'id'; 
+        if ($orderType1 === 1) { $orderCol = 'price'; }
+        if ($orderType1 === 2) { $orderCol = 'views'; }
+
+        $orderDir = 'DESC'; 
+        if ($orderType2 === 1) { $orderDir = 'ASC'; }
+
+        if ($type === 'mostviewed' && !isset($_GET['orderType1'])) {
+            $orderCol = 'views';
+            $orderDir = 'DESC';
+        }
+
+       
     }
 }
 ?>
