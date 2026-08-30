@@ -46,7 +46,11 @@ class ModelCollection extends Model
             $whereSql = "WHERE " . implode(" AND ", $whereClauses);
         }
 
-       
+        // Récupération sécurisée du tri (déjà validé par le contrôleur)
+        $orderCol = $filters['order_col'] ?? 'id';
+        $orderDir = $filters['order_dir'] ?? 'DESC';
+
+        
     }
 }
 ?>
