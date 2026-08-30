@@ -75,6 +75,13 @@ class ModelAddComment extends Model
         }
     }
 
-    
+    // Récupère les infos d'un commentaire existant
+    public function commentInfo(int $productId, int $userId): array
+    {
+        $sql = "SELECT * FROM comments WHERE product_id = ? AND user_id = ?";
+        $result = $this->doSelect($sql, [$productId, $userId], 'fetch');
+        
+        return $result ?: [];
+    }
 }
 ?>
