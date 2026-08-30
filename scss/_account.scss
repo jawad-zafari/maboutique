@@ -1,0 +1,55 @@
+
+.account-dashboard-wrapper {
+    max-width: 1200px; margin: 40px auto; padding: 0 15px;
+    display: flex; flex-direction: column; gap: 30px;
+    @media (min-width: $breakpoint-md) { flex-direction: row; align-items: flex-start; }
+}
+
+/* --- Sidebar Gauche --- */
+.account-sidebar {
+    width: 100%; background: $bg-white; border-radius: $radius-lg;
+    box-shadow: $shadow-sm; border: 1px solid $border-color; overflow: hidden;
+    @media (min-width: $breakpoint-md) { width: 280px; flex-shrink: 0; position: sticky; top: 120px; }
+
+    .user-profile-summary {
+        padding: 30px 20px; border-bottom: 1px solid $border-color; background: #fafbff;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        width: 100%;
+        
+        .user-avatar {
+            width: 80px; height: 80px; margin: 0 auto 15px auto;
+            background-color: $color-primary; color: $bg-white;
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-size: 2.2rem; font-weight: 800; box-shadow: $shadow-md;
+        }
+        .user-name { margin: 0 0 5px 0; font-size: $font-size-lg; font-weight: 900; color: $color-text; width: 100%; display: block; text-align: center !important; }
+        .user-since { font-size: $font-size-sm; color: $color-muted; width: 100%; display: block; text-align: center !important; }
+    }
+
+    .account-nav-list {
+        list-style: none; padding: 15px 0; margin: 0;
+        li { margin: 0; padding: 0; }
+
+        .nav-item {
+            padding: 15px 25px; display: flex; align-items: center; gap: 15px;
+            font-size: $font-size-md; font-weight: 700; color: $color-secondary;
+            cursor: pointer; transition: all $transition-fast; border-left: 4px solid transparent;
+
+            i { font-size: 1.2rem; width: 20px; text-align: center; color: $color-muted; transition: color $transition-fast; }
+            &:hover { background: $bg-light; color: $color-text; i { color: $color-primary; } }
+            &.active { background: rgba(59, 91, 219, 0.06); color: $color-primary; border-left-color: $color-primary; font-weight: 800; i { color: $color-primary; } }
+        }
+
+        .nav-separator { height: 1px; background: $border-color; margin: 15px 25px; }
+
+        .nav-link-danger {
+            display: flex; align-items: center; gap: 15px; padding: 15px 25px;
+            font-size: $font-size-md; font-weight: 700; color: $color-secondary;
+            text-decoration: none; cursor: pointer; background: none; border: none; width: 100%; text-align: left; transition: all $transition-fast;
+            
+            i { font-size: 1.2rem; width: 20px; text-align: center; transition: color $transition-fast; color: $color-muted; }
+            &:hover { color: $color-danger; background: rgba(224, 49, 49, 0.05); i { color: $color-danger; } }
+        }
+    }
+}
+
