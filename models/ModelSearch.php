@@ -33,6 +33,13 @@ class ModelSearch extends Model
         return $result;
     }
 
+    // Récupère la liste de toutes les couleurs disponibles
+    public function getColors(): array
+    {
+        $sql = "SELECT * FROM colors";
+        return $this->doSelect($sql);
+    }
+
    
 }
 ?>
