@@ -30,6 +30,9 @@ class ModelCollection extends Model
                 $categoryTitle = $catRes['title']; 
             }
             
+        } elseif ($type === 'special') {
+            $whereClauses[] = "(discount_percent > 0 OR is_special_offer = 1)";
         } 
+    }
 }
 ?>
