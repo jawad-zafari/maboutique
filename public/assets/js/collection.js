@@ -33,6 +33,28 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 
-        
+        // Pagination intelligente (qui conserve les filtres actifs)
+        const paginationLinks = document.querySelectorAll('.pagination-wrapper .page-link');
+        if (paginationLinks.length > 0) {
+            const currentParams = new URLSearchParams(new FormData(filterForm)).toString();
+            
+            paginationLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault(); 
+                    const targetUrl = link.getAttribute('href');
+                    
+                    if (currentParams) {
+                        const separator = targetUrl.includes('?') ? '&' : '?';
+                        window.location.href = targetUrl + separator + currentParams;
+                    } else {
+                        window.location.href = targetUrl;
+                    }
+                });
+            });
+        }
+    }
+
+   
+    
 
 });
