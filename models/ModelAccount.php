@@ -110,7 +110,12 @@ class ModelAccount extends Model
                 ORDER BY f.id DESC";
         $products = $this->doSelect($sql, [$userId]);
         
-       
+        // Applique les calculs de réduction si la méthode globale existe
+        if (method_exists($this, 'calculateProductsPrices')) {
+            return $this->calculateProductsPrices($products);
+        }
+        
+        return $products;
     }
 }
 ?>
