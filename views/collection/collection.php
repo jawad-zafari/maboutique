@@ -13,3 +13,12 @@ $order1   = (int)($filters['order_type_1'] ?? 3);
 $order2   = (int)($filters['order_type_2'] ?? 2);
 $limitVal = (int)($filters['limit'] ?? 20);
 
+// Définition du titre de la page
+$pageTitle = "Collection";
+if ($type === 'latest') { $pageTitle = "Nouveautés"; }
+elseif ($type === 'special') { $pageTitle = "Offres du moment"; }
+elseif ($type === 'exclusive') { $pageTitle = "Exclusivités Boutique"; }
+elseif ($type === 'mostviewed') { $pageTitle = "Les plus vus"; }
+elseif ($type === 'category') { $pageTitle = $data['categoryTitle'] ? $data['categoryTitle'] : "Catégorie"; }
+?>
+
