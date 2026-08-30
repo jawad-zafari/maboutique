@@ -226,7 +226,13 @@ class Account extends Controller
         // Récupération du nouveau total des favoris
         $favCount = $this->model->getFavoriteCount($userId);
         
-        
+        echo json_encode([
+            'status'   => 'success', 
+            'action'   => $action, 
+            'message'  => $action === 'added' ? 'Produit ajouté à vos favoris !' : 'Produit retiré de vos favoris.',
+            'favCount' => $favCount
+        ]);
+        exit; 
     }
 }
 ?>
