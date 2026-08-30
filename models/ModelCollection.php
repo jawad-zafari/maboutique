@@ -50,7 +50,11 @@ class ModelCollection extends Model
         $orderCol = $filters['order_col'] ?? 'id';
         $orderDir = $filters['order_dir'] ?? 'DESC';
 
+        // Requête pour compter le total des résultats
+        $sqlCount = "SELECT COUNT(id) as total FROM products $whereSql";
+        $resultCount = $this->doSelect($sqlCount, $params, 'fetch');
         
+       
     }
 }
 ?>
