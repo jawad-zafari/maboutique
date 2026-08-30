@@ -223,7 +223,10 @@ class Account extends Controller
 
         $action = $this->model->toggleFavorite($userId, (int)$productId);
         
-       
+        // Récupération du nouveau total des favoris
+        $favCount = $this->model->getFavoriteCount($userId);
+        
+        
     }
 }
 ?>
