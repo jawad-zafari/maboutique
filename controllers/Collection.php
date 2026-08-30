@@ -25,7 +25,15 @@ class Collection extends Controller
             $limit = 20; 
         }
 
-        
+        // Extraction et typage des filtres
+        $inStock = isset($_GET['in_stock']) ? (int)$_GET['in_stock'] : 0;
+        $orderType1 = isset($_GET['orderType1']) ? (int)$_GET['orderType1'] : 3;
+        $orderType2 = isset($_GET['orderType2']) ? (int)$_GET['orderType2'] : 2;
+
+        $categoryId = 0;
+        $page = 1;
+
+       
     }
 }
 ?>
