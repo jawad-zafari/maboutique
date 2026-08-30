@@ -53,6 +53,20 @@ class Account extends Controller
         $this->view('account/account', $data);
     }
 
-    
+    // Met à jour les informations personnelles du client
+    public function saveProfile(): void
+    {
+        $userId = $this->requireAuthentication();
+
+        // SÉCURITÉ : Blocage des requêtes GET
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit;
+        }
+
+        // SÉCURITÉ : Vérification stricte du jeton CSRF
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+       
 }
 ?>
