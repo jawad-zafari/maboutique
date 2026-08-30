@@ -258,5 +258,66 @@ document.addEventListener("DOMContentLoaded", () => {
         return btn;
     }
 
-    
+    // GESTION DU PANIER (AJOUT AJAX)
+    document.addEventListener('click', async (e) => {
+        const btnAdd = e.target.closest('.btn-quick-add');
+        if (btnAdd) {
+            e.preventDefault();
+            const productId = btnAdd.getAttribute('data-id');
+            if (!productId) return;
+
+            const originalIcon = btnAdd.innerHTML;
+            btnAdd.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+            btnAdd.disabled = true;
+
+            try {
+                // SÉCURITÉ : Lecture du jeton CSRF
+                const csrfInput = document.getElementById('globalCsrfToken');
+                const csrfToken = csrfInput ? csrfInput.value : '';
+
+                const formData = new URLSearchParams();
+                formData.append('quantity', '1');
+                formData.append('colorId', '0');
+                formData.append('guaranteeId', '0');
+                formData.append('csrf_token', csrfToken); 
+                
+                const response = await fetch(`${baseUrl}Cart/addToCart/${productId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData.toString()
+                });
+
+                let cartData;
+                try {
+                    cartData = await response.json();
+                } catch (jsonError) {
+                    throw new Error("Erreur de réponse du serveur.");
+                }
+
+                if (response.ok && !cartData.error) {
+                    const cartItems = cartData[0] || [];
+                    
+                    let totalCount = 0;
+                    cartItems.forEach(item => totalCount += parseInt(item.quantity || 1));
+                    
+                    const badge = document.getElementById('navCartCounterBadge');
+                    if (badge) {
+                        badge.innerText = totalCount;
+                        badge.style.transform = "scale(1.5)";
+                        setTimeout(() => { badge.style.transform = "scale(1)"; }, 300);
+                    }
+                    
+                    showSearchToast("Produit ajouté au panier avec succès !");
+                } else {
+                    showSearchToast("Erreur lors de la communication avec le serveur.", "danger");
+                }
+            } catch (error) {
+                console.error("Erreur d'ajout au panier :", error);
+                showSearchToast("Erreur de connexion.", "danger");
+            } finally {
+                btnAdd.innerHTML = originalIcon;
+                btnAdd.disabled = false;
+            }
+        }
+    });
 });
