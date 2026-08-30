@@ -46,6 +46,58 @@ class AddComment extends Controller
         $this->view('comment/add_comment', $data);
     }
 
-   
+    // Sauvegarde le commentaire en base de données
+    public function saveComment(string $productId): void
+    {
+        // SÉCURITÉ : Bloque le Method Spoofing
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit;
+        }
+
+        // SÉCURITÉ : Vérification CSRF
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        $userId = (int) Model::sessionGet('userId');
+        $productIdInt = (int) $productId;
+
+        // SÉCURITÉ (Input Sanitization) : Nettoyage strict des entrées
+        $cleanData = [
+            'title'    => trim(strip_tags($_POST['title'] ?? '')),
+            'positive' => trim(strip_tags($_POST['positive'] ?? '')),
+            'negative' => trim(strip_tags($_POST['negative'] ?? '')),
+            'comment'  => trim(strip_tags($_POST['comment'] ?? ''))
+        ];
+
+        // Validation basique
+        if (empty($cleanData['title']) || empty($cleanData['comment'])) {
+            header('Location: ' . URL . 'AddComment/index/' . $productIdInt . '?error=empty');
+            exit;
+        }
+
+        // Extraction et sécurisation des notes (Curseurs)
+        $commentParams = $this->model->getParam($productIdInt);
+        $paramScores = [];
+        
+        foreach ($commentParams as $row) {
+            $paramId = $row['id'];
+            $score = isset($_POST['param' . $paramId]) ? (int) $_POST['param' . $paramId] : 3;
+            
+            // Validation des limites (1 à 5)
+            if ($score < 1) $score = 1;
+            if ($score > 5) $score = 5;
+            
+            $paramScores[$paramId] = $score;
+        }
+        
+        $cleanData['parameters'] = $paramScores;
+
+        // Appel au modèle avec des données 100% sécurisées
+        $this->model->saveComment($cleanData, $productIdInt, $userId);
+        
+        // Redirection 
+        header('Location: ' . URL . 'Product/index/' . $productIdInt . '?success=comment');
+        exit;
+    }
 }
 ?>
