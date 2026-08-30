@@ -81,7 +81,10 @@ class Search extends Controller
             exit;
         }
 
-       
+        // Assainissement de l'entrée
+        $keyword = isset($_POST['keyword']) ? trim(strip_tags($_POST['keyword'])) : '';
+        
+        
     }
 }
 ?>
