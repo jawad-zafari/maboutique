@@ -58,7 +58,11 @@ class ModelCollection extends Model
             $total = (int)$resultCount['total']; 
         }
 
-        
+        // Requête pour récupérer les produits avec pagination
+        $sqlData = "SELECT * FROM products $whereSql ORDER BY $orderCol $orderDir LIMIT $limit OFFSET $offset";
+        $products = $this->doSelect($sqlData, $params);
+
+       
     }
 }
 ?>
