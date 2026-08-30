@@ -11,3 +11,7 @@ $totalSpentAmount = (float)($totalSpent ?? 0);
 $latestOrder      = $latestOrder ?? ($ordersList[0] ?? null);
 ?>
 
+<!-- Stockage du jeton CSRF pour les requêtes AJAX -->
+<div class="account-dashboard-wrapper" id="mainAccountDashboard" data-csrf="<?= $this->e($csrf_token ?? '') ?>">
+    
+    
