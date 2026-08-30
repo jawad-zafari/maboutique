@@ -69,7 +69,11 @@ $productId     = (int)($productInfo['id'] ?? 0);
                 <textarea id="commentContent" name="comment" aria-label="Détail de votre avis" placeholder="Expliquez pourquoi vous avez aimé ou non ce produit..." class="form-control textarea-large" required><?= $this->e($commentInfo['content'] ?? '') ?></textarea>
             </div>
             
-           
+            <div class="form-actions">
+                <button type="submit" class="btn-submit" aria-label="Publier mon avis">
+                    Publier mon avis <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+                </button>
+            </div>
 
         </main>
     </form>
