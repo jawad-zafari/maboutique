@@ -1,0 +1,120 @@
+
+.search-container {
+    width: 100%; 
+    max-width: 1300px; 
+    margin: 0 auto; 
+    padding: 15px 10px; 
+    
+    @media (min-width: $breakpoint-md) { 
+        padding: 25px 15px; 
+    }
+}
+
+//    BARRE D'OUTILS HORIZONTALE (FILTRES ET TRIS) - GRILLE 2x2 SUR MOBILE
+.search-toolbar {
+    background-color: $bg-white; 
+    border: 1px solid $border-color; 
+    border-radius: $radius-lg; 
+    box-shadow: $shadow-sm;
+    padding: 12px; 
+    margin-bottom: 25px; 
+    
+    // DESIGN MOBILE : Grille parfaite 2 colonnes
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    align-items: center;
+
+    // DESIGN DESKTOP : Ligne horizontale
+    @media (min-width: $breakpoint-lg) { 
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap; 
+        justify-content: flex-start; 
+        gap: 15px;
+    }
+
+    // Style commun pour tous les Selects
+    select.form-control {
+        width: 100%; 
+        padding: 8px 10px; 
+        background-color: $bg-body; 
+        color: $color-text; 
+        border: 1px solid $border-color; 
+        border-radius: $radius-sm; 
+        outline: none; 
+        font-size: 0.8rem; 
+        cursor: pointer; 
+        font-family: $font-main;
+        transition: all $transition-fast;
+        font-weight: 600;
+        height: 38px; 
+        
+        @media (min-width: $breakpoint-lg) {
+            width: auto; 
+            min-width: 130px;
+            font-size: 0.85rem;
+        }
+        
+        &:focus, &:hover { 
+            border-color: $color-primary; 
+            box-shadow: $shadow-glow; 
+        }
+    }
+}
+
+/* Interrupteur (Toggle) En stock */
+.toggle-switch {
+    display: flex; 
+    align-items: center; 
+    justify-content: flex-start;
+    gap: 8px; 
+    cursor: pointer; 
+    -webkit-user-select: none;
+    user-select: none; 
+    font-size: 0.8rem; 
+    font-weight: 800; 
+    color: $color-text;
+    height: 38px;
+    margin: 0;
+
+    @media (min-width: $breakpoint-lg) {
+        margin-right: auto; 
+        font-size: 0.85rem;
+    }
+
+    input { display: none; }
+    
+    .slider {
+        position: relative; 
+        width: 38px; 
+        height: 22px; 
+        background-color: #cbd5e1; 
+        border-radius: 34px; 
+        transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        flex-shrink: 0;
+        
+        &:before { 
+            content: ""; 
+            position: absolute; 
+            height: 16px; 
+            width: 16px; 
+            left: 3px; 
+            bottom: 3px; 
+            background-color: white; 
+            border-radius: 50%; 
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+    }
+    
+    input:checked + .slider { 
+        background-color: $color-primary; 
+        box-shadow: $shadow-glow;
+    }
+    
+    input:checked + .slider:before { 
+        transform: translateX(16px); 
+    }
+}
+
