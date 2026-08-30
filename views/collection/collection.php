@@ -124,4 +124,33 @@ elseif ($type === 'category') { $pageTitle = $data['categoryTitle'] ? $data['cat
         <?php endif; ?>
     </div>
 
-    
+    <!-- Pagination -->
+    <?php if ($totalPages > 1): ?>
+        <nav aria-label="Pagination" class="pagination-wrapper">
+            <?php 
+            $linkUrl = ($type === 'category') ? "Collection/index/category/$categoryId/" : "Collection/index/$type/";
+            ?>
+
+            <?php if ($currentPage > 1): ?>
+                <a href="<?= URL . $linkUrl . ($currentPage - 1) ?>" class="page-link prev-next" aria-label="Page précédente">
+                    <i class="fa-solid fa-angle-left" aria-hidden="true"></i> Précédent
+                </a>
+            <?php endif; ?>
+
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="<?= URL . $linkUrl . $i ?>" class="page-link <?= $i === $currentPage ? 'active' : '' ?>" <?= $i === $currentPage ? 'aria-current="page"' : '' ?>>
+                    <?= $i ?>
+                </a>
+            <?php endfor; ?>
+
+            <?php if ($currentPage < $totalPages): ?>
+                <a href="<?= URL . $linkUrl . ($currentPage + 1) ?>" class="page-link prev-next" aria-label="Page suivante">
+                    Suivant <i class="fa-solid fa-angle-right" aria-hidden="true"></i>
+                </a>
+            <?php endif; ?>
+        </nav>
+    <?php endif; ?>
+
+</div>
+
+<script src="<?= URL ?>public/assets/js/collection.js" defer></script>
