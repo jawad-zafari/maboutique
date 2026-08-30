@@ -93,6 +93,43 @@ class Account extends Controller
         exit;
     }
 
+    // Gère le changement de mot de passe depuis le profil
+    public function updatePassword(): void
+    {
+        $userId = $this->requireAuthentication();
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        $passOld = $_POST['pass_old'] ?? '';
+        $passNew = $_POST['pass_new'] ?? '';
+        $passConfirm = $_POST['pass_confirm'] ?? '';
+
+        // Validation du nouveau mot de passe
+        if (empty($passNew) || strlen($passNew) < 6 || $passNew !== $passConfirm) {
+            header('Location: ' . URL . 'Account/index?error=password_mismatch');
+            exit;
+        }
+
+        // SÉCURITÉ : Vérification de l'ancien mot de passe
+        $userHash = $this->model->getUserPasswordHash($userId);
+        
+        if (password_verify($passOld, $userHash)) {
+            // Hachage du nouveau mot de passe dans le contrôleur (Respect du MVC)
+            $hashedPassword = password_hash($passNew, PASSWORD_DEFAULT);
+            $this->model->updatePassword($userId, $hashedPassword);
+            
+            header('Location: ' . URL . 'Account/index?success=password');
+        } else {
+            header('Location: ' . URL . 'Account/index?error=password');
+        }
+        exit;
+    }
+
     
 }
 ?>
