@@ -14,4 +14,10 @@ $productId     = (int)($productInfo['id'] ?? 0);
         <!-- SÉCURITÉ : Jeton CSRF -->
         <input type="hidden" name="csrf_token" value="<?= $this->e($csrfToken) ?>">
 
+        <aside class="product-summary">
+            <img src="<?= URL ?>public/images/products/<?= $productId ?>/product_220.jpg" alt="<?= $this->e($productInfo['title'] ?? 'Produit') ?>" class="product-img" onerror="this.src='https://placehold.co/220x220/f1f3f5/3b5bdb?text=Produit'">
+            <h3 class="product-title">Évaluez ce produit</h3>
+            <p class="product-desc">Partagez votre expérience pour aider les autres utilisateurs.</p>
+        </aside>
+
        
