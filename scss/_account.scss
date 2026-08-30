@@ -106,3 +106,26 @@
     }
 }
 
+/* --- FORMULAIRES INTEGRES --- */
+.profile-forms-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+    @media (min-width: $breakpoint-lg) { grid-template-columns: repeat(2, 1fr); align-items: start; }
+    
+    .form-card {
+        background: #ffffff; padding: 25px; border-radius: 12px; border: 1px solid #e9ecef; box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        h3 { margin: 0 0 20px 0; font-size: 1.1rem; color: #1a1a2e; border-bottom: 1px solid #f1f3f5; padding-bottom: 12px; }
+    }
+}
+
+.form-group { 
+    display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; 
+    label { font-size: $font-size-sm; font-weight: bold; color: $color-text; } 
+}
+.form-control { background-color: $bg-light; color: $color-text; border: 1px solid $border-color; padding: 12px; border-radius: $radius-sm; font-size: $font-size-sm; transition: all $transition-fast; font-family: $font-main; &:focus { border-color: $color-primary; box-shadow: $shadow-glow; outline: none; } }
+
+.btn-account-submit { background-color: $color-primary; color: $bg-white; padding: 12px 25px; border-radius: $radius-sm; border: none; font-weight: bold; font-size: $font-size-sm; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all $transition-fast; &:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: $shadow-glow; } }
+.btn-account-secondary { background-color: $bg-light; color: $color-text; padding: 12px 25px; border-radius: $radius-sm; border: 1px solid $border-color; text-decoration: none; font-weight: bold; font-size: $font-size-sm; cursor: pointer; transition: all $transition-fast; &:hover { background-color: #e2e8f0; } }
+.bg-danger-btn { background-color: $color-danger !important; &:hover { box-shadow: 0 4px 14px rgba(224, 49, 49, 0.3) !important; } }
+
