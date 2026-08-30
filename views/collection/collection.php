@@ -22,3 +22,7 @@ elseif ($type === 'mostviewed') { $pageTitle = "Les plus vus"; }
 elseif ($type === 'category') { $pageTitle = $data['categoryTitle'] ? $data['categoryTitle'] : "Catégorie"; }
 ?>
 
+<!--Stockage du jeton CSRF pour les requêtes AJAX (ex: Ajout au panier) -->
+<div id="collectionMainWrapper" class="collection-container collection-page-wrapper" data-csrf="<?= $this->e($data['csrf_token'] ?? '') ?>">
+    
+   
