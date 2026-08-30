@@ -206,6 +206,13 @@ class Account extends Controller
             exit;
         }
 
+        // SÉCURITÉ : Vérification AJAX CSRF
+        $token = $_POST['csrf_token'] ?? '';
+        if ($token !== Model::sessionGet('csrf_token')) {
+            echo json_encode(['status' => 'error', 'message' => 'Jeton de sécurité invalide.']);
+            exit;
+        }
+
        
     }
 }
