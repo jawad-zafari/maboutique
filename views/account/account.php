@@ -246,3 +246,39 @@ $latestOrder      = $latestOrder ?? ($ordersList[0] ?? null);
     </div>
 </div>
 
+<div id="deleteAccountModal" class="action-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+    <div class="action-modal-box">
+        <h4 id="deleteModalTitle" class="modal-danger-title"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Suppression définitive</h4>
+        <p class="modal-text">Cette action est irréversible. Toutes vos données, commandes et avantages seront perdus. Veuillez confirmer votre identité.</p>
+        
+        <form action="<?= URL ?>Account/deleteAccount" method="post" id="formDeleteAccount" autocomplete="off">
+            
+            <input type="hidden" name="csrf_token" value="<?= $this->e($csrf_token ?? '') ?>">
+
+            <div class="form-group">
+                <label for="deleteReason">Pourquoi souhaitez-vous nous quitter ? *</label>
+                <select id="deleteReason" name="reason" class="form-control" required aria-required="true">
+                    <option value="">Sélectionnez une raison...</option>
+                    <option value="1">Je n'utilise plus ce compte</option>
+                    <option value="2">Je reçois trop d'e-mails</option>
+                    <option value="3">Je ne suis pas satisfait(e) du service</option>
+                    <option value="4">Autre raison</option>
+                </select>
+            </div>
+            
+            <div class="form-group modal-spacing-top">
+                <label for="deletePassword">Mot de passe pour confirmer * :</label>
+                <div class="password-input-wrapper">
+                    <input type="password" id="deletePassword" name="password" class="form-control" autocomplete="new-password" required aria-required="true">
+                    <button type="button" class="toggle-password" aria-label="Afficher le mot de passe"><i class="fa-solid fa-eye" aria-hidden="true"></i></button>
+                </div>
+            </div>
+            
+            <div class="modal-actions modal-spacing-top">
+                <button type="button" class="btn-account-secondary" id="btnCancelDelete">Annuler</button>
+                <button type="submit" class="btn-account-submit bg-danger-btn">Confirmer la suppression</button>
+            </div>
+        </form>
+    </div>
+</div>
+
