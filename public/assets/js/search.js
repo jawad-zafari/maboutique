@@ -241,6 +241,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-   
+    function createPageButton(pageNumber, htmlContent, ariaLabel) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn-page';
+        btn.setAttribute('data-page', pageNumber);
+        btn.setAttribute('aria-label', ariaLabel);
+        btn.innerHTML = htmlContent; 
+
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            executeSearch(pageNumber);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        return btn;
+    }
+
     
 });
