@@ -44,6 +44,13 @@ class ModelAccount extends Model
         return $result[0]['password'] ?? '';
     }
 
-    
+    // Sauvegarde le nouveau mot de passe haché
+    public function updatePassword(int $userId, string $hashedPassword): void
+    {
+        $sql = "UPDATE users SET password = ? WHERE id = ?";
+        $this->doQuery($sql, [$hashedPassword, $userId]);
+    }
+
+   
 }
 ?>
