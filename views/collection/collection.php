@@ -74,4 +74,54 @@ elseif ($type === 'category') { $pageTitle = $data['categoryTitle'] ? $data['cat
         </div>
     </form>
 
-   
+    <div class="products-grid-layout">
+        <?php if (!empty($products)): foreach ($products as $product): 
+            $price = (float)($product['price'] ?? 0);
+            $discount = (float)($product['discount_percent'] ?? 0);
+            $hasDiscount = $discount > 0;
+            $productId = (int)($product['id'] ?? 0);
+            $productTitle = $this->e($product['title'] ?? '');
+        ?>
+            <div class="product-card hover-glow">
+                <button type="button" class="btn-favorite-toggle" data-id="<?= $productId ?>" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
+                    <i class="fa-regular fa-heart" aria-hidden="true"></i>
+                </button>
+                
+                <?php if ($hasDiscount): ?>
+                    <div class="badge-item badge-discount">-<?= $discount ?>%</div>
+                <?php else: ?>
+                    <div class="badge-item badge-new">Nouveau</div>
+                <?php endif; ?>
+
+                <a href="<?= URL ?>Product/index/<?= $productId ?>" class="card-link-wrapper" aria-label="Voir le produit <?= $productTitle ?>">
+                    <div class="image-wrapper">
+                        <img src="<?= URL ?>public/images/products/<?= $productId ?>/product_220.jpg" alt="<?= $productTitle ?>" class="product-img" onerror="this.src='https://placehold.co/220x220/f1f3f5/3b5bdb?text=Produit'">
+                    </div>
+                </a>
+
+                <div class="card-content">
+                    <a href="<?= URL ?>Product/index/<?= $productId ?>" class="product-title-link">
+                        <h4 class="product-title"><?= $productTitle ?></h4>
+                    </a>
+                    
+                    <div class="price-cart-row">
+                        <div class="product-price-container">
+                            <?php if($hasDiscount): ?>
+                                <del class="price-old"><?= number_format($price, 0, ',', ' ') ?> €</del>
+                                <span class="product-price price-danger"><?= number_format((float)($product['price_total'] ?? 0), 0, ',', ' ') ?> €</span>
+                            <?php else: ?>
+                                <span class="product-price price-primary"><?= number_format($price, 0, ',', ' ') ?> €</span>
+                            <?php endif; ?>
+                        </div>
+                        <button type="button" class="btn-quick-add" data-id="<?= $productId ?>" aria-label="Ajouter au panier" title="Ajouter au panier">
+                            <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; else: ?>
+            <p class="empty-collection-text empty-collection-box">Aucun produit trouvé dans cette collection avec les filtres actuels.</p>
+        <?php endif; ?>
+    </div>
+
+    
