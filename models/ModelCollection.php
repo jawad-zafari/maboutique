@@ -54,7 +54,11 @@ class ModelCollection extends Model
         $sqlCount = "SELECT COUNT(id) as total FROM products $whereSql";
         $resultCount = $this->doSelect($sqlCount, $params, 'fetch');
         
-       
+        if (!empty($resultCount)) { 
+            $total = (int)$resultCount['total']; 
+        }
+
+        
     }
 }
 ?>
