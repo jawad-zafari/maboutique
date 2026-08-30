@@ -117,6 +117,24 @@ class ModelSearch extends Model
         return $this->calculateProductsPrices($results);
     }
 
-   
+    // Méthode auxiliaire pour calculer les prix remisés
+    public function calculateProductsPrices( $products): array
+    {
+        if (empty($products)) {
+            return [];
+        }
+
+        foreach ($products as $key => $product) {
+            $price    = (float)($product['price'] ?? 0);
+            $discount = (float)($product['discount_percent'] ?? 0);
+            
+            $priceCalculate = $this->calculateDiscount($price, $discount);
+            
+            $products[$key]['price_discount'] = $priceCalculate[0];
+            $products[$key]['price_total'] = $priceCalculate[1];
+        }
+
+        return $products;
+    }
 }
 ?>
