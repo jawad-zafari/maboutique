@@ -195,6 +195,18 @@ class Account extends Controller
         $this->view('account/favorites', $data);
     }
 
-    
+    // Ajoute ou retire un produit des favoris (Requête AJAX)
+    public function toggleFavorite(string $productId): void
+    {
+        header('Content-Type: application/json');
+        ob_clean();
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(['status' => 'error', 'message' => 'Méthode non autorisée.']);
+            exit;
+        }
+
+       
+    }
 }
 ?>
