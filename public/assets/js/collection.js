@@ -11,5 +11,28 @@ document.addEventListener("DOMContentLoaded", () => {
     // GESTION DES FILTRES ET TRIS (AUTO-SUBMIT & PAGINATION)
     const filterForm = document.getElementById('collectionFilterForm');
     
-   
+    if (filterForm) {
+        const formElements = filterForm.querySelectorAll('select, input[type="checkbox"]');
+        
+        formElements.forEach(element => {
+            element.addEventListener('change', () => {
+                // Effet visuel de chargement fluide sur la grille
+                const grid = document.querySelector('.products-grid-layout');
+                if (grid) {
+                    grid.style.opacity = '0.4';
+                    grid.style.pointerEvents = 'none';
+                    grid.style.transition = 'opacity 0.3s ease';
+                }
+
+                const formData = new FormData(filterForm);
+                const params = new URLSearchParams(formData);
+                
+                const currentUrl = new URL(window.location.href);
+                currentUrl.search = params.toString();
+                window.location.href = currentUrl.toString();
+            });
+        });
+
+        
+
 });
