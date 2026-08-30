@@ -120,5 +120,40 @@ document.addEventListener("DOMContentLoaded", () => {
         if(btnCancelLogout) btnCancelLogout.addEventListener('click', () => { logoutModal.classList.remove('active'); });
     }
 
-   
+    // 4. ACTIVATION D'UN CODE DE RÉDUCTION
+    const btnActivateVoucher = document.getElementById('btnActivateVoucher');
+    const voucherInput = document.getElementById('voucherCode');
+
+    if (btnActivateVoucher && voucherInput) {
+        btnActivateVoucher.addEventListener('click', async () => {
+            const codeValue = voucherInput.value.trim();
+            if (codeValue === "") {
+                showAccountToast("Veuillez saisir un code de réduction valide.");
+                return;
+            }
+            try {
+                const params = new URLSearchParams();
+                params.append('code', codeValue);
+                params.append('csrf_token', csrfToken); // Sécurité CSRF
+
+                const response = await fetch(`${baseUrl}Account/activateVoucher`, {
+                    method: 'POST',
+                    body: params
+                });
+                
+                if (response.ok) {
+                    sessionStorage.setItem('activeDashboardTab', 'tabVouchers');
+                    window.location.reload(); 
+                } else {
+                    showAccountToast("Le code saisi est invalide ou expiré.");
+                }
+            } catch (error) { 
+                console.error(error); 
+                showAccountToast("Erreur de connexion au serveur.");
+            }
+        });
+    }
+
+    
+
 });
