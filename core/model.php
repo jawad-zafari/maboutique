@@ -115,7 +115,7 @@ class Model
     }
 
     // Récupère le nombre total de favoris pour un utilisateur spécifique
-    public function getFavoriteCount($userId)
+    public function getFavoriteCount(int $userId): int
     {
         if (!$userId) {
             return 0;
