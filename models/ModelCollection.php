@@ -32,7 +32,11 @@ class ModelCollection extends Model
             
         } elseif ($type === 'special') {
             $whereClauses[] = "(discount_percent > 0 OR is_special_offer = 1)";
-        } 
+        } elseif ($type === 'exclusive') {
+            $whereClauses[] = "is_exclusive = 1";
+        }
+
+        
     }
 }
 ?>
