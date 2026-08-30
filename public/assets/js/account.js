@@ -69,6 +69,21 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-   
+    // Gestion du routage après rechargement (PRG Pattern)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('success') || urlParams.has('error')) {
+        switchTab('tabInfo');
+        const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+        window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
+    } else {
+        const savedTab = sessionStorage.getItem('activeDashboardTab');
+        if (savedTab) switchTab(savedTab);
+    }
 
+    const btnViewAllOrders = document.getElementById('btnViewAllOrdersShortcut');
+    if (btnViewAllOrders) {
+        btnViewAllOrders.addEventListener('click', () => switchTab('tabOrders'));
+    }
+
+   
 });
