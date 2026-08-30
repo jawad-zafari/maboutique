@@ -35,6 +35,15 @@ class ModelAccount extends Model
         ]);
     }
 
+    // Récupère le mot de passe haché pour vérification dans le contrôleur
+    public function getUserPasswordHash(int $userId): string
+    {
+        $sql = "SELECT password FROM users WHERE id = ?";
+        $result = $this->doSelect($sql, [$userId]);
+        
+        return $result[0]['password'] ?? '';
+    }
+
     
 }
 ?>
