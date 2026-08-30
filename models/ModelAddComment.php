@@ -15,6 +15,16 @@ class ModelAddComment extends Model
         return $result ?: [];
     }
 
+    // Récupère les paramètres d'évaluation de la catégorie du produit
+    public function getParam(int $productId): array
+    {
+        $productInfo = $this->productInfo($productId);
+        $categoryId = (int) ($productInfo['category_id'] ?? 0);
+        
+        $sql = "SELECT * FROM review_parameters WHERE category_id = ?";
+        return $this->doSelect($sql, [$categoryId]);
+    }
+
    
 }
 ?>
