@@ -19,7 +19,13 @@ class Collection extends Controller
             $type = 'latest'; 
         }
 
-       
+        // Validation de la limite d'affichage
+        $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 20;
+        if (!in_array($limit, [20, 40, 60], true)) {
+            $limit = 20; 
+        }
+
+        
     }
 }
 ?>
