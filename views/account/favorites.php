@@ -77,3 +77,5 @@
         <?php endif; ?>
     </div>
 </div>
+
+<script src="<?= URL ?>public/assets/js/account.js" defer></script>
