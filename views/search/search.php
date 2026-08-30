@@ -61,7 +61,17 @@ $csrfToken   = $data['csrf_token'] ?? '';
             
         </div>
         
-       
+        <div class="product-grid-wrapper" aria-live="polite">
+            <ul class="product-grid" id="productsContainer" role="list">
+                <li class="loading-state" role="status">
+                    <i class="fa-solid fa-circle-notch fa-spin fa-2x loading-icon" aria-hidden="true"></i>
+                    <p>Chargement des produits en cours...</p>
+                </li>
+            </ul>
+
+            <nav aria-label="Pagination de la recherche" class="pagination-container" id="paginationContainer"></nav>
+        </div>
+
     </form>
 </div>
 
