@@ -95,6 +95,24 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 3000);
     }
 
-    
+    // MISE À JOUR DU PANIER LATÉRAL (DOM SÉCURISÉ)
+    function updateCartSidebar(items, totalPrice) {
+        const sidebarBody = document.getElementById('cartSidebarBody');
+        const sidebarTotal = document.getElementById('cartSidebarTotal');
+        
+        if (!sidebarBody) return;
+        sidebarBody.innerHTML = ''; // Nettoyage propre du conteneur
+        
+        if (!items || items.length === 0) {
+            const emptyDiv = document.createElement('div');
+            emptyDiv.className = 'empty-cart-msg';
+            emptyDiv.textContent = 'Votre panier est vide.';
+            sidebarBody.appendChild(emptyDiv);
+            if (sidebarTotal) sidebarTotal.textContent = '0,00 €';
+            return;
+        }
+        
+       
+    });
 
 });
