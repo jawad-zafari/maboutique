@@ -393,3 +393,48 @@
     }
 }
 
+/* Totaux */
+.order-total-box {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .total-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+        color: #495057;
+        font-weight: 600;
+
+        &.grand-total {
+            margin-top: 5px;
+            padding-top: 15px;
+            border-top: 2px dashed #ced4da;
+            font-size: 1.1rem;
+            color: #1a1a2e;
+            font-weight: 900;
+        }
+    }
+}
+.mt-30 { margin-top: 30px; }
+.modern-order-card-box { padding: 18px; border: 1px solid #e9ecef; border-radius: 12px; background: #f8f9fa; }
+.recent-order-flex-row { display: flex; justify-content: space-between; align-items: center; }
+.order-ref-highlight { color: #3b5bdb; font-size: 1.1rem; }
+.order-date-label { font-size: 0.85rem; color: #6c757d; }
+.order-amount-large { font-weight: 800; font-size: 1.2rem; color: #1a1a2e; }
+.btn-account-submit-full { width: 100%; justify-content: center; }
+.modal-spacing-top { margin-top: 15px; }
+.display-none-box { display: none; }
+.title-icon-danger { color: #e03131; }
+.rounded-action-btn { border-radius: 50%; width: 38px; height: 38px; }
+.empty-favorites-block { grid-column: 1 / -1; text-align: center; padding: 50px; }
+.empty-fav-icon-muted { font-size: 4rem; color: #ccc; margin-bottom: 20px; }
+.text-muted-color { color: #666; }
+.link-return-shopping-highlight { display: inline-block; margin-top: 15px; color: #3b5bdb; font-weight: bold; }
+.account-sidebar-link { text-decoration: none; color: inherit; display: block; width: 100%; }
+.status-badge-paid { color: #2b8a3e; font-weight: bold; }
+.status-badge-pending { color: #e67700; font-weight: bold; }
