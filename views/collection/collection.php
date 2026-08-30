@@ -38,4 +38,13 @@ elseif ($type === 'category') { $pageTitle = $data['categoryTitle'] ? $data['cat
         <span class="current-page-title" aria-current="page"><?= $this->e($pageTitle) ?></span>
     </nav>
 
+    <div class="collection-header-box">
+        <h2 class="main-title"><?= $this->e($pageTitle) ?></h2>
+        <?php if ($type === 'latest'): ?>
+            <p class="subtitle">Les derniers produits ajoutés à notre catalogue.</p>
+        <?php elseif ($type === 'special'): ?>
+            <p class="subtitle">Ne manquez pas ces produits à prix réduit.</p>
+        <?php endif; ?>
+    </div>
+
     
