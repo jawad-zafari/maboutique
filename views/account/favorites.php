@@ -35,4 +35,45 @@
                 // SÉCURITÉ : Échappement des titres contre XSS
                 $productTitle = $this->e($product['title'] ?? '');
         ?>
-            
+            <div class="product-card hover-glow" id="fav-card-<?= $productId ?>">
+                
+                <button type="button" class="btn-favorite-toggle active" data-id="<?= $productId ?>" title="Retirer des favoris" aria-label="Retirer ce produit">
+                    <i class="fa-solid fa-heart" aria-hidden="true"></i>
+                </button>
+
+                <a href="<?= URL ?>Product/index/<?= $productId ?>" class="card-link-wrapper" aria-label="Voir la fiche du produit">
+                    <div class="image-wrapper">
+                        <img src="<?= URL ?>public/images/products/<?= $productId ?>/product_220.jpg" alt="<?= $productTitle ?>" class="product-img" onerror="this.src='https://placehold.co/220x220/f1f3f5/3b5bdb?text=Produit'">
+                    </div>
+                </a>
+
+                <div class="card-content">
+                    <a href="<?= URL ?>Product/index/<?= $productId ?>" class="product-title-link">
+                        <h4 class="product-title"><?= $productTitle ?></h4>
+                    </a>
+                    
+                    <div class="price-cart-row">
+                        <div class="product-price-container">
+                            <?php if($hasDiscount): ?>
+                                <del class="price-old"><?= number_format((float)($product['price'] ?? 0), 0, ',', ' ') ?> €</del>
+                                <span class="product-price price-danger"><?= number_format((float)($product['price_total'] ?? 0), 0, ',', ' ') ?> €</span>
+                            <?php else: ?>
+                                <span class="product-price price-primary"><?= number_format((float)($product['price'] ?? 0), 0, ',', ' ') ?> €</span>
+                            <?php endif; ?>
+                        </div> 
+                        <!-- SÉCURITÉ : Ajout de jeton CSRF via le contexte global JS pour l'ajout au panier -->
+                        <button type="button" class="btn-quick-add square-btn rounded-action-btn" data-id="<?= $productId ?>" aria-label="Ajouter au panier" title="Ajouter au panier">
+                            <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; else: ?>
+            <div class="empty-favorites-block">
+                <i class="fa-regular fa-heart empty-fav-icon-muted" aria-hidden="true"></i>
+                <h3 class="text-muted-color">Votre liste de favoris est vide.</h3>
+                <a href="<?= URL ?>" class="link-return-shopping-highlight">Continuer mes achats</a>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
