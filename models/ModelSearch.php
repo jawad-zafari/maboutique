@@ -103,6 +103,20 @@ class ModelSearch extends Model
         return [$products, $pageNumber];
     }
 
-    
+    // Recherche instantanée (Auto-suggestion)
+    public function suggestProducts(string $keyword): array
+    {
+        // Utilisation de mb_strlen pour supporter l'UTF-8
+        if (mb_strlen($keyword, 'UTF-8') < 2) {
+            return [];
+        }
+        
+        $sql = "SELECT * FROM products WHERE title LIKE ? LIMIT 5";
+        $results = $this->doSelect($sql, ['%' . $keyword . '%']);
+        
+        return $this->calculateProductsPrices($results);
+    }
+
+   
 }
 ?>
