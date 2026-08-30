@@ -159,3 +159,69 @@
 }
 
 
+//    STYLES AJOUTES : NOTIFICATIONS STICKY ET MOTS DE PASSE
+
+.alert-sticky {
+    position: sticky;
+    top: 20px;
+    z-index: 9; 
+    margin-bottom: 25px;
+    padding: 16px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: slideDownAlert 0.4s ease forwards;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+
+    &.danger {
+        background-color: #fff5f5;
+        color: #c92a2a;
+        border: 1px solid #ffe3e3;
+        i { font-size: 1.2rem; }
+    }
+
+    &.success {
+        background-color: #ebfbee;
+        color: #2b8a3e;
+        border: 1px solid #b2f2bb;
+        i { font-size: 1.2rem; }
+    }
+}
+
+@keyframes slideDownAlert {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .form-control {
+        width: 100%;
+        padding-right: 45px;
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 12px;
+        background: none;
+        border: none;
+        color: #adb5bd;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: color 0.3s ease;
+        padding: 0; display: flex; align-items: center; justify-content: center;
+
+        &:hover, &:focus {
+            color: $color-primary;
+            outline: none;
+        }
+    }
+}
+
+ 
