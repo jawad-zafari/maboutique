@@ -181,6 +181,20 @@ class Account extends Controller
         exit; 
     }
 
+    // Affiche la page des produits favoris
+    public function favorites(): void
+    {
+        $userId = $this->requireAuthentication();
+        
+        $favorites = $this->model->getFavorites($userId);
+        
+        $data = [
+            'favorites' => $favorites
+        ];
+        
+        $this->view('account/favorites', $data);
+    }
+
     
 }
 ?>
