@@ -82,4 +82,47 @@ $latestOrder      = $latestOrder ?? ($ordersList[0] ?? null);
             </div>
         </section>
 
+        <section id="tabOrders" class="account-tab-content">
+            <div class="dashboard-header">
+                <h2>Mes commandes</h2>
+                <p>Consultez l'historique et les détails de vos achats.</p>
+            </div>
+            <div class="account-table-wrapper">
+                <table class="account-table" aria-label="Historique de vos commandes">
+                    <thead>
+                        <tr>
+                            <th scope="col">Référence</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Montant</th>
+                            <th scope="col">Statut</th>
+                            <th scope="col" class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if(!empty($ordersList)): foreach($ordersList as $order): ?>
+                        <tr>
+                            <td><strong>#<?= (int)$order['id'] ?></strong></td>
+                            <td><?= $this->e($order['created_date'] ?? '') ?></td>
+                            <td><strong><?= number_format((float)($order['total_amount'] ?? 0), 2, ',', ' ') ?> €</strong></td>
+                            <td>
+                                <?php if(isset($order['is_paid']) && (int)$order['is_paid'] === 1): ?>
+                                    <span class="status-badge-paid">Payée</span>
+                                <?php else: ?>
+                                    <span class="status-badge-pending">En attente</span>
+                                <?php endif; ?>
+                            </td>
+                            <td class="text-center">
+                                <button type="button" class="btn-view-order" data-id="<?= (int)$order['id'] ?>" title="Voir les détails de la commande" aria-label="Détails de la commande">
+                                    <i class="fa-solid fa-eye" aria-hidden="true"></i> Détails
+                                </button>
+                            </td>
+                        </tr>
+                        <?php endforeach; else: ?>
+                        <tr><td colspan="5" class="text-empty-table text-center">Aucune commande récente.</td></tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
         
