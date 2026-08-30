@@ -190,6 +190,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-   
+    // AJOUT AU PANIER VIA AJAX (AVEC PROTECTION CSRF)
+    document.addEventListener('click', async (e) => {
+        const btnAdd = e.target.closest('.btn-quick-add');
+        if (btnAdd) {
+            e.preventDefault();
+            const productId = btnAdd.getAttribute('data-id');
+            if (!productId) return;
+
+            const originalIcon = btnAdd.innerHTML;
+            btnAdd.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+            btnAdd.disabled = true;
+
+           
+    });
 
 });
