@@ -202,7 +202,59 @@ document.addEventListener("DOMContentLoaded", () => {
             btnAdd.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
             btnAdd.disabled = true;
 
-           
+            try {
+                const formData = new URLSearchParams();
+                formData.append('quantity', '1');
+                formData.append('colorId', '0');
+                formData.append('guaranteeId', '0');
+                
+                // SÉCURITÉ CRITIQUE : Injection du jeton CSRF lu depuis le conteneur HTML
+                formData.append('csrf_token', csrfToken); 
+                
+                const response = await fetch(`${baseUrl}Cart/addToCart/${productId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData.toString()
+                });
+
+                if (response.ok) {
+                    const cartData = await response.json();
+                    
+                    // Gestion sécurisée des erreurs du contrôleur (Ex: CSRF Invalide)
+                    if (cartData.status === 'error') {
+                        showCollectionToast(cartData.message, 'danger');
+                        return;
+                    }
+
+                    const cartItems = cartData[0] || [];
+                    const totalPrice = cartData[1] || 0;
+                    
+                    let totalCount = 0;
+                    if (Array.isArray(cartItems)) {
+                        // SÉCURITÉ DWWM : Utilisation stricte de la variable 'quantity'
+                        cartItems.forEach(item => totalCount += parseInt(item.quantity || 1, 10));
+                    }
+                    
+                    const badge = document.getElementById('navCartCounterBadge');
+                    if (badge) {
+                        badge.textContent = totalCount;
+                        badge.style.transform = "scale(1.5)";
+                        setTimeout(() => { badge.style.transform = "scale(1)"; }, 300);
+                    }
+                    
+                    updateCartSidebar(cartItems, totalPrice);
+                    showCollectionToast("Produit ajouté au panier !");
+                } else {
+                    showCollectionToast("Erreur lors de l'ajout.", "danger");
+                }
+            } catch (error) {
+                console.error("Erreur d'ajout au panier :", error);
+                showCollectionToast("Erreur de connexion.", "danger");
+            } finally {
+                btnAdd.innerHTML = originalIcon;
+                btnAdd.disabled = false;
+            }
+        }
     });
 
 });
