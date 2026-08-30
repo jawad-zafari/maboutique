@@ -211,4 +211,36 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // RENDU DE LA PAGINATION
+    function renderPagination(totalPages) {
+        if (!paginationContainer) return;
+        paginationContainer.textContent = ''; 
+        
+        if (totalPages <= 1) return;
+
+        if (currentPage > 1) {
+            const btnPrev = createPageButton(currentPage - 1, '<i class="fa-solid fa-chevron-left" aria-hidden="true"></i> Préc', 'Aller à la page précédente');
+            paginationContainer.appendChild(btnPrev);
+        }
+
+        let start = Math.max(1, currentPage - 2);
+        let end = Math.min(totalPages, currentPage + 2);
+
+        for (let i = start; i <= end; i++) {
+            const btn = createPageButton(i, i, `Page ${i}`);
+            if (i === currentPage) {
+                btn.classList.add('active');
+                btn.setAttribute('aria-current', 'page');
+            }
+            paginationContainer.appendChild(btn);
+        }
+
+        if (currentPage < totalPages) {
+            const btnNext = createPageButton(currentPage + 1, 'Suiv <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>', 'Aller à la page suivante');
+            paginationContainer.appendChild(btnNext);
+        }
+    }
+
+   
     
+});
