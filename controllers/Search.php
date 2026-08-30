@@ -69,6 +69,19 @@ class Search extends Controller
         exit;
     }
 
-    
+    // Méthode pour l'auto-complétion (Suggestions en direct dans le Header)
+    public function autoSuggest(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        ob_clean();
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['error' => 'Méthode non autorisée.']);
+            exit;
+        }
+
+       
+    }
 }
 ?>
