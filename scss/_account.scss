@@ -225,3 +225,30 @@
 }
 
  
+//    BOUTONS D'ACTION (TABLEAU)
+
+.btn-view-order {
+    background-color: #f1f3f5;
+    color: #3b5bdb;
+    border: 1px solid #e9ecef;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    &:hover {
+        background-color: #3b5bdb;
+        color: #ffffff;
+        border-color: #3b5bdb;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(59, 91, 219, 0.2);
+    }
+}
+
+.text-center { text-align: center !important; }
+
