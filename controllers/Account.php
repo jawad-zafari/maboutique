@@ -213,6 +213,9 @@ class Account extends Controller
             exit;
         }
 
+        // Vérification de l'authentification directement pour AJAX
+        $userId = (int) Model::sessionGet('userId');
+        
        
     }
 }
