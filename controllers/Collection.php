@@ -75,7 +75,8 @@ class Collection extends Controller
         $totalProducts = $productsData['total'] ?? 0;
         $categoryTitle = $productsData['category_title'] ?? '';
         
-        
+        // Calcul des prix finaux
+        $products = $this->model->calculateProductsPrices($productsData['products'] ?? []);
 
         
     }
