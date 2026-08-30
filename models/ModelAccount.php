@@ -51,6 +51,13 @@ class ModelAccount extends Model
         $this->doQuery($sql, [$hashedPassword, $userId]);
     }
 
-   
+    // Supprime un utilisateur de la base de données
+    public function deleteUser(int $userId): void
+    {
+        $sql = "DELETE FROM users WHERE id = ?";
+        $this->doQuery($sql, [$userId]);
+    }
+
+    
 }
 ?>
