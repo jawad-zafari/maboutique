@@ -81,6 +81,12 @@ class Account extends Controller
             'newsletter'  => isset($_POST['newsletter']) ? 1 : 0
         ];
 
+        // Validation basique côté serveur
+        if (!filter_var($cleanData['email'], FILTER_VALIDATE_EMAIL) || empty($cleanData['username'])) {
+            header('Location: ' . URL . 'Account/index?error=validation');
+            exit;
+        }
+
        
     }
 }
