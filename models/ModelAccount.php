@@ -58,6 +58,13 @@ class ModelAccount extends Model
         $this->doQuery($sql, [$userId]);
     }
 
+    // Récupère l'historique complet des commandes
+    public function getOrders(int $userId): array
+    {
+        $sql = "SELECT * FROM orders WHERE user_id = ? ORDER BY id DESC";
+        return $this->doSelect($sql, [$userId]);
+    }
+
     
 }
 ?>
