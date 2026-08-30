@@ -129,3 +129,14 @@
 .btn-account-secondary { background-color: $bg-light; color: $color-text; padding: 12px 25px; border-radius: $radius-sm; border: 1px solid $border-color; text-decoration: none; font-weight: bold; font-size: $font-size-sm; cursor: pointer; transition: all $transition-fast; &:hover { background-color: #e2e8f0; } }
 .bg-danger-btn { background-color: $color-danger !important; &:hover { box-shadow: 0 4px 14px rgba(224, 49, 49, 0.3) !important; } }
 
+/* --- AUTRES ELEMENTS COMMUNS --- */
+.account-table-wrapper { overflow-x: auto; background-color: $bg-white; border-radius: $radius-lg; box-shadow: $shadow-sm; border: 1px solid $border-color; }
+.account-table {
+    width: 100%; border-collapse: collapse; min-width: 500px;
+    th, td { padding: 14px 18px; text-align: left; border-bottom: 1px solid $border-color; font-size: $font-size-sm; color: $color-text; }
+    th { background-color: $bg-light; color: $color-primary; font-weight: bold; text-transform: uppercase; }
+    tbody tr:hover { background-color: rgba(59, 91, 219, 0.03); }
+}
+
+.voucher-activation-box { background: $bg-white; border: 1px solid $border-color; padding: 20px; border-radius: $radius-lg; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; .input-group-flex { display: flex; gap: 10px; input { flex: 1; } } }
+
