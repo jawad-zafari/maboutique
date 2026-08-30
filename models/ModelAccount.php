@@ -74,6 +74,23 @@ class ModelAccount extends Model
         return $result ?: false;
     }
 
+    // Ajoute ou supprime un favori
+    public function toggleFavorite(int $userId, int $productId): string
+    {
+        $sqlCheck = "SELECT id FROM favorites WHERE user_id = ? AND product_id = ?";
+        $exists = $this->doSelect($sqlCheck, [$userId, $productId]);
+
+        if (!empty($exists)) {
+            $sqlDelete = "DELETE FROM favorites WHERE id = ?";
+            $this->doQuery($sqlDelete, [$exists[0]['id']]);
+            return 'removed';
+        } else {
+            $sqlInsert = "INSERT INTO favorites (user_id, product_id, folder_id, title) VALUES (?, ?, 0, '')";
+            $this->doQuery($sqlInsert, [$userId, $productId]);
+            return 'added';
+        }
+    }
+
     
 }
 ?>
