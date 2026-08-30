@@ -26,7 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
         
-        
+        // Initialiser l'état visuel au chargement de la page
+        input.dispatchEvent(new Event('input'));
     });
 
 });
