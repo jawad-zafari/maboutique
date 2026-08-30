@@ -125,4 +125,18 @@ $latestOrder      = $latestOrder ?? ($ordersList[0] ?? null);
             </div>
         </section>
 
-        
+        <section id="tabVouchers" class="account-tab-content">
+            <div class="dashboard-header">
+                <h2>Bons de réduction</h2>
+                <p>Activez et gérez vos codes promotionnels.</p>
+            </div>
+            <div class="voucher-activation-box">
+                <label for="voucherCode">Activer un bon de réduction :</label>
+                <div class="input-group-flex">
+                    <input type="text" id="voucherCode" class="form-control" placeholder="Saisir un code...">
+                    <button type="button" id="btnActivateVoucher" class="btn-account-submit">Activer</button>
+                </div>
+            </div>
+        </section>
+
+       
