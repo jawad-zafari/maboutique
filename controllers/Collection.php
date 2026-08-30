@@ -59,6 +59,16 @@ class Collection extends Controller
             $orderDir = 'DESC';
         }
 
+        // Préparation du tableau de filtres propres pour le modèle
+        $filters = [
+            'in_stock'     => $inStock,
+            'order_col'    => $orderCol,
+            'order_dir'    => $orderDir,
+            'order_type_1' => $orderType1,
+            'order_type_2' => $orderType2,
+            'limit'        => $limit
+        ];
+
        
     }
 }
