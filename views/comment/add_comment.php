@@ -56,6 +56,19 @@ $productId     = (int)($productInfo['id'] ?? 0);
                 <input type="text" id="commentTitle" name="title" aria-label="Titre de votre avis" value="<?= $this->e($commentInfo['title'] ?? '') ?>" placeholder="Titre de votre avis (ex: Excellent produit !)" class="form-control" required>
             </div>
             
-            
+            <div class="form-row">
+                <div class="form-group half">
+                    <input type="text" id="commentPositive" name="positive" aria-label="Points forts du produit" value="<?= $this->e($commentInfo['positive_points'] ?? '') ?>" placeholder="Points forts (séparés par des virgules)" class="form-control input-success">
+                </div>
+                <div class="form-group half">
+                    <input type="text" id="commentNegative" name="negative" aria-label="Points faibles du produit" value="<?= $this->e($commentInfo['negative_points'] ?? '') ?>" placeholder="Points faibles (séparés par des virgules)" class="form-control input-danger">
+                </div>
+            </div>
+
+           
+
+        </main>
+    </form>
+</div>
 
 <script src="<?= URL ?>public/assets/js/comment.js" defer></script>
