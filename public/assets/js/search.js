@@ -42,6 +42,14 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => { toast.classList.remove('show'); }, 3000);
     }
 
-    
+    // INITIALISATION DES ÉCOUTEURS
+    function initializeListeners() {
+        if (!searchForm) return;
+        const formElements = searchForm.querySelectorAll('select, input[type="checkbox"]');
+        formElements.forEach(element => {
+            element.addEventListener('change', () => executeSearch(1));
+        });
+    }
+
     
 });
