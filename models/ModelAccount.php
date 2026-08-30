@@ -100,6 +100,17 @@ class ModelAccount extends Model
         return (int) ($result['total'] ?? 0);
     }
 
-    
+    // Récupère la liste des produits favoris
+    public function getFavorites(int $userId): array
+    {
+        $sql = "SELECT p.*, f.id as favorite_id 
+                FROM favorites f 
+                INNER JOIN products p ON f.product_id = p.id 
+                WHERE f.user_id = ? 
+                ORDER BY f.id DESC";
+        $products = $this->doSelect($sql, [$userId]);
+        
+       
+    }
 }
 ?>
