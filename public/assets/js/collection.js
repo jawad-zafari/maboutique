@@ -112,7 +112,84 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         
-       
-    });
+        items.forEach(item => {
+            // SÉCURITÉ DWWM : Utilisation stricte de la variable 'quantity'
+            const qty = item.quantity || 1;
+            
+            // SÉCURITÉ (Anti-XSS) : Construction manuelle du DOM
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'cart-item-card';
+
+            const img = document.createElement('img');
+            img.src = `${baseUrl}public/images/products/${item.id}/product_220.jpg`;
+            img.alt = item.title;
+            img.className = 'item-img';
+            img.onerror = function() { this.src = 'https://placehold.co/80x80/f5f5f5/111?text=Img'; };
+
+            const detailsDiv = document.createElement('div');
+            detailsDiv.className = 'item-details';
+
+            const h4 = document.createElement('h4');
+            h4.className = 'item-title';
+            h4.textContent = item.title; // Neutralisation des scripts malveillants
+
+            const priceDiv = document.createElement('div');
+            priceDiv.className = 'item-price';
+            priceDiv.textContent = `${new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2 }).format(item.price)} €`;
+
+            const controlsDiv = document.createElement('div');
+            controlsDiv.className = 'item-controls';
+
+            const qtyWrapper = document.createElement('div');
+            qtyWrapper.className = 'qty-wrapper';
+            
+            const btnMinus = document.createElement('button');
+            btnMinus.type = 'button';
+            btnMinus.className = 'btn-qty minus';
+            btnMinus.setAttribute('data-row', item.cartRow);
+            btnMinus.textContent = '-';
+
+            const inputQty = document.createElement('input');
+            inputQty.type = 'text';
+            inputQty.className = 'input-qty';
+            inputQty.value = qty;
+            inputQty.readOnly = true;
+            inputQty.setAttribute('data-row', item.cartRow);
+
+            const btnPlus = document.createElement('button');
+            btnPlus.type = 'button';
+            btnPlus.className = 'btn-qty plus';
+            btnPlus.setAttribute('data-row', item.cartRow);
+            btnPlus.textContent = '+';
+
+            qtyWrapper.appendChild(btnMinus);
+            qtyWrapper.appendChild(inputQty);
+            qtyWrapper.appendChild(btnPlus);
+
+            const btnRemove = document.createElement('button');
+            btnRemove.type = 'button';
+            btnRemove.className = 'btn-remove-item';
+            btnRemove.setAttribute('data-row', item.cartRow);
+            btnRemove.innerHTML = '<i class="fa-solid fa-trash-can" aria-hidden="true"></i>';
+
+            controlsDiv.appendChild(qtyWrapper);
+            controlsDiv.appendChild(btnRemove);
+
+            detailsDiv.appendChild(h4);
+            detailsDiv.appendChild(priceDiv);
+            detailsDiv.appendChild(controlsDiv);
+
+            cardDiv.appendChild(img);
+            cardDiv.appendChild(detailsDiv);
+
+            sidebarBody.appendChild(cardDiv);
+        });
+        
+        if (sidebarTotal) {
+            sidebarTotal.textContent = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2 }).format(totalPrice) + ' €';
+        }
+    }
+
+   
 
 });
