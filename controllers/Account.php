@@ -130,6 +130,32 @@ class Account extends Controller
         exit;
     }
 
+    // Supprime définitivement le compte client
+    public function deleteAccount(): void
+    {
+        $userId = $this->requireAuthentication();
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        $password = $_POST['password'] ?? '';
+
+        // Double vérification par mot de passe avant la suppression
+        $userHash = $this->model->getUserPasswordHash($userId);
+        
+        if (password_verify($password, $userHash)) {
+            $this->model->deleteUser($userId);
+            header('Location: ' . URL . 'Login/logout');
+        } else {
+            header('Location: ' . URL . 'Account/index?error=delete');
+        }
+        exit;
+    }
+
     
 }
 ?>
