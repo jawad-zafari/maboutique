@@ -221,7 +221,9 @@ class Account extends Controller
             exit;
         }
 
+        $action = $this->model->toggleFavorite($userId, (int)$productId);
         
+       
     }
 }
 ?>
