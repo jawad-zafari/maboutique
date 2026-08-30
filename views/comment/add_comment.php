@@ -65,6 +65,10 @@ $productId     = (int)($productInfo['id'] ?? 0);
                 </div>
             </div>
 
+            <div class="form-group">
+                <textarea id="commentContent" name="comment" aria-label="Détail de votre avis" placeholder="Expliquez pourquoi vous avez aimé ou non ce produit..." class="form-control textarea-large" required><?= $this->e($commentInfo['content'] ?? '') ?></textarea>
+            </div>
+            
            
 
         </main>
