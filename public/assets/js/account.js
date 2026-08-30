@@ -101,5 +101,24 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    
+    // 3. GESTION DES MODALES (Déconnexion & Suppression)
+    const btnOpenDeleteModal = document.getElementById('btnOpenDeleteModal');
+    const deleteModal = document.getElementById('deleteAccountModal');
+    const btnCancelDelete = document.getElementById('btnCancelDelete');
+
+    const btnOpenLogoutModal = document.getElementById('btnOpenLogoutModal');
+    const logoutModal = document.getElementById('logoutModal');
+    const btnCancelLogout = document.getElementById('btnCancelLogout');
+
+    if (btnOpenDeleteModal && deleteModal) {
+        btnOpenDeleteModal.addEventListener('click', () => { deleteModal.classList.add('active'); });
+        if(btnCancelDelete) btnCancelDelete.addEventListener('click', () => { deleteModal.classList.remove('active'); });
+    }
+
+    if (btnOpenLogoutModal && logoutModal) {
+        btnOpenLogoutModal.addEventListener('click', () => { logoutModal.classList.add('active'); });
+        if(btnCancelLogout) btnCancelLogout.addEventListener('click', () => { logoutModal.classList.remove('active'); });
+    }
+
+   
 });
