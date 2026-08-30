@@ -36,7 +36,12 @@ class ModelCollection extends Model
             $whereClauses[] = "is_exclusive = 1";
         }
 
-        
+        // Application du filtre de stock
+        if (isset($filters['in_stock']) && $filters['in_stock'] === 1) {
+            $whereClauses[] = "stock_quantity > 0";
+        }
+
+       
     }
 }
 ?>
