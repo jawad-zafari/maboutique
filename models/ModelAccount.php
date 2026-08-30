@@ -91,6 +91,15 @@ class ModelAccount extends Model
         }
     }
 
+    // Récupère le nombre total de favoris
+    public function getFavoriteCount(int $userId): int
+    {
+        $sql = "SELECT COUNT(*) as total FROM favorites WHERE user_id = ?";
+        $result = $this->doSelect($sql, [$userId], 'fetch');
+        
+        return (int) ($result['total'] ?? 0);
+    }
+
     
 }
 ?>
