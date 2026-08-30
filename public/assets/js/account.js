@@ -38,6 +38,37 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 3500);
     }
 
+    // 1. GESTION DES ONGLETS DU DASHBOARD (Tabs)
+    const navItems = document.querySelectorAll('.account-nav-list .nav-item[data-target]');
+    const tabContents = document.querySelectorAll('.account-tab-content');
+
+    function switchTab(targetId) {
+        if (!targetId) return;
+        navItems.forEach(nav => nav.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+
+        const activeNav = document.querySelector(`[data-target="${targetId}"]`);
+        const targetContent = document.getElementById(targetId);
+
+        if (activeNav && targetContent) {
+            activeNav.classList.add('active');
+            targetContent.classList.add('active');
+            sessionStorage.setItem('activeDashboardTab', targetId);
+        }
+    }
+
+    if (navItems.length > 0 && tabContents.length > 0) {
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Masquer les alertes serveur existantes lors du changement d'onglet
+                document.querySelectorAll('.alert-sticky').forEach(alert => {
+                    alert.style.display = 'none';
+                });
+                switchTab(this.getAttribute('data-target'));
+            });
+        });
+    }
+
    
 
 });
