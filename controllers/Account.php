@@ -156,6 +156,31 @@ class Account extends Controller
         exit;
     }
 
+    // Récupère les détails d'une commande via AJAX
+    public function getOrderDetails(string $orderId): void
+    {
+        $userId = $this->requireAuthentication();
+
+        header('Content-Type: application/json');
+        ob_clean(); 
+
+        $order = $this->model->getOrderById((int)$orderId, $userId);
+
+        if ($order) {
+            // Prévention de "PHP Object Injection"
+            $cartData = !empty($order['cart_data']) ? unserialize($order['cart_data'], ['allowed_classes' => false]) : [];
+            
+            echo json_encode([
+                'status'   => 'success',
+                'order'    => $order,
+                'products' => $cartData
+            ]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Commande introuvable ou accès non autorisé.']);
+        }
+        exit; 
+    }
+
     
 }
 ?>
