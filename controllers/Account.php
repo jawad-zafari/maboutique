@@ -9,6 +9,18 @@ class Account extends Controller
     }
 
   
-    
+    private function requireAuthentication(): int
+    {
+        $userId = (int) Model::sessionGet('userId');
+        
+        if ($userId === 0) {
+            header('Location: ' . URL . 'Login/index');
+            exit;
+        }
+        
+        return $userId;
+    }
+
+   
 }
 ?>
