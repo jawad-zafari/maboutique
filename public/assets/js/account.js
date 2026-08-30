@@ -154,6 +154,95 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // 5. GESTION DES DÉTAILS DE LA COMMANDE (MODALE AJAX)
+    const btnViewOrderList = document.querySelectorAll('.btn-view-order');
+    const orderModal = document.getElementById('orderDetailsModal');
+    const btnCloseOrderModal = document.getElementById('btnCloseOrderModal');
+    
+    const orderLoader = document.getElementById('orderDetailsLoader');
+    const orderContent = document.getElementById('orderDetailsContent');
+
+    if (btnViewOrderList.length > 0 && orderModal) {
+        btnViewOrderList.forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const orderId = this.getAttribute('data-id');
+                
+                orderModal.classList.add('active');
+                orderLoader.style.display = 'block';
+                orderContent.style.display = 'none';
+                
+                document.getElementById('modalOrderRef').textContent = '#' + orderId;
+
+                try {
+                    const response = await fetch(`${baseUrl}Account/getOrderDetails/${orderId}`);
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        const order = data.order;
+                        const products = data.products;
+
+                        document.getElementById('modalOrderDate').textContent = order.created_date;
+                        
+                        // SÉCURITÉ : Forçage du typage entier
+                        const isPaid = parseInt(order.is_paid, 10);
+                        document.getElementById('modalOrderStatus').innerHTML = (isPaid === 1) ? '<span class="status-badge-paid">Payée</span>' : '<span class="status-badge-pending">En attente</span>';
+                        
+                        // Prévention XSS
+                        document.getElementById('modalOrderAddress').textContent = order.address_data || 'Adresse non spécifiée';
+                        
+                        document.getElementById('modalOrderShipping').textContent = parseFloat(order.shipping_price) > 0 ? new Intl.NumberFormat('fr-FR').format(order.shipping_price) + ' €' : 'Gratuit';
+                        document.getElementById('modalOrderTotal').textContent = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2 }).format(order.total_amount) + ' €';
+
+                        const productsContainer = document.getElementById('modalOrderProducts');
+                        productsContainer.innerHTML = '';
+
+                        if (products && products.length > 0) {
+                            products.forEach(p => {
+                                const qty = parseInt(p.quantity || 1, 10);
+                                const price = parseFloat(p.price || 0);
+                                const totalPrice = qty * price;
+                                const imgSrc = `${baseUrl}public/images/products/${p.id}/product_220.jpg`;
+                                
+                                // Construction du DOM sécurisée contre les failles XSS (Remplacement des balises)
+                                const safeTitle = p.title.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                                
+                                const html = `
+                                <div class="modal-product-item">
+                                    <div class="product-img">
+                                        <img src="${imgSrc}" alt="" onerror="this.src='https://placehold.co/60x60/f8f9fa/adb5bd?text=Image'">
+                                    </div>
+                                    <div class="product-details">
+                                        <div class="product-title">${safeTitle}</div>
+                                        <div class="product-meta">Quantité : ${qty}</div>
+                                    </div>
+                                    <div class="product-price">${new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2 }).format(totalPrice)} €</div>
+                                </div>`;
+                                productsContainer.insertAdjacentHTML('beforeend', html);
+                            });
+                        } else {
+                            productsContainer.innerHTML = '<p class="text-muted-color">Détails des articles indisponibles.</p>';
+                        }
+
+                        orderLoader.style.display = 'none';
+                        orderContent.style.display = 'block';
+
+                    } else {
+                        showAccountToast(data.message);
+                        orderModal.classList.remove('active');
+                    }
+                } catch (error) {
+                    console.error("Erreur Fetch Order Details", error);
+                    showAccountToast("Une erreur s'est produite lors de la récupération des données.");
+                    orderModal.classList.remove('active');
+                }
+            });
+        });
+    }
+
+    if (btnCloseOrderModal) {
+        btnCloseOrderModal.addEventListener('click', () => { orderModal.classList.remove('active'); });
+    }
+
     
 
 });
