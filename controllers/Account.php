@@ -216,7 +216,12 @@ class Account extends Controller
         // Vérification de l'authentification directement pour AJAX
         $userId = (int) Model::sessionGet('userId');
         
-       
+        if ($userId === 0) {
+            echo json_encode(['status' => 'unauthorized', 'message' => 'Veuillez vous connecter pour gérer vos favoris.']);
+            exit;
+        }
+
+        
     }
 }
 ?>
