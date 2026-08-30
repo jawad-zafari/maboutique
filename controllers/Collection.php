@@ -33,7 +33,20 @@ class Collection extends Controller
         $categoryId = 0;
         $page = 1;
 
-       
+        if ($type === 'category') {
+            $categoryId = (int)$param1;
+            $page = (int)$param2;
+        } else {
+            $page = (int)$param1;
+        }
+
+        if ($page < 1) {
+            $page = 1;
+        }
+        
+        $offset = ($page - 1) * $limit;
+
+        
     }
 }
 ?>
