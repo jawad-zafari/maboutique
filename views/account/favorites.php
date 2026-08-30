@@ -19,4 +19,20 @@
         <span class="current-page-title">Mes Favoris</span>
     </div>
 
-    
+    <div class="collection-header-box">
+        <h2 class="main-title"><i class="fa-solid fa-heart title-icon-danger" aria-hidden="true"></i> Mes produits favoris</h2>
+        <p class="subtitle">Retrouvez ici tous les produits que vous avez sauvegardés.</p>
+    </div>
+
+    <div class="products-grid-layout">
+        <?php 
+        $favoritesList = $favorites ?? [];
+        if (!empty($favoritesList)):
+            foreach ($favoritesList as $product):
+                $discount = (int)($product['discount_percent'] ?? 0);
+                $hasDiscount = $discount > 0;
+                $productId = (int)($product['id'] ?? 0);
+                // SÉCURITÉ : Échappement des titres contre XSS
+                $productTitle = $this->e($product['title'] ?? '');
+        ?>
+            
