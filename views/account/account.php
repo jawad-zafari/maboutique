@@ -282,3 +282,48 @@ $latestOrder      = $latestOrder ?? ($ordersList[0] ?? null);
     </div>
 </div>
 
+<div id="orderDetailsModal" class="action-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
+    <div class="action-modal-box modal-large">
+        <div class="modal-header-flex">
+            <h4 id="orderModalTitle" class="modal-title-custom"><i class="fa-solid fa-receipt" aria-hidden="true"></i> Détails de la commande <span id="modalOrderRef"></span></h4>
+            <button type="button" class="btn-close-icon" id="btnCloseOrderModal" aria-label="Fermer la fenêtre"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        </div>
+        
+        <div class="modal-body-scrollable">
+            <div id="orderDetailsLoader" class="loader-spinner"><i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Chargement des données...</div>
+            
+            <div id="orderDetailsContent" class="display-none-box">
+                <div class="order-info-grid">
+                    <div class="info-block">
+                        <span class="info-label">Date :</span>
+                        <span class="info-value" id="modalOrderDate"></span>
+                    </div>
+                    <div class="info-block">
+                        <span class="info-label">Statut :</span>
+                        <span class="info-value" id="modalOrderStatus"></span>
+                    </div>
+                    <div class="info-block full-width">
+                        <span class="info-label">Adresse de livraison :</span>
+                        <span class="info-value" id="modalOrderAddress"></span>
+                    </div>
+                </div>
+
+                <h5 class="sub-section-title">Articles achetés</h5>
+                <div class="order-products-list" id="modalOrderProducts"></div>
+
+                <div class="order-total-box">
+                    <div class="total-line">
+                        <span>Frais de livraison :</span>
+                        <span id="modalOrderShipping"></span>
+                    </div>
+                    <div class="total-line grand-total">
+                        <span>Montant Total Payé :</span>
+                        <span id="modalOrderTotal"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="<?= URL ?>public/assets/js/account.js" defer></script>
