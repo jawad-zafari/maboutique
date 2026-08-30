@@ -85,5 +85,21 @@ document.addEventListener("DOMContentLoaded", () => {
         btnViewAllOrders.addEventListener('click', () => switchTab('tabOrders'));
     }
 
-   
+    // 2. AFFICHER/MASQUER LE MOT DE PASSE
+    const togglePasswords = document.querySelectorAll('.toggle-password');
+    togglePasswords.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            const icon = this.querySelector('i');
+            if(input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+    });
+
+    
 });
