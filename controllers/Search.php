@@ -86,7 +86,8 @@ class Search extends Controller
         
         $results = $this->model->suggestProducts($keyword);
         
-        
+        echo json_encode($results);
+        exit;
     }
 }
 ?>
