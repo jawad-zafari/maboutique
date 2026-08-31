@@ -111,6 +111,18 @@ class ModelIndex extends Model
         return $this->doSelect($sql, [1]);
     }
 
-   
+    // Récupère les paramètres de la Boutique TV
+    
+    public function getTvSettings()
+    {
+        $sql = "SELECT * FROM settings WHERE setting_key IN ('tv_video_link', 'tv_cover_image')";
+        $results = $this->doSelect($sql);
+        
+        $settings = [];
+        foreach ($results as $row) {
+            $settings[$row['setting_key']] = $row['setting_value'];
+        }
+        return $settings;
+    }
 }
 ?>
