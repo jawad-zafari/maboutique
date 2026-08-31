@@ -128,3 +128,47 @@
 
 
 
+/* --- FORMULAIRE D'ADRESSE INLINE (ACCORDÉON) --- */
+.inline-address-form-wrapper {
+    transition: all 0.3s ease-in-out;
+}
+
+.inline-form-card {
+    background-color: #f8fafc;
+    border: 2px dashed $color-primary;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+
+    .inline-form-title {
+        font-size: 1rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        i {
+            color: $color-primary;
+        }
+    }
+}
+
+.display-none-box {
+    display: none !important;
+}
+/* --- BANNIÈRE D'INFORMATION (COMMANDE ENREGISTRÉE) --- */
+.elegant-alert-banner {
+    &.info {
+        background-color: #eef2ff; 
+        border: 1px solid #c7d2fe;
+        .banner-icon { color: #3b5bdb; }
+        .banner-content { 
+            h2 { color: #1e3a8a; } 
+            p { color: #3b5bdb; } 
+        }
+    }
+}
+
+
