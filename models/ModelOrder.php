@@ -107,6 +107,11 @@ class ModelOrder extends Model
             return 0;
         }
 
+        $addressInfo = $this->getAddressById($addressId, $userId);
+        if (!$addressInfo) {
+            return 0;
+        }
+
        
     }
 }
