@@ -48,7 +48,26 @@ class ModelCart extends Model
             return $this->getCartTotalCount();
         }
 
-       
+        // Requête préparée pour chercher si le produit exact existe déjà avec les mêmes options
+        $sqlCheck = "SELECT id, quantity FROM cart_items WHERE product_id = ? AND session_cookie = ? AND color_id = ? AND guarantee_id = ?";
+        $result = $this->doSelect($sqlCheck, [$productId, $cookie, $colorId, $guaranteeId]);
+
+        if (!empty($result)) {
+            // Si le produit existe déjà, on additionne la quantité
+            $newQuantity = (int)$result[0]['quantity'] + $quantity;
+            $cartItemId = (int)$result[0]['id'];
+            
+            $sqlUpdate = "UPDATE cart_items SET quantity = ? WHERE id = ?";
+            $this->doQuery($sqlUpdate, [$newQuantity, $cartItemId]);
+        } else {
+            // Sinon, création d'une nouvelle ligne
+            $sqlInsert = "INSERT INTO cart_items (session_cookie, product_id, quantity, color_id, guarantee_id) VALUES (?, ?, ?, ?, ?)";
+            $this->doQuery($sqlInsert, [$cookie, $productId, $quantity, $colorId, $guaranteeId]);
+        }
+
+        return $this->getCartTotalCount();
     }
+
+    
 }
 ?>
