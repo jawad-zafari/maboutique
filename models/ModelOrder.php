@@ -50,6 +50,13 @@ class ModelOrder extends Model
         return $this->doSelect($sql);
     }
 
+    public function getShippingPrice(int $shippingId): float
+    {
+        $sql = "SELECT price FROM shipping_methods WHERE id = ?";
+        $result = $this->doSelect($sql, [$shippingId], 'fetch', PDO::FETCH_ASSOC);
+        return isset($result['price']) ? (float)$result['price'] : 0.0;
+    }
+
    
 }
 ?>
