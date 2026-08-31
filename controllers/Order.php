@@ -31,6 +31,47 @@ class Order extends Controller
         }
     }
 
+    // Traite et sécurise les données du panier
+    private function processCartData(): array 
+    {
+        $rawCartData = $this->model->getCartData() ?? [];
+        
+        $cart = [];
+        $totalPrice = 0;
+        $totalDiscount = 0;
+
+        if (isset($rawCartData[0]) && is_array($rawCartData[0]) && isset($rawCartData[1]) && is_numeric($rawCartData[1])) {
+            $cart = $rawCartData[0];
+            $totalPrice = (float)$rawCartData[1];
+            $totalDiscount = (float)($rawCartData[2] ?? 0);
+        } else {
+            $cart = is_array($rawCartData) ? $rawCartData : [];
+        }
+
+        if ($totalPrice <= 0 && !empty($cart)) {
+            foreach ($cart as $item) {
+                $qty = (int)($item['quantity'] ?? 1);
+                $price = (float)($item['price'] ?? 0);
+                $totalPrice += ($price * $qty);
+            }
+        }
+
+        return [$cart, $totalPrice, $totalDiscount];
+    }
+
+    public function index(): void 
+    {
+        $userId = Model::sessionGet('userId');
+        
+        if ($userId != false) {
+            header('Location: ' . URL . 'Order/address');
+            exit;
+        } else {
+            header('Location: ' . URL . 'Login/index?back=Order/address');
+            exit;
+        }
+    }
+
     
 }
 ?>
