@@ -27,5 +27,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    function closeCart() {
+        if(cartSidebar && cartOverlay) {
+            cartSidebar.classList.remove('active');
+            cartOverlay.classList.remove('active');
+        }
+    }
+
+    headerCartBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault(); 
+            openCart();
+        });
+    });
+
     
 });
