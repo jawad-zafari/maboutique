@@ -62,6 +62,13 @@ class ModelOrder extends Model
         return parent::getCart();
     }
 
-    
+    public function getPaymentStatus(): array 
+    {
+        $sql = "SELECT * FROM settings WHERE setting_key = 'payment_status'";
+        $result = $this->doSelect($sql, [], 'fetch', PDO::FETCH_ASSOC);
+        return $result ?: [];
+    }
+
+   
 }
 ?>
