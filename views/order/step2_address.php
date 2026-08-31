@@ -80,4 +80,24 @@ $postTypes = $data['postType'] ?? [];
                 </div>
             </div>
 
-           
+            <div class="checkout-section-card margin-top-md">
+                <h3><i class="fa-solid fa-truck-ramp-box" aria-hidden="true"></i> 2. Choisissez le mode de livraison</h3>
+                
+                <div class="shipping-methods-grid">
+                    <?php if(!empty($postTypes)): foreach($postTypes as $method): ?>
+                        <div class="modern-selection-card js-shipping-card" data-id="<?= (int)$method['id'] ?>">
+                            <div class="card-radio-select">
+                                <input type="radio" name="selected_shipping" id="ship_<?= (int)$method['id'] ?>" value="<?= (int)$method['id'] ?>">
+                                <label for="ship_<?= (int)$method['id'] ?>"><strong><?= $this->e($method['title'] ?? '') ?></strong></label>
+                            </div>
+                            <span class="shipping-price-tag font-weight-bold color-success">
+                                <?= (isset($method['price']) && (float)$method['price'] > 0) ? number_format((float)$method['price'], 2, ',', ' ') . ' €' : 'Gratuit' ?>
+                            </span>
+                        </div>
+                    <?php endforeach; endif; ?>
+                </div>
+            </div>
+
+        </div>
+
+       
