@@ -51,4 +51,26 @@ $csrfToken = $data['csrf_token'] ?? '';
                         </div>
                     </div>
 
-                    
+                    <div class="product-actions-box">
+                        <div class="quantity-selector-modern">
+                            <button type="button" class="btn-qty minus" data-row="<?= $currentRowId ?>" aria-label="Diminuer la quantité">-</button>
+                            <input type="text" class="input-qty" value="<?= $currentQty ?>" readonly aria-label="Quantité" data-row="<?= $currentRowId ?>">
+                            <button type="button" class="btn-qty plus" data-row="<?= $currentRowId ?>" aria-label="Augmenter la quantité">+</button>
+                        </div>
+
+                        <div class="product-total-price">
+                            <?= number_format($totalPrice, 2, ',', ' ') ?> €
+                        </div>
+
+                        <button type="button" class="btn-remove-item" data-row="<?= $currentRowId ?>" aria-label="Supprimer cet article">
+                            <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+                </div>
+                <?php endforeach; ?>
+            </div>
+
+            
+
+</div>
