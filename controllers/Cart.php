@@ -34,6 +34,9 @@ class Cart extends Controller
             exit;
         }
 
+        // Vérification stricte du jeton CSRF
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
        
     }
 
