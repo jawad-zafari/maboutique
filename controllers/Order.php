@@ -72,6 +72,24 @@ class Order extends Controller
         }
     }
 
-    
+    public function address(): void 
+    {
+        $this->checkLogin(); 
+        $this->checkCartNotEmpty(); 
+
+        $addresses = $this->model->getAddresses();
+        $shippingTypes = $this->model->getShippingTypes();
+        
+        $data = [
+            'cartData'   => $this->processCartData(),
+            'addresses'  => $addresses, 
+            'postType'   => $shippingTypes,
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        
+        $this->view('order/step2_address', $data);
+    }
+
+   
 }
 ?>
