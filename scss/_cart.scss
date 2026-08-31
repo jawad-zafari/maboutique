@@ -90,3 +90,12 @@
     .secure-checkout-badge { text-align: center; margin-top: 15px; font-size: 0.8rem; color: #868e96; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; i { color: #20c997; } }
 }
 
+/* --- PANIER VIDE --- */
+.empty-cart-container {
+    text-align: center; padding: 60px 20px; background-color: #ffffff; border-radius: 16px; border: 1px dashed #ced4da; margin-top: 20px;
+    .empty-icon { font-size: 4rem; color: #e9ecef; margin-bottom: 20px; }
+    h3 { font-size: 1.5rem; color: #343a40; font-weight: 800; margin-bottom: 10px; }
+    p { color: #868e96; margin-bottom: 30px; }
+    .btn-return-shop { background-color: $color-primary; color: #fff; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 700; transition: background 0.3s; &:hover { background-color: darken($color-primary, 5%); } }
+}
+
