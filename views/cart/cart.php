@@ -26,4 +26,29 @@ $csrfToken = $data['csrf_token'] ?? '';
                     $colorTitle = !empty($row['colorTitle']) ? $this->e($row['colorTitle']) : null;
                     $guaranteeTitle = !empty($row['garanteeTitle']) ? $this->e($row['garanteeTitle']) : null;
                 ?>
-               
+                <div class="cart-product-card" data-row="<?= $currentRowId ?>">
+                    
+                    <div class="product-image-box">
+                        <img src="<?= URL ?>public/images/products/<?= $productId ?>/product_220.jpg" 
+                             alt="<?= $productTitle ?>" 
+                             class="product-thumbnail-img"
+                             onerror="this.src='https://placehold.co/100x100/f1f3f5/3b5bdb?text=Produit'">
+                    </div>
+
+                    <div class="product-details-box">
+                        <h3 class="product-title"><?= $productTitle ?></h3>
+                        
+                        <?php if ($colorTitle): ?>
+                            <p class="product-meta"><i class="fa-solid fa-palette" aria-hidden="true"></i> Couleur : <strong><?= $colorTitle ?></strong></p>
+                        <?php endif; ?>
+
+                        <?php if ($guaranteeTitle): ?>
+                            <p class="product-meta"><i class="fa-solid fa-shield" aria-hidden="true"></i> Garantie : <strong><?= $guaranteeTitle ?></strong></p>
+                        <?php endif; ?>
+
+                        <div class="product-price-unit margin-top-sm">
+                            Prix unitaire : <span><?= number_format($unitPrice, 2, ',', ' ') ?> €</span>
+                        </div>
+                    </div>
+
+                    
