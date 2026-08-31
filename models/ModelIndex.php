@@ -7,6 +7,12 @@ class ModelIndex extends Model
         parent::__construct();
     }
 
+    public function getMainSliders()
+    {
+        $sql = "SELECT * FROM sliders";
+        return $this->doSelect($sql);
+    }
+
    
 }
 ?>
