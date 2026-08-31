@@ -175,7 +175,9 @@ class ModelOrder extends Model
             $userId, $paymentMethodId, $maskedCard, $payBankName, $timestamp, $date
         ];
         
-      
+        $this->doQuery($sql, $params);
+        $orderId = (int)self::$conn->lastInsertId();
+
     }
 }
 ?>
