@@ -76,7 +76,21 @@
         &copy; <?= date('Y') ?> Tous droits réservés. Conçu avec soin pour la meilleure expérience d'achat.
     </div>
 
-   
+    <div id="cookieConsentBanner" class="cookie-banner-modern is-hidden" role="dialog" aria-live="polite" aria-label="Bannière de consentement aux cookies">
+        <div class="cookie-banner-content">
+            <div class="cookie-text">
+                <h4><i class="fa-solid fa-cookie-bite" aria-hidden="true"></i> Gestion de vos préférences sur les cookies</h4>
+                <p>
+                    Notre site utilise des cookies pour assurer son bon fonctionnement (panier d'achat, connexion) et mesurer son audience. Certains cookies tiers (comme ceux des vidéos YouTube) peuvent être déposés avec votre accord. 
+                    <a href="<?= URL ?>Page/privacy" class="cookie-policy-link">En savoir plus</a>.
+                </p>
+            </div>
+            <div class="cookie-actions">
+                <button type="button" id="btnAcceptCookies" class="btn-cookie-accept">Tout accepter</button>
+                <button type="button" id="btnRejectCookies" class="btn-cookie-reject">Tout refuser</button>
+            </div>
+        </div>
+    </div>
 </footer>
 
 <script src="<?= URL ?>public/assets/js/global.js" defer></script>
