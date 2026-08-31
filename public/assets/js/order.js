@@ -265,6 +265,66 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // VALIDATION DE L'ÉTAPE ADRESSE ET CONTINUATION VERS LE PAIEMENT
+    const btnContinueToSummary = document.getElementById('btnContinueToSummary');
+    const jsErrorMessage = document.getElementById('jsErrorMessage');
+
+    if (btnContinueToSummary) {
+        btnContinueToSummary.addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            const activeAddress = document.querySelector('.js-address-card.active');
+            const activeShipping = document.querySelector('.js-shipping-card.active');
+
+            if (!activeAddress || !activeShipping) {
+                if (jsErrorMessage) {
+                    jsErrorMessage.innerHTML = '<i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Veuillez sélectionner une adresse et un mode de livraison.';
+                    jsErrorMessage.classList.remove('display-none-box');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    showOrderToast("Veuillez sélectionner une adresse et un mode de livraison.", "danger");
+                }
+                return;
+            }
+            
+            if (jsErrorMessage) jsErrorMessage.classList.add('display-none-box');
+            
+            const addressId = activeAddress.querySelector('input[type="radio"]').value;
+            const shippingId = activeShipping.querySelector('input[type="radio"]').value;
+
+            const formData = new URLSearchParams();
+            formData.append('addressId', addressId);
+            formData.append('shippingId', shippingId);
+            formData.append('csrf_token', getCsrfToken());
+
+            btnContinueToSummary.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" aria-hidden="true"></i> Traitement...';
+            btnContinueToSummary.disabled = true;
+
+            try {
+                const response = await fetch(`${baseUrl}Order/saveAddressSession`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    window.location.href = `${baseUrl}Order/payment`;
+                } else {
+                    showOrderToast(result.message || "Erreur de validation.", "danger");
+                    btnContinueToSummary.innerHTML = 'Continuer <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
+                    btnContinueToSummary.disabled = false;
+                }
+            } catch (err) {
+                console.error("Erreur Checkout:", err);
+                showOrderToast("Erreur de connexion au serveur.", "danger");
+                btnContinueToSummary.innerHTML = 'Continuer <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>';
+                btnContinueToSummary.disabled = false;
+            }
+        });
+    }
+
+    
     
 
 });
