@@ -1,0 +1,17 @@
+
+.order-page-wrapper { max-width: 1300px; margin: 0 auto; padding: 20px 10px; }
+
+.checkout-modern-container {
+    width: 100%; max-width: 1200px; margin: 30px auto; padding: 0 15px; font-family: $font-main;
+}
+
+.checkout-grid-layout, .checkout-grid {
+    display: grid; grid-template-columns: 1fr; gap: 25px; align-items: start;
+    @media (min-width: $breakpoint-lg) { grid-template-columns: 1fr 400px; gap: 40px; }
+}
+
+.checkout-back-nav {
+    margin-bottom: 25px;
+    a { color: $color-primary; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; &:hover { opacity: 0.8; transform: translateX(-3px); } }
+}
+
