@@ -31,6 +31,18 @@ class ModelCheckout extends Model
         return true;
     }
 
-   
+    // Mise à jour des informations pour le virement bancaire
+    public function updateCreditCard(array $cleanData, int $orderId): void
+    {
+        $day        = $cleanData['day'] ?? 0;
+        $month      = $cleanData['month'] ?? 0;
+        $year       = $cleanData['year'] ?? 0;
+        $creditCard = $cleanData['creditcard'] ?? '';
+        $bank       = $cleanData['bank'] ?? '';
+
+        // Insertion directe (les données ont été nettoyées via strip_tags dans le contrôleur)
+        $sql = "UPDATE orders SET pay_card_number = ?, pay_bank_name = ?, pay_day = ?, pay_month = ?, pay_year = ? WHERE id = ?";
+        $this->doQuery($sql, [$creditCard, $bank, $day, $month, $year, $orderId]);
+    }
 }
 ?>
