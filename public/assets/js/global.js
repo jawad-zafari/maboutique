@@ -16,6 +16,31 @@ document.addEventListener("DOMContentLoaded", function() {
         return '';
     }
 
-   
+    //  Gestion du menu principal (Header avec animations douces)
+    const menuItems = document.querySelectorAll('.menu-level-1 > li');
+    let menuTimers = {};
 
+    menuItems.forEach((item, index) => {
+        if (!item.hasAttribute('data-time')) {
+            item.setAttribute('data-time', 'menu_' + index);
+        }
+        
+        const timerId = item.getAttribute('data-time');
+
+        item.addEventListener('mouseenter', function() {
+            clearTimeout(menuTimers[timerId]);
+            menuTimers[timerId] = setTimeout(() => {
+                this.classList.add('active-menu');
+            }, 300);
+        });
+
+        item.addEventListener('mouseleave', function() {
+            clearTimeout(menuTimers[timerId]);
+            menuTimers[timerId] = setTimeout(() => {
+                this.classList.remove('active-menu');
+            }, 400); 
+        });
+    });
+
+    
 });
