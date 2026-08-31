@@ -113,7 +113,13 @@ class Checkout extends Controller
                 exit;
             }
 
-           
+            // Envoi des données 100% sécurisées au modèle
+            $this->model->updateCreditCard($cleanData, $orderIdInt);
+            header('Location: ' . URL . 'Checkout/index/' . $orderIdInt);
+            exit;
+        }
+
+       
     }
 }
 ?>
