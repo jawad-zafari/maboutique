@@ -30,3 +30,9 @@ function style(string $path): string
 }
 
 
+function script(string $path): string 
+{
+    return URL . 'public/assets/js/' . $path;
+}
+
+
