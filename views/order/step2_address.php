@@ -58,4 +58,26 @@ $postTypes = $data['postType'] ?? [];
                     <?php endif; ?>
                 </div>
 
-               
+                <div id="inlineAddressFormContainer" class="inline-address-form-wrapper display-none-box margin-top-md">
+                    <div class="inline-form-card">
+                        <h4 class="inline-form-title"><i class="fa-solid fa-thumbtack" aria-hidden="true"></i> Saisir une nouvelle adresse</h4>
+                        
+                        <form id="formAddAddress" method="post" autocomplete="off">
+                            <div class="form-grid-double">
+                                <div class="form-group"><label for="last_name">Nom complet du destinataire *</label><input type="text" id="last_name" name="last_name" class="form-control" required></div>
+                                <div class="form-group"><label for="mobile">Téléphone mobile *</label><input type="text" id="mobile" name="mobile" class="form-control" dir="ltr" required></div>
+                                <div class="form-group"><label for="province_name">Région / Province *</label><input type="text" id="province_name" name="province_name" class="form-control" required></div>
+                                <div class="form-group"><label for="city_name">Ville *</label><input type="text" id="city_name" name="city_name" class="form-control" required></div>
+                                <div class="form-group full-width"><label for="postal_code">Code postal *</label><input type="text" id="postal_code" name="postal_code" class="form-control" dir="ltr" required></div>
+                                <div class="form-group full-width"><label for="address">Adresse complète *</label><textarea id="address" name="address" rows="2" class="form-control" required></textarea></div>
+                            </div>
+                            <div class="inline-form-actions margin-top-md flex-end-gap">
+                                <button type="button" class="btn-account-secondary" id="btnCancelAddressInline">Annuler</button>
+                                <button type="submit" class="btn-account-submit color-bg-success" id="btnSubmitAddress"><i class="fa-solid fa-save" aria-hidden="true"></i> Enregistrer l'adresse</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+           
