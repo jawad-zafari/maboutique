@@ -162,4 +162,24 @@ $csrfToken = $this->e($data['csrf_token'] ?? '');
 
                     <div class="summary-line-separator"></div>
 
+                    <div class="summary-address-section margin-top-sm">
+                        <h4 class="summary-sub-title"><i class="fa-solid fa-truck" aria-hidden="true"></i> Adresse d'expédition</h4>
+                        <div class="address-text-summary margin-top-sm">
+                            <strong><?= $this->e($addressInfo['last_name'] ?? '') ?></strong> 
+                            (<?= $this->e($addressInfo['mobile'] ?? '') ?>)<br>
+                            <?= $this->e($addressInfo['address'] ?? '') ?>, 
+                            <?= $this->e($addressInfo['city_name'] ?? $addressInfo['city'] ?? '') ?> 
+                            (<?= $this->e($addressInfo['postal_code'] ?? '') ?>)
+                        </div>
+                    </div>
+
                     
+
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<script src="<?= URL ?>public/assets/js/order.js" defer></script>
