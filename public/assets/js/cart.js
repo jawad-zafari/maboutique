@@ -318,6 +318,14 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
         
-       
+        if (sidebarTotal) {
+            sidebarTotal.textContent = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2 }).format(totalPriceAll) + ' €';
+        }
+        
+        if (cartCounter) {
+            cartCounter.textContent = totalItems;
+            cartCounter.classList.add('pulse-anim');
+            setTimeout(() => cartCounter.classList.remove('pulse-anim'), 300);
+        }
     }
 });
