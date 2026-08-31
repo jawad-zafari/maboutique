@@ -100,4 +100,30 @@ $postTypes = $data['postType'] ?? [];
 
         </div>
 
-       
+        <div class="checkout-right-column">
+            <div class="checkout-summary-card">
+                <h3><i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Vos articles (<?= count($cart) ?>)</h3>
+                
+                <div class="summary-products-list">
+                    <?php if(!empty($cart)): foreach($cart as $item):
+                        $qty = (int)($item['quantity'] ?? 1);
+                        $price = (float)($item['price'] ?? 0);
+                        $productId = (int)($item['id'] ?? 0);
+                    ?>
+                        <div class="summary-product-item">
+                            <div class="summary-product-img-box">
+                                <img src="<?= URL ?>public/images/products/<?= $productId ?>/product_220.jpg" 
+                                     alt="<?= $this->e($item['title'] ?? 'Produit') ?>"
+                                     onerror="this.src='https://placehold.co/60x60/f8f9fa/adb5bd?text=Img';">
+                                <span class="product-qty-badge"><?= $qty ?></span>
+                            </div>
+                            <div class="product-info-col">
+                                <span class="product-name"><?= $this->e($item['title'] ?? 'Produit') ?></span>
+                                <span class="product-meta"><?= number_format($price, 2, ',', ' ') ?> € / un.</span>
+                            </div>
+                            <span class="product-price"><?= number_format($price * $qty, 2, ',', ' ') ?> €</span>
+                        </div>
+                    <?php endforeach; endif; ?>
+                </div>
+
+                
