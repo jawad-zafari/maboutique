@@ -118,6 +118,11 @@ class ModelOrder extends Model
             return 0;
         }
 
+        $totalProductsPrice = (float)($cartInfo[1] ?? 0);
+        $totalDiscount = (float)($cartInfo[2] ?? 0);
+        $shippingPrice = $this->getShippingPrice($shippingMethodId);
+
+        $codePromo = $cleanData['code_promo'] ?? '';
        
     }
 }
