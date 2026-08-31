@@ -90,6 +90,16 @@ class ModelIndex extends Model
     }
 
     
+    //   Récupère les dernières actualités (News)
+     
+    public function getLatestNews($limit = 3)
+    {
+        // SÉCURITÉ : Forçage du type (Integer)
+        $safeLimit = (int)$limit;
+        $sql = "SELECT * FROM news ORDER BY id DESC LIMIT " . $safeLimit;
+        return $this->doSelect($sql);
+    }
+
    
 }
 ?>
