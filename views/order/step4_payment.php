@@ -173,7 +173,14 @@ $csrfToken = $this->e($data['csrf_token'] ?? '');
                         </div>
                     </div>
 
-                    
+                    <div class="margin-top-md">
+                        <button type="submit" class="btn-checkout-massive btn-full-width color-bg-success">
+                            Confirmer et Payer <i class="fa-solid fa-lock" aria-hidden="true"></i>
+                        </button>
+                        <div class="secure-badge-stepper text-center font-weight-semibold margin-top-sm">
+                            <i class="fa-solid fa-shield-halved color-teal" aria-hidden="true"></i> Transactions 100% cryptées et sécurisées
+                        </div>
+                    </div>
 
                 </div>
             </div>
