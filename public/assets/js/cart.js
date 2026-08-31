@@ -211,4 +211,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    
+    // RECONSTRUCTION DYNAMIQUE DU DOM DU PANIER (SÉCURISÉ CONTRE XSS)
+    function rebuildCartDOM(cartArray, totalPriceAll) {
+        const sidebarBody = document.getElementById('cartSidebarBody');
+        const sidebarTotal = document.getElementById('cartSidebarTotal');
+        const cartCounter = document.getElementById('headerCartCounter') || document.getElementById('navCartCounterBadge') || document.querySelector('.cart-counter'); 
+        
+        if (!sidebarBody) return;
+        
+        sidebarBody.innerHTML = ''; // Nettoyage sécurisé du conteneur
+        let totalItems = 0;
+
+       
+    }
+});
