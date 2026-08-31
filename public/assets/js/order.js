@@ -56,6 +56,25 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 4000);
     }
 
-    
+    // GESTION DES CARTES DE SÉLECTION (Adresse & Transport)
+    function attachCardClickEvent(card) {
+        card.addEventListener('click', function(e) {
+            // Ignorer le clic si l'utilisateur interagit avec un bouton ou un lien
+            if(e.target.closest('button') || e.target.closest('a')) return;
 
-});
+            const isAddress = this.classList.contains('js-address-card');
+            const groupSelector = isAddress ? '.js-address-card' : '.js-shipping-card';
+            
+            document.querySelectorAll(groupSelector).forEach(c => {
+                c.classList.remove('active');
+                const radio = c.querySelector('input[type="radio"]');
+                if (radio) radio.checked = false;
+            });
+            
+            this.classList.add('active');
+            const targetRadio = this.querySelector('input[type="radio"]');
+            if (targetRadio) targetRadio.checked = true;
+        });
+    }
+
+   
