@@ -1,0 +1,36 @@
+
+.checkout-modern-container {
+    width: 100%; max-width: 1200px; margin: 30px auto; padding: 0 15px; font-family: $font-main;
+}
+
+/* --- ELEGANT ALERT BANNERS (Success & Error) --- */
+.elegant-alert-banner {
+    display: flex; align-items: center; justify-content: space-between; gap: 15px;
+    padding: 18px 25px; border-radius: 12px; margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03); transition: all 0.3s ease;
+    flex-wrap: wrap;
+
+    .banner-icon { font-size: 1.8rem; display: flex; align-items: center; justify-content: center; }
+    
+    .banner-content {
+        flex-grow: 1;
+        h2 { margin: 0 0 4px 0; font-size: 1.15rem; font-weight: 800; }
+        p { margin: 0; font-size: 0.9rem; font-weight: 500; }
+        strong { font-weight: 800; font-size: 1rem; }
+    }
+
+    .banner-action { flex-shrink: 0; }
+
+    &.success {
+        background-color: #f8fff9; border: 1px solid #d3f9d8;
+        .banner-icon { color: #2b8a3e; }
+        .banner-content { h2 { color: #237032; } p { color: #2b8a3e; } strong { color: #1a1a2e; } }
+    }
+
+    &.error {
+        background-color: #fff5f5; border: 1px solid #ffe3e3;
+        .banner-icon { color: #e03131; }
+        .banner-content { h2 { color: #c92a2a; } p { color: #e03131; } }
+    }
+}
+
