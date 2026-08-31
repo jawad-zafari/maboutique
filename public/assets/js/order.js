@@ -205,6 +205,66 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (r) r.checked = false;
                     });
 
-                    
+                    // Création sécurisée de la nouvelle carte d'adresse
+                    const newCard = document.createElement('div');
+                    newCard.className = 'modern-selection-card js-address-card active';
+                    newCard.setAttribute('data-id', addr.id);
+
+                    const radioBox = document.createElement('div');
+                    radioBox.className = 'card-radio-select';
+
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.name = 'selected_address';
+                    radioInput.id = `addr_${addr.id}`;
+                    radioInput.value = addr.id;
+                    radioInput.checked = true;
+
+                    const label = document.createElement('label');
+                    label.setAttribute('for', `addr_${addr.id}`);
+                    const strong = document.createElement('strong');
+                    strong.textContent = addr.last_name || '';
+                    label.appendChild(strong);
+
+                    radioBox.appendChild(radioInput);
+                    radioBox.appendChild(label);
+
+                    const pSummary = document.createElement('p');
+                    pSummary.className = 'address-text-summary';
+                    pSummary.textContent = addr.address || '';
+
+                    const spanCity = document.createElement('span');
+                    spanCity.className = 'address-city-zip';
+                    spanCity.textContent = `${addr.city_name || addr.city || ''} (${addr.postal_code || ''})`;
+
+                    newCard.appendChild(radioBox);
+                    newCard.appendChild(pSummary);
+                    newCard.appendChild(spanCity);
+
+                    attachCardClickEvent(newCard);
+
+                    if (addressGrid) {
+                        addressGrid.prepend(newCard);
+                    }
+
+                    inlineAddressFormContainer.classList.add('display-none-box');
+                    btnToggleAddressForm.setAttribute('aria-expanded', 'false');
+                    btnToggleAddressForm.innerHTML = '<i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter une adresse';
+                    formAddAddress.reset();
+
+                } else {
+                    showOrderToast(result.message || "Erreur lors de l'enregistrement.", "danger");
+                }
+            } catch (error) {
+                console.error("Erreur AJAX Adresse:", error);
+                showOrderToast("Erreur de connexion au serveur.", "danger");
+            } finally {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        });
+    }
+
+    
 
 });
