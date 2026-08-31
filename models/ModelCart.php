@@ -7,6 +7,12 @@ class ModelCart extends Model
         parent::__construct();
     }
 
+    public function getCartData(): array
+    {
+        // Appelle la méthode globale du modèle parent
+        return parent::getCart();
+    }
+
     
 }
 ?>
