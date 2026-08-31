@@ -90,6 +90,52 @@ class Order extends Controller
         $this->view('order/step2_address', $data);
     }
 
+    // Ajout d'adresse via AJAX avec nettoyage des entrées (Input Sanitization)
+    public function addAddressAjax(): void
+    {
+        $this->checkLogin();
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            echo json_encode(['status' => 'error', 'message' => 'Méthode non autorisée.']);
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        // SÉCURITÉ (Anti Mass-Assignment) : Extraction et nettoyage stricts
+        $cleanData = [
+            'last_name'     => trim(strip_tags($_POST['last_name'] ?? '')),
+            'mobile'        => trim(strip_tags($_POST['mobile'] ?? '')),
+            'province_name' => trim(strip_tags($_POST['province_name'] ?? '')),
+            'city_name'     => trim(strip_tags($_POST['city_name'] ?? '')),
+            'postal_code'   => trim(strip_tags($_POST['postal_code'] ?? '')),
+            'address'       => trim(strip_tags($_POST['address'] ?? ''))
+        ];
+
+        // Validation des champs obligatoires
+        if (empty($cleanData['last_name']) || empty($cleanData['mobile']) || empty($cleanData['city_name']) || empty($cleanData['postal_code']) || empty($cleanData['address'])) {
+            echo json_encode(['status' => 'error', 'message' => 'Veuillez remplir tous les champs obligatoires.']);
+            exit;
+        }
+
+        // Appel sécurisé au modèle
+        $addressId = $this->model->addAddress($cleanData);
+        $userId = (int)Model::sessionGet('userId');
+
+        if ($addressId > 0) {
+            $newAddress = $this->model->getAddressById($addressId, $userId);
+            echo json_encode([
+                'status'  => 'success',
+                'message' => 'Adresse enregistrée avec succès !',
+                'address' => $newAddress
+            ]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Erreur lors de l\'enregistrement de l\'adresse.']);
+        }
+        exit;
+    }
+
    
 }
 ?>
