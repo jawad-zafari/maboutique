@@ -15,3 +15,29 @@
     a { color: $color-primary; text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; &:hover { opacity: 0.8; transform: translateX(-3px); } }
 }
 
+/* --- STEPPER (Barre de progression) --- */
+.checkout-stepper-modern-bar, .checkout-stepper-modern {
+    display: flex; justify-content: space-between; align-items: center; position: relative; margin-bottom: 40px; padding-bottom: 15px; border-bottom: 2px solid #f1f3f5;
+    .stepper-steps-flex, .stepper-steps {
+        display: flex; justify-content: space-between; width: 100%; list-style: none; margin: 0; padding: 0; gap: 15px; font-size: 0.9rem; font-weight: bold; color: #adb5bd;
+        li { flex: 1; text-align: center; position: relative; z-index: 2;
+            &.completed { color: #0033fe; }
+            &.active { color: #0033fe; border-bottom: 3px solid #0033fe; padding-bottom: 13px; margin-bottom: -15px; }
+        }
+    }
+}
+
+/* --- EN-TÊTES ET CARTES DE SECTION --- */
+.checkout-section-card { background: #fff; border: 1px solid #e2e8f0; padding: 25px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+.section-title-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+.checkout-section-card h3 { margin: 0 0 15px 0; font-size: 1.25rem; font-weight: 800; color: #1a1a2e; display: flex; align-items: center; gap: 10px; i { color: $color-primary; } }
+
+/* --- CARTES DE SÉLECTION (Adresse & Livraison) --- */
+.address-cards-grid, .shipping-methods-grid { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px; }
+.modern-selection-card { flex: 1; min-width: 240px; border: 2px solid #e9ecef; background-color: #f8f9fa; padding: 20px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; position: relative; }
+.modern-selection-card.active { border-color: #0033fe !important; background-color: rgba(0, 51, 254, 0.03); box-shadow: 0 4px 15px rgba(0, 51, 254, 0.08); }
+.card-radio-select { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; input[type="radio"] { accent-color: #0033fe; transform: scale(1.2); } label { font-weight: 800; font-size: 1rem; color: #1a1a2e; cursor: pointer; } }
+.address-text-summary { font-size: 0.9rem; color: #6c757d; margin: 5px 0; line-height: 1.4; }
+.address-city-zip { font-size: 0.85rem; color: #adb5bd; font-weight: 600; }
+.shipping-price-tag { position: absolute; top: 20px; right: 20px; font-weight: 800; }
+
