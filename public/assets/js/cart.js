@@ -19,5 +19,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return csrfInput ? csrfInput.value : '';
     }
 
-   
+    // GESTION DU PANIER LATÉRAL (Offcanvas)
+    function openCart() {
+        if(cartSidebar && cartOverlay) {
+            cartSidebar.classList.add('active');
+            cartOverlay.classList.add('active');
+        }
+    }
+
+    
 });
