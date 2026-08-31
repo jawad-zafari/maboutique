@@ -73,4 +73,35 @@ $finalTotal = $totalProductsPrice + $shippingPrice - $totalDiscount;
 
         </div>
 
-       
+        <div class="checkout-right-column">
+            <div class="checkout-summary-card">
+                <h3>Résumé financier</h3>
+                
+                <div class="summary-lines-box">
+                    <div class="summary-line"><span class="label">Sous-total</span><span class="value"><?= number_format($totalProductsPrice, 2, ',', ' ') ?> €</span></div>
+                    <div class="summary-line"><span class="label">Frais de port</span><span class="value"><?= $shippingPrice > 0 ? number_format($shippingPrice, 2, ',', ' ') . ' €' : 'Gratuit' ?></span></div>
+                    
+                    <?php if($totalDiscount > 0): ?>
+                        <div class="summary-line text-danger"><span class="label">Remise totale</span><span class="value">- <?= number_format($totalDiscount, 2, ',', ' ') ?> €</span></div>
+                    <?php endif; ?>
+                    
+                    <div class="summary-line-separator"></div>
+                    
+                    <div class="summary-line total-large-line">
+                        <span class="label">Montant total</span>
+                        <span class="value color-dark-slate"><?= number_format($finalTotal, 2, ',', ' ') ?> €</span>
+                    </div>
+                </div>
+
+                <div class="margin-top-md">
+                    <a href="<?= URL ?>Order/payment" class="btn-checkout-massive btn-full-width text-center" aria-label="Passer à l'étape finale du paiement">
+                        Procéder au paiement <i class="fa-solid fa-lock" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="<?= URL ?>public/assets/js/order.js" defer></script>
