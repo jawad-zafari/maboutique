@@ -131,6 +131,13 @@ class ModelOrder extends Model
             }
         }
 
+        $totalAmount = max(0, $totalProductsPrice + $shippingPrice - $totalDiscount);
+
+        // RÉCUPÉRATION DU MODE DE PAIEMENT SÉLECTIONNÉ
+        $paymentMethodId = (int)($cleanData['payment_method'] ?? 1);
+        $maskedCard = '';
+        $payBankName = '';
+
        
     }
 }
