@@ -126,4 +126,24 @@ $postTypes = $data['postType'] ?? [];
                     <?php endforeach; endif; ?>
                 </div>
 
-                
+                <div class="summary-totals">
+                    <div class="summary-line"><span class="label">Sous-total</span><span class="value"><?= number_format($totalProductsPrice, 2, ',', ' ') ?> €</span></div>
+                    <?php if($totalDiscount > 0): ?>
+                        <div class="summary-line text-danger"><span class="label">Remise</span><span class="value">- <?= number_format($totalDiscount, 2, ',', ' ') ?> €</span></div>
+                    <?php endif; ?>
+                    <div class="summary-line total-line">
+                        <span class="label">Total TTC</span>
+                        <span class="highlight-total"><?= number_format($totalProductsPrice - $totalDiscount, 2, ',', ' ') ?> €</span>
+                    </div>
+                </div>
+
+                <button type="button" id="btnContinueToSummary" class="btn-checkout-massive btn-full-width margin-top-md">
+                    Procéder au paiement <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="<?= URL ?>public/assets/js/order.js" defer></script>
