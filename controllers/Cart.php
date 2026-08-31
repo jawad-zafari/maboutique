@@ -45,6 +45,31 @@ class Cart extends Controller
         exit;
     }
 
+    // Mise à jour de la quantité
+    public function updateCart(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            echo json_encode(['status' => 'error', 'message' => 'Méthode non autorisée.']);
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        // SÉCURITÉ (Anti Mass-Assignment) : Extraction manuelle et typage strict
+        $cartRowId = isset($_POST['cartRow']) ? (int)$_POST['cartRow'] : 0;
+        $quantity  = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
+
+        // Validation métier : La quantité doit être positive
+        if ($quantity > 0 && $cartRowId > 0) {
+            $this->model->updateCartItem($cartRowId, $quantity);
+        }
+        
+        $cartData = $this->model->getCartData();
+        echo json_encode($cartData);
+        exit;
+    }
+
     
 }
 ?>
