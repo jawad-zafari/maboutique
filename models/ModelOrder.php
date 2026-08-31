@@ -22,6 +22,28 @@ class ModelOrder extends Model
         return $result ?: [];
     }
 
+    // Le contrôleur a déjà nettoyé $cleanData via strip_tags et trim
+    public function addAddress(array $cleanData): int
+    {
+        Model::sessionInit();
+        $userId = (int)Model::sessionGet('userId');
+
+        $lastName     = $cleanData['last_name'] ?? '';
+        $mobile       = $cleanData['mobile'] ?? '';
+        $provinceName = $cleanData['province_name'] ?? '';
+        $cityName     = $cleanData['city_name'] ?? '';
+        $postalCode   = $cleanData['postal_code'] ?? '';
+        $address      = $cleanData['address'] ?? '';
+
+        $sql = "INSERT INTO user_addresses (user_id, last_name, mobile, province_name, city_name, postal_code, address, phone, province_id, city_id, neighborhood) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, '', '', '', '')";
+        
+        $params = [$userId, $lastName, $mobile, $provinceName, $cityName, $postalCode, $address];
+        
+        $this->doQuery($sql, $params);
+        return (int)self::$conn->lastInsertId();
+    }
+
     
 }
 ?>
