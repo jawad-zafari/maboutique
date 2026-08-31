@@ -34,6 +34,21 @@ class ModelCart extends Model
         }
     }
 
-   
+    public function addToCart(int $productId, int $quantity = 1, int $colorId = 0, int $guaranteeId = 0): int
+    {
+        $cookie = parent::getCartCookie();
+
+        // Vérification de l'existence du produit en base de données
+        // Empêche un attaquant d'ajouter un produit fantôme via l'inspecteur d'éléments
+        $sqlCheckProduct = "SELECT id FROM products WHERE id = ?";
+        $productExists = $this->doSelect($sqlCheckProduct, [$productId], 'fetch');
+        
+        if (empty($productExists)) {
+            // Si le produit n'existe pas, on retourne simplement le total actuel
+            return $this->getCartTotalCount();
+        }
+
+       
+    }
 }
 ?>
