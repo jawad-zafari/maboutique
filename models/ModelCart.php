@@ -68,6 +68,18 @@ class ModelCart extends Model
         return $this->getCartTotalCount();
     }
 
-    
+    public function getCartTotalCount(): int
+    {
+        $cookie = parent::getCartCookie();
+        
+        $sql = "SELECT SUM(quantity) as total FROM cart_items WHERE session_cookie = ?";
+        $result = $this->doSelect($sql, [$cookie]);
+        
+        if (!empty($result) && isset($result[0]['total'])) {
+            return (int)$result[0]['total'];
+        }
+        
+        return 0;
+    }
 }
 ?>
