@@ -51,6 +51,38 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    
+    //  GESTION DYNAMIQUE DES FAVORIS (AJAX + REDIRECTION LOGIN) - Anti XSS & CSRF
+    function showGlobalFavToast(message, type = 'success') {
+        let toast = document.getElementById('globalFavToastNotification');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'globalFavToastNotification';
+            document.body.appendChild(toast);
+        }
+        toast.className = `toast-notification ${type === 'danger' ? 'toast-danger' : 'toast-success'}`;
+        toast.style.backgroundColor = type === 'danger' ? '#e03131' : '#2b8a3e';
+        
+        // Neutralisation du XSS via textContent
+        const span = document.createElement('span');
+        span.textContent = message;
+        
+        toast.innerHTML = `<i class="fa-solid ${type === 'danger' ? 'fa-circle-exclamation' : 'fa-heart'}"></i> `;
+        toast.appendChild(span);
+        
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    }
+
+    document.addEventListener('click', async (e) => {
+        const btnHeart = e.target.closest('.btn-favorite-toggle');
+        if (btnHeart) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const productId = btnHeart.getAttribute('data-id');
+            const icon = btnHeart.querySelector('i');
+            if (!productId) return;
+
+           
 
 });
