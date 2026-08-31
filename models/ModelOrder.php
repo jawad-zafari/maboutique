@@ -76,6 +76,24 @@ class ModelOrder extends Model
         return $this->doSelect($sql, [$code, $currentDate], 'fetch', PDO::FETCH_ASSOC);
     }
 
+    public function calculateTotalPrice(string $code = ''): float
+    {
+        $cartData = $this->getCartData();
+        $totalPrice = (float)($cartData[1] ?? 0);
+        $discountTotal = (float)($cartData[2] ?? 0);
+
+        if (!empty($code)) {
+            $promo = $this->verifyPromoCode($code);
+            if ($promo && isset($promo['discount_percent'])) {
+                $promoDiscount = ($totalPrice * (float)$promo['discount_percent']) / 100;
+                $discountTotal += $promoDiscount;
+            }
+        }
+
+        return max(0, $totalPrice - $discountTotal);
+    }
+
     
+   
 }
 ?>
