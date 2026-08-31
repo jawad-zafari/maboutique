@@ -94,6 +94,15 @@ class ModelOrder extends Model
     }
 
     
-   
+    //  Enregistrement sécurisé de la commande.
+    
+    public function saveOrder(array $cleanData): int
+    {
+        Model::sessionInit();
+        $userId = (int)Model::sessionGet('userId');
+        $addressId = (int)Model::sessionGet('selected_address_id');
+        $shippingMethodId = (int)Model::sessionGet('selected_shipping_type_id');
+
+        
 }
 ?>
