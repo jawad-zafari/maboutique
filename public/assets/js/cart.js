@@ -9,5 +9,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const baseTag = document.querySelector('base');
     const baseUrl = baseTag ? baseTag.getAttribute('href') : '/';
 
+    // RÉCUPÉRATION SÉCURISÉE DU JETON CSRF
+    function getCsrfToken() {
+        const mainCart = document.getElementById('mainCart');
+        if (mainCart && mainCart.hasAttribute('data-csrf')) {
+            return mainCart.getAttribute('data-csrf');
+        }
+        const csrfInput = document.querySelector('input[name="csrf_token"]');
+        return csrfInput ? csrfInput.value : '';
+    }
+
    
 });
