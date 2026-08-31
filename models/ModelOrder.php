@@ -178,6 +178,14 @@ class ModelOrder extends Model
         $this->doQuery($sql, $params);
         $orderId = (int)self::$conn->lastInsertId();
 
+        // Vidage du panier après succès
+        if ($orderId > 0) {
+            $cookie = parent::getCartCookie();
+            $sqlEmptyCart = "DELETE FROM cart_items WHERE session_cookie = ?";
+            $this->doQuery($sqlEmptyCart, [$cookie]);
+        }
+
+        return $orderId;
     }
 }
 ?>
