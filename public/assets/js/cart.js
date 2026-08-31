@@ -160,5 +160,31 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    
+    async function updateCartItem(quantity, cartRow) {
+        const url = `${baseUrl}Cart/updateCart`; 
+        const params = new URLSearchParams();
+        params.append('cartRow', cartRow); 
+        params.append('quantity', quantity);
+        params.append('csrf_token', getCsrfToken()); 
+        
+        try {
+            const response = await fetch(url, { method: 'POST', body: params });
+            const result = await response.json();
+            
+            if (result.status === 'error') {
+                showToastNotification(result.message, 'error');
+                return;
+            }
+
+            if (document.getElementById('mainCart')) {
+                window.location.reload();
+            } else {
+                rebuildCartDOM(result[0], result[1]);
+            }
+        } catch (error) { 
+            console.error(error); 
+        }
+    }
+
+   
 });
