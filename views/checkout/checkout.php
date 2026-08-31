@@ -108,6 +108,33 @@ $totalPayable = (float)($orderInfo['total_amount'] ?? ($subTotal + $shippingCost
                     </div>
                 </div>
 
-               
+                <div class="checkout-right-column">
+                    <div class="checkout-summary-card">
+                        <h3>Total de la commande</h3>
+                        <div class="summary-lines-box">
+                            <div class="summary-line"><span class="label">Sous-total</span><span class="value"><?= number_format($subTotal, 2, ',', ' ') ?> €</span></div>
+                            <div class="summary-line"><span class="label">Frais de livraison</span><span class="value"><?= $shippingCost > 0 ? number_format($shippingCost, 2, ',', ' ') . ' €' : 'Offerts' ?></span></div>
+                            
+                            <div class="summary-line-separator"></div>
+                            
+                            <div class="summary-line total-large-line">
+                                <span class="label">Total TTC à payer</span>
+                                <span class="value color-success font-size-large"><?= number_format($totalPayable, 2, ',', ' ') ?> €</span>
+                            </div>
+                        </div>
+                        <div class="margin-top-md text-center">
+                            <a href="<?= URL ?>Account/orders" class="btn-checkout-massive btn-full-width text-center" style="text-decoration: none;">
+                                <i class="fa-solid fa-user" aria-hidden="true"></i> Retour à mon compte
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    <?php endif; ?>
+
+</div>
 
 <script src="<?= URL ?>public/assets/js/checkout.js" defer></script>
