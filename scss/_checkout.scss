@@ -272,4 +272,61 @@
     position: relative;
     overflow: hidden;
 
-   
+    // Aïcone d'arrière-plan géant en filigrane
+    &::before {
+        content: "\f07a";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 18rem;
+        color: rgba(59, 91, 219, 0.03);
+        pointer-events: none;
+    }
+
+    .empty-cart-icon-box {
+        width: 100px;
+        height: 100px;
+        background-color: #edf2ff;
+        color: $color-primary;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        margin: 0 auto 20px auto;
+    }
+
+    .empty-cart-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 10px;
+    }
+
+    .empty-cart-description {
+        font-size: 0.95rem;
+        color: #64748b;
+        margin-bottom: 25px;
+    }
+
+    .btn-return-shop {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 28px;
+        background-color: $color-primary;
+        color: #ffffff;
+        font-weight: 700;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+
+        &:hover {
+            background-color: darken($color-primary, 8%);
+            transform: translateY(-2px);
+        }
+    }
+}
