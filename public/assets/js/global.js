@@ -126,5 +126,28 @@ document.addEventListener("DOMContentLoaded", function() {
                         }
                     }
 
-                   
+                    // MISE À JOUR DYNAMIQUE DU COMPTEUR DANS LE HEADER
+                    const favBadge = document.getElementById('navFavCounterBadge');
+                    if (favBadge) {
+                        const count = parseInt(result.favCount || 0);
+                        favBadge.innerText = count;
+                        if (count > 0) {
+                            favBadge.classList.remove('is-hidden');
+                            favBadge.style.display = 'inline-flex';
+                            favBadge.style.transform = 'scale(1.4)';
+                            setTimeout(() => { favBadge.style.transform = 'scale(1)'; }, 250);
+                        } else {
+                            favBadge.classList.add('is-hidden');
+                            favBadge.style.display = 'none';
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error("Erreur Favoris AJAX :", error);
+                showGlobalFavToast("Erreur de connexion.", 'danger');
+            }
+        }
+    });
+
+    
 });
