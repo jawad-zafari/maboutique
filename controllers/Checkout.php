@@ -33,6 +33,21 @@ class Checkout extends Controller
         $this->view('checkout/checkout', $data);
     }
 
+    // Affichage des erreurs de paiement
+    public function showError(): void
+    {
+        $error = $_GET['error'] ?? 'Une erreur est survenue lors de votre paiement.';
+        $orderId = (int)($_GET['orderId'] ?? 0);
+        
+        $data = [
+            'Error'      => $error,
+            'orderId'    => $orderId,
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        
+        $this->view('checkout/error', $data);
+    }
+
     
 }
 ?>
