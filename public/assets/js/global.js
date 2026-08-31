@@ -149,5 +149,39 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    
+    //  GESTION DU CONSENTEMENT AUX COOKIES 
+    const cookieBanner = document.getElementById('cookieConsentBanner');
+    const btnAccept = document.getElementById('btnAcceptCookies');
+    const btnReject = document.getElementById('btnRejectCookies');
+
+    if (cookieBanner) {
+        // Vérification du consentement préalable dans le navigateur
+        if (!localStorage.getItem('rgpd_cookie_consent')) {
+            cookieBanner.classList.remove('is-hidden');
+            setTimeout(() => {
+                cookieBanner.classList.add('show');
+            }, 500);
+        }
+
+        function hideCookieBanner(consentValue) {
+            localStorage.setItem('rgpd_cookie_consent', consentValue);
+            cookieBanner.classList.remove('show');
+            setTimeout(() => {
+                cookieBanner.classList.add('is-hidden');
+            }, 500);
+        }
+
+        if (btnAccept) {
+            btnAccept.addEventListener('click', () => {
+                hideCookieBanner('accepted');
+            });
+        }
+
+        if (btnReject) {
+            btnReject.addEventListener('click', () => {
+                hideCookieBanner('rejected');
+            });
+        }
+    }
+
 });
