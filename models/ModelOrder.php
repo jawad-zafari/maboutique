@@ -57,6 +57,11 @@ class ModelOrder extends Model
         return isset($result['price']) ? (float)$result['price'] : 0.0;
     }
 
-   
+    public function getCartData(): array 
+    {
+        return parent::getCart();
+    }
+
+    
 }
 ?>
