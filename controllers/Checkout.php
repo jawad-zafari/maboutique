@@ -123,6 +123,7 @@ class Checkout extends Controller
             'orderInfo'  => $orderInfo,
             'csrf_token' => $this->generateCsrfToken()
         ];
+        $this->view('checkout/bank_transfer', $data);
     }
 }
 ?>
