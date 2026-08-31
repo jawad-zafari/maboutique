@@ -19,6 +19,18 @@ class Order extends Controller
         }
     }
 
-   
+    // Vérifie si le panier n'est pas vide
+    private function checkCartNotEmpty(): void
+    {
+        $cartData = $this->processCartData();
+        $items = $cartData[0] ?? [];
+        
+        if (empty($items)) {
+            header('Location: ' . URL . 'Cart/index?error=empty_cart');
+            exit;
+        }
+    }
+
+    
 }
 ?>
