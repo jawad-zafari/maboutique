@@ -56,4 +56,21 @@ $finalTotal = $totalProductsPrice + $shippingPrice - $totalDiscount;
                 </div>
             </div>
 
-           
+            <div class="checkout-section-card margin-top-md">
+                <h3><i class="fa-solid fa-truck" aria-hidden="true"></i> Informations d'expédition</h3>
+                
+                <div class="shipping-info-box-flex">
+                    <div class="info-block-item">
+                        <strong>Destinataire :</strong>
+                        <span><?= $this->e($addressInfo['last_name'] ?? '') ?> (<?= $this->e($addressInfo['mobile'] ?? '') ?>)</span>
+                    </div>
+                    <div class="info-block-item">
+                        <strong>Adresse de livraison :</strong>
+                        <span><?= $this->e($addressInfo['address'] ?? '') ?>, <?= $this->e($addressInfo['city_name'] ?? $addressInfo['city'] ?? '') ?> (<?= $this->e($addressInfo['postal_code'] ?? '') ?>)</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+       
