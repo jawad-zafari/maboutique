@@ -138,6 +138,19 @@ class ModelOrder extends Model
         $maskedCard = '';
         $payBankName = '';
 
+        if ($paymentMethodId === 1) {
+            $payBankName = 'Carte Bancaire';
+            // SÉCURITÉ PCI-DSS : Masquage de la carte
+            $rawCardNumber = preg_replace('/\D/', '', $cleanData['card_number'] ?? '');
+            if (!empty($rawCardNumber)) {
+                $last4Digits = substr($rawCardNumber, -4);
+                $maskedCard = '**** **** **** ' . $last4Digits;
+            }
+        } else if ($paymentMethodId === 2) {
+            $payBankName = 'Virement Bancaire';
+            $maskedCard = 'N/A';
+        }
+
        
     }
 }
