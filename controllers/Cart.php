@@ -70,6 +70,31 @@ class Cart extends Controller
         exit;
     }
 
-    
+    // Ajout d'un article au panier
+    public function addToCart(string $productId): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            echo json_encode(['status' => 'error', 'message' => 'Méthode non autorisée.']);
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        // Nettoyage et typage strict
+        $productIdInt = (int)$productId;
+        $quantity     = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
+        $colorId      = isset($_POST['colorId']) ? (int)$_POST['colorId'] : 0;
+        $guaranteeId  = isset($_POST['guaranteeId']) ? (int)$_POST['guaranteeId'] : 0;
+
+        // Validation métier
+        if ($quantity > 0 && $productIdInt > 0) {
+            $this->model->addToCart($productIdInt, $quantity, $colorId, $guaranteeId);
+        }
+        
+        $cartData = $this->model->getCartData();
+        echo json_encode($cartData);
+        exit;
+    }
 }
 ?>
