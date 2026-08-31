@@ -41,5 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    
+    if(closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
+    if(cartOverlay) cartOverlay.addEventListener('click', closeCart);
+
+   
 });
