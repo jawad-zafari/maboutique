@@ -112,6 +112,12 @@ class ModelOrder extends Model
             return 0;
         }
 
+        $cartInfo = $this->getCartData();
+        $cartItems = $cartInfo[0] ?? [];
+        if (empty($cartItems)) {
+            return 0;
+        }
+
        
     }
 }
