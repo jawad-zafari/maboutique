@@ -136,6 +136,12 @@ class Order extends Controller
         exit;
     }
 
+    public function summary(): void 
+    {
+        header('Location: ' . URL . 'Order/payment');
+        exit;
+    }
+
    
 }
 ?>
