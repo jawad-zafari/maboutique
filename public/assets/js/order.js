@@ -134,6 +134,77 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-   
+    // AJOUT D'ADRESSE INLINE EN AJAX
+    const btnToggleAddressForm = document.getElementById('btnToggleAddressForm');
+    const inlineAddressFormContainer = document.getElementById('inlineAddressFormContainer');
+    const btnCancelAddressInline = document.getElementById('btnCancelAddressInline');
+    const formAddAddress = document.getElementById('formAddAddress');
+
+    if (btnToggleAddressForm && inlineAddressFormContainer) {
+        btnToggleAddressForm.addEventListener('click', () => {
+            const isHidden = inlineAddressFormContainer.classList.contains('display-none-box');
+            
+            if (isHidden) {
+                inlineAddressFormContainer.classList.remove('display-none-box');
+                btnToggleAddressForm.setAttribute('aria-expanded', 'true');
+                btnToggleAddressForm.innerHTML = '<i class="fa-solid fa-minus" aria-hidden="true"></i> Masquer le formulaire';
+                
+                const firstInput = inlineAddressFormContainer.querySelector('input');
+                if (firstInput) firstInput.focus();
+            } else {
+                inlineAddressFormContainer.classList.add('display-none-box');
+                btnToggleAddressForm.setAttribute('aria-expanded', 'false');
+                btnToggleAddressForm.innerHTML = '<i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter une adresse';
+            }
+        });
+    }
+
+    if (btnCancelAddressInline && inlineAddressFormContainer && btnToggleAddressForm) {
+        btnCancelAddressInline.addEventListener('click', () => {
+            inlineAddressFormContainer.classList.add('display-none-box');
+            btnToggleAddressForm.setAttribute('aria-expanded', 'false');
+            btnToggleAddressForm.innerHTML = '<i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter une adresse';
+            if (formAddAddress) formAddAddress.reset();
+        });
+    }
+
+    if (formAddAddress) {
+        formAddAddress.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = formAddAddress.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enregistrement...';
+            submitBtn.disabled = true;
+
+            const formData = new FormData(formAddAddress);
+            // SÉCURITÉ : Ajout du jeton CSRF
+            formData.append('csrf_token', getCsrfToken());
+
+            try {
+                const response = await fetch(`${baseUrl}Order/addAddressAjax`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success' && result.address) {
+                    showOrderToast(result.message, "success");
+
+                    const addr = result.address;
+                    const addressGrid = document.querySelector('.address-cards-grid');
+                    const emptyNotice = document.getElementById('emptyAddressNotice');
+                    if (emptyNotice) emptyNotice.remove();
+
+                    // Désactiver les autres cartes
+                    document.querySelectorAll('.js-address-card').forEach(c => {
+                        c.classList.remove('active');
+                        const r = c.querySelector('input[type="radio"]');
+                        if (r) r.checked = false;
+                    });
+
+                    
 
 });
