@@ -177,6 +177,30 @@ class Order extends Controller
         $this->view('order/step4_payment', $data);
     }
 
+    public function saveAddressSession(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            echo json_encode(['status' => 'error', 'message' => 'Méthode non autorisée.']);
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        // SÉCURITÉ : Typage strict
+        $addressId = (int)($_POST['addressId'] ?? 0);
+        $shippingId = (int)($_POST['shippingId'] ?? 0);
+
+        if ($addressId > 0 && $shippingId > 0) {
+            Model::sessionSet('selected_address_id', $addressId);
+            Model::sessionSet('selected_shipping_type_id', $shippingId);
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Données invalides.']);
+        }
+        exit;
+    }
+
     
 }
 ?>
