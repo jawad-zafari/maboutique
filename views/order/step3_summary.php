@@ -36,4 +36,24 @@ $finalTotal = $totalProductsPrice + $shippingPrice - $totalDiscount;
                 </ul>
             </nav>
 
+            <div class="checkout-section-card">
+                <h3><i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Récapitulatif des articles</h3>
+                
+                <div class="summary-items-list-grid">
+                    <?php if (!empty($cart)): foreach($cart as $item):
+                        $qty = (int)($item['quantity'] ?? 1);
+                        $price = (float)($item['price'] ?? 0);
+                    ?>
+                        <div class="summary-item-row-card">
+                            <span class="product-qty-tag">x<?= $qty ?></span>
+                            <!-- SÉCURITÉ : Échappement HTML -->
+                            <span class="product-title-text"><?= $this->e($item['title'] ?? 'Produit') ?></span>
+                            <span class="product-price-tag font-weight-bold"><?= number_format($price * $qty, 2, ',', ' ') ?> €</span>
+                        </div>
+                    <?php endforeach; else: ?>
+                        <p class="text-muted-color">Votre panier est vide ou les données sont indisponibles.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+
            
