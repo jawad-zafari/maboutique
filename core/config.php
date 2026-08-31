@@ -24,3 +24,9 @@ define('menu_color', $options['menu_color'] ?? '');
 define('body_color', $options['body_color'] ?? '');
 
 
+function style(string $path): string 
+{
+    return URL . 'public/assets/css/' . $path;
+}
+
+
