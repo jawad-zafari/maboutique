@@ -42,5 +42,15 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    // Gestion globale des boutons de retour (Remplacement du onclick natif)
+    const backButtons = document.querySelectorAll('.js-back-button');
+    backButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.history.back();
+        });
+    });
+
     
+
 });
