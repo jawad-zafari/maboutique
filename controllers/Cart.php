@@ -39,7 +39,10 @@ class Cart extends Controller
 
         $this->model->deleteCartItem((int)$cartRowId);
         
-        
+        // Renvoie les nouvelles données du panier au format JSON pour AJAX
+        $cartData = $this->model->getCartData();
+        echo json_encode($cartData);
+        exit;
     }
 
     
