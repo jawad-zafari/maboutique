@@ -71,6 +71,28 @@ $csrfToken = $data['csrf_token'] ?? '';
                 <?php endforeach; ?>
             </div>
 
-            
+            <div class="cart-summary-column">
+                <div class="cart-summary-card">
+                    <h3>Récapitulatif de la commande</h3>
+                    
+                    <div class="summary-lines">
+                        <div class="summary-line">
+                            <span class="label">Sous-total articles</span>
+                            <span class="value"><?= number_format($totalPriceAll, 2, ',', ' ') ?> €</span>
+                        </div>
 
+                        <div class="summary-line">
+                            <span class="label">Frais de livraison</span>
+                            <span class="value text-muted">Calculés à l'étape suivante</span>
+                        </div>
+                        
+                        <div class="summary-line-separator"></div>
+
+                        <div class="summary-line total-line">
+                            <span class="label">Total TTC</span>
+                            <span class="value highlight-total total-all-price"><?= number_format($totalPriceAll, 2, ',', ' ') ?> €</span>
+                        </div>
+                    </div>
+                    
+                    
 </div>
