@@ -85,6 +85,21 @@ class Checkout extends Controller
         exit;
     }
 
-   
+    // Formulaire d'enregistrement des informations de virement bancaire
+    public function bankTransfer(string $orderId): void
+    {
+        $orderIdInt = (int)$orderId;
+        $orderInfo = $this->model->getOrderInfo($orderIdInt);
+        
+        if (!$orderInfo) {
+            header('Location: ' . URL . 'Checkout/showError?error=' . urlencode('Commande introuvable ou accès non autorisé.') . '&orderId=' . $orderIdInt);
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+           
+    
 }
 ?>
