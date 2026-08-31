@@ -69,6 +69,13 @@ class ModelOrder extends Model
         return $result ?: [];
     }
 
-   
+    public function verifyPromoCode(string $code)
+    {
+        $sql = "SELECT * FROM discount_codes WHERE code = ? AND is_used = 0 AND expires_at > ?";
+        $currentDate = date('Y-m-d');
+        return $this->doSelect($sql, [$code, $currentDate], 'fetch', PDO::FETCH_ASSOC);
+    }
+
+    
 }
 ?>
