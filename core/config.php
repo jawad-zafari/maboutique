@@ -36,3 +36,9 @@ function script(string $path): string
 }
 
 
+function dd($var) 
+{
+    echo '<pre style="background: #f4f4f4; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">';
+    var_dump($var);
+    echo '</pre>';
+}
