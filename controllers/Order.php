@@ -201,6 +201,27 @@ class Order extends Controller
         exit;
     }
 
-    
+    public function checkPromoCode(): void 
+    {
+        $this->checkLogin();
+        
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(['status' => 'error', 'message' => 'Méthode non autorisée.']);
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+        
+        // Nettoyage du code promo
+        $safeCode = trim(strip_tags($_POST['code'] ?? ''));
+        
+        $result = $this->model->verifyPromoCode($safeCode);
+        $totalPrice = $this->model->calculateTotalPrice($safeCode);
+
+        echo json_encode([$result, $totalPrice]);
+        exit;
+    }
+
+   
 }
 ?>
