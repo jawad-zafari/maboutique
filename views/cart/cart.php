@@ -94,5 +94,24 @@ $csrfToken = $data['csrf_token'] ?? '';
                         </div>
                     </div>
                     
+                    <a class="btn-checkout-massive" href="<?= URL ?>Order/step2_address" aria-label="Procéder au règlement de la commande">
+                        Valider mon panier <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                    </a>
                     
+                    <div class="secure-checkout-badge">
+                        <i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Processus de paiement 100% sécurisé
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    <?php else: ?>
+        <div class="empty-cart-container">
+            <div class="empty-icon"><i class="fa-solid fa-basket-shopping" aria-hidden="true"></i></div>
+            <h3>Votre panier est actuellement vide</h3>
+            <p>Découvrez nos nouveautés et offres exclusives pour remplir votre panier !</p>
+            <a href="<?= URL ?>Index/index" class="btn-return-shop">Continuer mes achats</a>
+        </div>
+    <?php endif; ?>
+
 </div>
