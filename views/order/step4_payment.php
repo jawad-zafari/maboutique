@@ -150,4 +150,16 @@ $csrfToken = $this->e($data['csrf_token'] ?? '');
                         </div>
                     </div>
 
-                   
+                    <div class="summary-line-separator"></div>
+
+                    <div class="summary-promo-section margin-top-sm">
+                        <h4 class="summary-sub-title"><i class="fa-solid fa-ticket" aria-hidden="true"></i> Code de réduction</h4>
+                        <div class="promo-code-input-flex-row margin-top-sm">
+                            <input type="text" id="codePromoInput" name="code_promo" class="form-control code-promo-field" placeholder="Ex: PROMO2026" autocomplete="off">
+                            <button type="button" id="btnVerifyPromo" class="btn-stepper-secondary">Appliquer</button>
+                        </div>
+                    </div>
+
+                    <div class="summary-line-separator"></div>
+
+                    
