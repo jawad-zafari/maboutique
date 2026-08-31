@@ -22,6 +22,18 @@ class ModelCart extends Model
         $this->doQuery($sql, [$cartRowId, $cookie]);
     }
 
+    // le modèle reçoit des variables propres, pas de $_POST
+    public function updateCartItem(int $cartRowId, int $quantity): void
+    {
+        $cookie = parent::getCartCookie();
+
+        // Sécurité supplémentaire au niveau du modèle
+        if ($quantity > 0 && $cartRowId > 0) {
+            $sql = "UPDATE cart_items SET quantity = ? WHERE id = ? AND session_cookie = ?";
+            $this->doQuery($sql, [$quantity, $cartRowId, $cookie]);
+        }
+    }
+
    
 }
 ?>
