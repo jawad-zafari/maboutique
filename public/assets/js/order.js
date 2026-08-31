@@ -77,4 +77,10 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    document.querySelectorAll('.js-address-card, .js-shipping-card').forEach(card => {
+        attachCardClickEvent(card);
+    });
+
    
+
+});
