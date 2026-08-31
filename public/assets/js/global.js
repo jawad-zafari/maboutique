@@ -83,6 +83,48 @@ document.addEventListener("DOMContentLoaded", function() {
             const icon = btnHeart.querySelector('i');
             if (!productId) return;
 
-           
+            try {
+                // Injection du jeton CSRF pour prouver que la requête est légitime
+                const params = new URLSearchParams();
+                params.append('csrf_token', getGlobalCsrfToken());
 
+                const response = await fetch(`${baseUrl}Account/toggleFavorite/${productId}`, {
+                    method: 'POST',
+                    body: params
+                });
+
+                // ANTI-CRASH : Vérifier si la réponse du serveur n'est pas une erreur 404/500
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                if (result.status === 'unauthorized') {
+                    // REDIRECTION INTELLIGENTE : Sauvegarde de la page actuelle et redirection vers le login
+                    const currentPath = window.location.pathname.replace(baseUrl, '') + window.location.search;
+                    window.location.href = baseUrl + 'Login/index?back=' + encodeURIComponent(currentPath);
+                } else if (result.status === 'error') {
+                    showGlobalFavToast(result.message, 'danger');
+                } else if (result.status === 'success') {
+                    showGlobalFavToast(result.message, 'success');
+
+                    // Mise à jour visuelle du bouton cœur
+                    if (result.action === 'added') {
+                        btnHeart.classList.add('active');
+                        if (icon) icon.className = 'fa-solid fa-heart';
+                    } else if (result.action === 'removed') {
+                        btnHeart.classList.remove('active');
+                        if (icon) icon.className = 'fa-regular fa-heart';
+                        
+                        // Si on est sur la page liste des favoris, masquer la carte fluidement
+                        const favCard = document.getElementById(`fav-card-${productId}`);
+                        if (favCard) {
+                            favCard.style.transition = 'opacity 0.3s ease';
+                            favCard.style.opacity = '0';
+                            setTimeout(() => favCard.remove(), 300);
+                        }
+                    }
+
+                   
 });
