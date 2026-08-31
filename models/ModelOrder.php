@@ -7,6 +7,14 @@ class ModelOrder extends Model
         parent::__construct();
     }
 
-    
+    public function getAddresses(): array 
+    {
+        $sql = "SELECT * FROM user_addresses WHERE user_id = ?";
+        Model::sessionInit();
+        $userId = (int)Model::sessionGet('userId');
+        return $this->doSelect($sql, [$userId]);
+    }
+
+   
 }
 ?>
