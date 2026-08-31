@@ -1,4 +1,4 @@
-<div id="homeMainWrapper" class="home-global-wrapper" data-csrf="<?= htmlspecialchars($data['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+<div id="homeMainWrapper" class="home-global-wrapper" data-csrf="<?= $this->e($data['csrf_token'] ?? '') ?>">
 
     <section class="main-slider" aria-roledescription="carousel" aria-label="Bannières principales">
         <div class="slider-track" id="sliderTrack">
@@ -7,18 +7,18 @@
             if(!empty($slider1)): foreach($slider1 as $slide):
             ?>
             <div class="slide" role="group" aria-roledescription="slide">
-                <a href="<?= htmlspecialchars($slide['link'] ?? '#', ENT_QUOTES, 'UTF-8') ?>" class="slide-link-container">
-                    <img src="<?= URL . htmlspecialchars($slide['image_path'] ?? '', ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($slide['title'] ?? '', ENT_QUOTES, 'UTF-8') ?>" class="slide-bg">
+                <a href="<?= $this->e($slide['link'] ?? '#') ?>" class="slide-link-container">
+                    <img src="<?= URL . $this->e($slide['image_path'] ?? '') ?>" alt="<?= $this->e($slide['title'] ?? '') ?>" class="slide-bg">
                     
                     <div class="slide-content">
-                        <h2 class="slide-title"><?= htmlspecialchars($slide['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></h2>
+                        <h2 class="slide-title"><?= $this->e($slide['title'] ?? '') ?></h2>
                         
                         <?php if(!empty($slide['description'])): ?>
-                            <p class="slide-desc"><?= htmlspecialchars($slide['description'], ENT_QUOTES, 'UTF-8') ?></p>
+                            <p class="slide-desc"><?= $this->e($slide['description']) ?></p>
                         <?php endif; ?>
                         
                         <span class="btn-slide-action">
-                            <?= htmlspecialchars($slide['button_text'] ?? 'Découvrir', ENT_QUOTES, 'UTF-8') ?>
+                            <?= $this->e($slide['button_text'] ?? 'Découvrir') ?>
                         </span>
                     </div>
                 </a>
@@ -92,11 +92,12 @@
                     $brands = $data['brands'] ?? [];
                     if(!empty($brands)): foreach($brands as $brand): 
                         $brandId = (int)($brand['id'] ?? 0);
-                        $brandName = htmlspecialchars($brand['title'] ?? '', ENT_QUOTES, 'UTF-8');
+                        $brandName = $this->e($brand['title'] ?? '');
                     ?>
                     <div class="brands-carousel-item">
                         <a href="<?= URL ?>Collection/index/category/<?= $brandId ?>/1" class="brand-item-circle" title="<?= $brandName ?>" aria-label="<?= $brandName ?>">
-                            <img src="<?= URL . htmlspecialchars($brand['image_path'] ?? '', ENT_QUOTES, 'UTF-8') ?>" 
+                            <!-- SÉCURITÉ : Protection de l'attribut onerror avec addslashes pour éviter la rupture du contexte JS -->
+                            <img src="<?= URL . $this->e($brand['image_path'] ?? '') ?>" 
                                  alt="<?= $brandName ?>" 
                                  onerror="this.outerHTML='<span class=\'brand-text-fallback\'><?= addslashes($brandName) ?></span>'">
                         </a>
@@ -127,7 +128,7 @@
                     $discount = (int)($product['discount_percent'] ?? 0);
                     $hasDiscount = $discount > 0;
                     $prodId = (int)($product['id'] ?? 0);
-                    $prodTitle = htmlspecialchars($product['title'] ?? '', ENT_QUOTES, 'UTF-8');
+                    $prodTitle = $this->e($product['title'] ?? '');
                 ?>
                 <div class="product-card hover-glow">
                     <button type="button" class="btn-favorite-toggle" data-id="<?= $prodId ?>" aria-label="Ajouter aux favoris" title="Ajouter aux favoris">
@@ -189,7 +190,7 @@
                     $discount = (int)($product['discount_percent'] ?? 0);
                     $hasDiscount = $discount > 0;
                     $prodId = (int)($product['id'] ?? 0);
-                    $prodTitle = htmlspecialchars($product['title'] ?? '', ENT_QUOTES, 'UTF-8');
+                    $prodTitle = $this->e($product['title'] ?? '');
                 ?>
                 <div class="product-card hover-glow">
                     <button type="button" class="btn-favorite-toggle" data-id="<?= $prodId ?>" aria-label="Ajouter aux favoris">
@@ -250,7 +251,7 @@
                     $discount = (int)($product['discount_percent'] ?? 0);
                     $hasDiscount = $discount > 0;
                     $prodId = (int)($product['id'] ?? 0);
-                    $prodTitle = htmlspecialchars($product['title'] ?? '', ENT_QUOTES, 'UTF-8');
+                    $prodTitle = $this->e($product['title'] ?? '');
                 ?>
                 <div class="product-card hover-glow">
                     <button type="button" class="btn-favorite-toggle" data-id="<?= $prodId ?>" aria-label="Ajouter aux favoris">
@@ -311,7 +312,7 @@
                     $discount = (int)($product['discount_percent'] ?? 0);
                     $hasDiscount = $discount > 0;
                     $prodId = (int)($product['id'] ?? 0);
-                    $prodTitle = htmlspecialchars($product['title'] ?? '', ENT_QUOTES, 'UTF-8');
+                    $prodTitle = $this->e($product['title'] ?? '');
                 ?>
                 <div class="product-card hover-glow">
                     <button type="button" class="btn-favorite-toggle" data-id="<?= $prodId ?>" aria-label="Ajouter aux favoris">
@@ -366,8 +367,8 @@
             <div class="tv-carousel-track" id="tvCarouselTrack">
                 <?php
                 $tvSettings = $data['tv_settings'] ?? [];
-                $tvCover = !empty($tvSettings['tv_cover_image']) ? URL . htmlspecialchars($tvSettings['tv_cover_image'], ENT_QUOTES, 'UTF-8') : 'https://placehold.co/600x400/1a1a2e/ffffff?text=Boutique+TV+1';
-                $tvLink = !empty($tvSettings['tv_video_link']) ? htmlspecialchars($tvSettings['tv_video_link'], ENT_QUOTES, 'UTF-8') : 'https://www.youtube.com/embed/tgbNymZ7vqY';
+                $tvCover = !empty($tvSettings['tv_cover_image']) ? URL . $this->e($tvSettings['tv_cover_image']) : 'https://placehold.co/600x400/1a1a2e/ffffff?text=Boutique+TV+1';
+                $tvLink = !empty($tvSettings['tv_video_link']) ? $this->e($tvSettings['tv_video_link']) : 'https://www.youtube.com/embed/tgbNymZ7vqY';
                 
                 $tvItems = $data['tv_items'] ?? [
                     ['video_link' => $tvLink, 'cover_image' => $tvCover, 'title' => 'Présentation de notre Boutique'],
@@ -376,9 +377,9 @@
                 ];
 
                 foreach($tvItems as $item):
-                    $vLink = htmlspecialchars($item['video_link'] ?? '', ENT_QUOTES, 'UTF-8');
-                    $vCover = htmlspecialchars($item['cover_image'] ?? '', ENT_QUOTES, 'UTF-8');
-                    $vTitle = htmlspecialchars($item['title'] ?? 'Vidéo TV', ENT_QUOTES, 'UTF-8');
+                    $vLink = $this->e($item['video_link'] ?? '');
+                    $vCover = $this->e($item['cover_image'] ?? '');
+                    $vTitle = $this->e($item['title'] ?? 'Vidéo TV');
                 ?>
                 <div class="tv-carousel-item" data-video-src="<?= $vLink ?>">
                     <div class="tv-image-container hover-zoom" role="button" aria-label="Lire la vidéo <?= $vTitle ?>" tabindex="0">
@@ -404,12 +405,12 @@
                 <?php 
                 $newsList = $data['latest_news'] ?? [];
                 if(!empty($newsList)): foreach($newsList as $news): 
-                    $newsTitle = htmlspecialchars($news['title'] ?? '', ENT_QUOTES, 'UTF-8');
-                    $newsDesc = htmlspecialchars($news['short_desc'] ?? '', ENT_QUOTES, 'UTF-8');
-                    $newsImg = URL . htmlspecialchars($news['image_path'] ?? '', ENT_QUOTES, 'UTF-8');
+                    $newsTitle = $this->e($news['title'] ?? '');
+                    $newsDesc = $this->e($news['short_desc'] ?? '');
+                    $newsImg = URL . $this->e($news['image_path'] ?? '');
                     
-                    // UTILISATION DE LA FONCTION STANDARD
-                    $newsDate = htmlspecialchars(Model::formatDateForDisplay($news['created_at'] ?? ''), ENT_QUOTES, 'UTF-8');
+                    // SÉCURITÉ : Formatage de date sécurisé
+                    $newsDate = $this->e(Model::formatDateForDisplay($news['created_at'] ?? ''));
                 ?>
                 <div class="news-card clickable-news-item hover-glow" role="button" tabindex="0" data-title="<?= $newsTitle ?>" data-desc="<?= $newsDesc ?>" data-img="<?= $newsImg ?>" data-date="<?= $newsDate ?>">
                     <div class="news-card-img">
@@ -418,7 +419,8 @@
                     <div class="news-card-body">
                         <span class="news-date"><?= $newsDate ?></span>
                         <h4 class="news-title"><?= $newsTitle ?></h4>
-                        <p class="news-excerpt"><?= htmlspecialchars(mb_strimwidth($news['short_desc'] ?? '', 0, 80, '...'), ENT_QUOTES, 'UTF-8') ?></p>
+                        <!-- Limitation sécurisée du texte -->
+                        <p class="news-excerpt"><?= $this->e(mb_strimwidth($news['short_desc'] ?? '', 0, 80, '...')) ?></p>
                         <span class="news-read-more">Lire la suite <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
                     </div>
                 </div>
@@ -431,6 +433,7 @@
     </div>
 </div>
 
+<!-- Modal Actualité -->
 <div id="newsModal" class="news-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="newsModalTitle">
     <div class="news-modal-content">
         <button class="close-news-modal" id="closeNewsModal" aria-label="Fermer la fenêtre"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
