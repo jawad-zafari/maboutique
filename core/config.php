@@ -13,3 +13,14 @@ try {
     $options = [];
 }
 
+// Définition de l'URL racine de l'application
+define('URL', $options['root'] ?? 'http://localhost/maboutique/');
+
+// Délai d'expiration pour le paiement d'une commande (en heures)
+define('PAYMENT_DEADLINE', $options['payment_deadline'] ?? 24);
+
+// Paramètres de personnalisation visuelle du thème
+define('menu_color', $options['menu_color'] ?? '');
+define('body_color', $options['body_color'] ?? '');
+
+
