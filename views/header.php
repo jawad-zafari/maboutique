@@ -1,13 +1,14 @@
 <?php
-
-// Récupération sécurisée des variables transmises par le contrôleur global
-$userId    = $userId ?? false;
-$userLevel = $userLevel ?? 0;
-$menuList  = $menuList ?? [];
-$cartItems = $cartItems ?? [];
-$cartCount = $cartCount ?? 0;
-$favCount  = $favCount ?? 0;
-$csrfToken = $csrf_token ?? '';
+/**
+ * @var array $menuList
+ * @var array $cartItems
+ * @var int $cartCount
+ * @var int $favCount
+ * @var int|bool $userId
+ * @var int $userLevel
+ * @var string $csrf_token
+ * @var array $option
+ */
 ?>
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
@@ -37,7 +38,7 @@ $csrfToken = $csrf_token ?? '';
 
        <div class="search-container">
             <form action="<?= URL ?>Search/index" method="POST" id="headerSearchForm" class="search-form-wrapper">
-                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                <input type="hidden" name="csrf_token" value="<?= $this->e($csrf_token ?? '') ?>">
                 <input type="text" id="headerKeyword" name="keyword" class="search-input" placeholder="Rechercher un produit..." autocomplete="off" aria-label="Champ de recherche">
                 <button type="submit" class="search-btn" aria-label="Lancer la recherche">
                     <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
@@ -92,13 +93,13 @@ $csrfToken = $csrf_token ?? '';
                 <?php if(!empty($menuList)): foreach ($menuList as $menu1): ?>
                     <li class="menu-item" role="none">
                         <a href="<?= URL ?>Collection/index/category/<?= (int)$menu1['id'] ?>/1" role="menuitem">
-                            <?= htmlspecialchars($menu1['title'], ENT_QUOTES, 'UTF-8') ?>
+                            <?= $this->e($menu1['title'] ?? '') ?>
                             <?php if (!empty($menu1['children'])): ?><i class="fa-solid fa-angle-down nav-dropdown-icon" aria-hidden="true"></i><?php endif; ?>
                         </a>
                         <?php if (!empty($menu1['children'])): ?>
                             <ul class="menu-level-2" role="menu">
                                 <?php foreach ($menu1['children'] as $menu2): ?>
-                                    <li role="none"><a href="<?= URL ?>Collection/index/category/<?= (int)$menu2['id'] ?>/1" role="menuitem"><?= htmlspecialchars($menu2['title'], ENT_QUOTES, 'UTF-8') ?></a></li>
+                                    <li role="none"><a href="<?= URL ?>Collection/index/category/<?= (int)$menu2['id'] ?>/1" role="menuitem"><?= $this->e($menu2['title'] ?? '') ?></a></li>
                                 <?php endforeach; ?>
                             </ul>
                         <?php endif; ?>
@@ -122,15 +123,14 @@ $csrfToken = $csrf_token ?? '';
         $priceTotalAll = 0;
         if(!empty($cartItems)): 
             foreach($cartItems as $item): 
-                // Typage rigoureux pour les calculs financiers (suppression de la variable obsolète)
                 $qty = (int)($item['quantity'] ?? 1);
                 $price = (float)($item['price'] ?? 0);
                 $priceTotalAll += ($price * $qty);
         ?>
         <div class="cart-item-card">
-            <img src="<?= URL ?>public/images/products/<?= (int)($item['id'] ?? 0) ?>/product_220.jpg" alt="<?= htmlspecialchars($item['title'] ?? '', ENT_QUOTES, 'UTF-8') ?>" class="item-img" onerror="this.src='https://placehold.co/80x80/f5f5f5/111?text=Img'">
+            <img src="<?= URL ?>public/images/products/<?= (int)($item['id'] ?? 0) ?>/product_220.jpg" alt="<?= $this->e($item['title'] ?? '') ?>" class="item-img" onerror="this.src='https://placehold.co/80x80/f5f5f5/111?text=Img'">
             <div class="item-details">
-                <h4 class="item-title"><?= htmlspecialchars($item['title'] ?? '', ENT_QUOTES, 'UTF-8') ?></h4>
+                <h4 class="item-title"><?= $this->e($item['title'] ?? '') ?></h4>
                 <div class="item-price"><?= number_format($price, 2, '.', '') ?> €</div>
                 <div class="item-controls">
                     <div class="qty-wrapper">
