@@ -24,6 +24,19 @@ class Cart extends Controller
         $this->view('cart/cart', $data);
     }
 
-   
+    // Suppression d'un article (Validation POST + CSRF)
+    public function deleteCart(string $cartRowId): void
+    {
+        // Bloquer les requêtes GET pour éviter les suppressions accidentelles ou malveillantes
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            echo json_encode(['status' => 'error', 'message' => 'Méthode non autorisée.']);
+            exit;
+        }
+
+       
+    }
+
+    
 }
 ?>
