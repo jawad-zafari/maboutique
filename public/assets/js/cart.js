@@ -79,5 +79,43 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => { toast.classList.remove('show'); }, 3000);
     }
 
+    // SOUMISSION GLOBALE DES FORMULAIRES D'AJOUT AU PANIER
+    document.addEventListener('submit', async (e) => {
+        const form = e.target.closest('.add-to-cart-form');
+        if (form) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            let actionUrl = form.getAttribute('action');
+            if(!actionUrl.startsWith('http') && !actionUrl.startsWith(baseUrl)) {
+                 actionUrl = baseUrl + actionUrl;
+            }
+
+            const formData = new FormData(form);
+
+            if (!formData.has('csrf_token')) {
+                formData.append('csrf_token', getCsrfToken());
+            }
+
+            try {
+                const response = await fetch(actionUrl, { method: 'POST', body: formData });
+                const result = await response.json();
+                
+                if (result.status === 'error') {
+                    showToastNotification(result.message, 'error');
+                    return;
+                }
+                
+                rebuildCartDOM(result[0], result[1]);
+                showToastNotification("Produit ajouté au panier", 'success'); 
+                
+            } catch (error) {
+                console.error("Erreur lors de l'ajout au panier :", error);
+                showToastNotification("Erreur de connexion", 'error');
+            }
+        }
+    }, true);
+
     
 });
