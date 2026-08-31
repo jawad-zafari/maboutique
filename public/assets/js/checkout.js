@@ -45,4 +45,41 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 3500);
     }
 
+    // LOGIQUE DE SIMULATION DU PAIEMENT EN LIGNE (MOCK GATEWAY)
+    const mockLoader = document.getElementById('mockPaymentLoader');
     
+    if (mockLoader) {
+        const orderId = mockLoader.getAttribute('data-order-id');
+        const csrfToken = getCsrfToken();
+
+        // Simulation d'une attente réseau (3 secondes) pour la présentation DWWM
+        setTimeout(async () => {
+            try {
+                const formData = new FormData();
+                formData.append('csrf_token', csrfToken);
+
+                const response = await fetch(`${baseUrl}Checkout/processMockPaymentAjax/${orderId}`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    // Paiement réussi : rechargement pour afficher la facture
+                    window.location.reload();
+                } else {
+                    // Échec du paiement (ex: fonds insuffisants) : redirection sécurisée
+                    const errorMessage = encodeURIComponent(result.message || 'Erreur lors du paiement.');
+                    window.location.href = `${baseUrl}Checkout/showError?error=${errorMessage}&orderId=${orderId}`;
+                }
+
+            } catch (error) {
+                console.error("Erreur serveur lors de la simulation:", error);
+                window.location.href = `${baseUrl}Checkout/showError?error=Erreur_serveur_inattendue&orderId=${orderId}`;
+            }
+        }, 3000); // 3000ms = 3 secondes
+    }
+
+    
+});
