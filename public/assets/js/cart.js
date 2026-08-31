@@ -222,6 +222,26 @@ document.addEventListener("DOMContentLoaded", () => {
         sidebarBody.innerHTML = ''; // Nettoyage sécurisé du conteneur
         let totalItems = 0;
 
-       
+        if (!cartArray || cartArray.length === 0) {
+            const emptyContainer = document.createElement('div');
+            emptyContainer.className = 'sidebar-empty-state';
+
+            const emptyMsg = document.createElement('div');
+            emptyMsg.className = 'empty-msg-text';
+            emptyMsg.textContent = 'Votre panier est vide.';
+
+            const emptyIconBox = document.createElement('div');
+            emptyIconBox.className = 'empty-bg-icon';
+            
+            const iconElement = document.createElement('i');
+            iconElement.className = 'fa-solid fa-cart-arrow-down';
+            iconElement.setAttribute('aria-hidden', 'true');
+            
+            emptyIconBox.appendChild(iconElement);
+            emptyContainer.appendChild(emptyMsg);
+            emptyContainer.appendChild(emptyIconBox);
+            
+            sidebarBody.appendChild(emptyContainer);
+        } 
     }
 });
