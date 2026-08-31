@@ -119,7 +119,10 @@ class Checkout extends Controller
             exit;
         }
 
-       
+        $data = [
+            'orderInfo'  => $orderInfo,
+            'csrf_token' => $this->generateCsrfToken()
+        ];
     }
 }
 ?>
