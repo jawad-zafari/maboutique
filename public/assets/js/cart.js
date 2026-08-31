@@ -186,5 +186,29 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-   
-});
+    async function deleteCartItem(cartRow) {
+        try {
+            const url = `${baseUrl}Cart/deleteCart/${cartRow}`;
+            const params = new URLSearchParams();
+            params.append('csrf_token', getCsrfToken()); 
+
+            const response = await fetch(url, { method: 'POST', body: params });
+            const result = await response.json();
+            
+            if (result.status === 'error') {
+                showToastNotification(result.message, 'error');
+                return;
+            }
+
+            if (document.getElementById('mainCart')) {
+                window.location.reload();
+            } else {
+                rebuildCartDOM(result[0], result[1]);
+                showToastNotification("Produit retiré du panier", 'danger');
+            }
+        } catch (error) { 
+            console.error(error); 
+        }
+    }
+
+    
