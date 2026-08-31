@@ -16,4 +16,46 @@ $postTypes = $data['postType'] ?? [];
         </div>
     <?php endif; ?>
 
-    
+    <div id="jsErrorMessage" class="alert-sticky danger alert-box-modern display-none-box" role="alert"></div>
+
+    <div class="checkout-grid-layout">
+        
+        <div class="checkout-left-column">
+            
+            <div class="checkout-back-nav">
+                <a href="<?= URL ?>Order/index" class="link-back-navigation"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i> Retour à la connexion</a>
+            </div>
+
+            <nav class="checkout-stepper-modern-bar">
+                <ul class="stepper-steps-flex">
+                    <li class="completed">Connexion</li>
+                    <li class="active" aria-current="step">Livraison</li>
+                    <li>Paiement</li>
+                </ul>
+            </nav>
+
+            <div class="checkout-section-card">
+                <div class="section-title-flex">
+                    <h3><i class="fa-solid fa-map-location-dot" aria-hidden="true"></i> 1. Choisissez une adresse de livraison</h3>
+                    <button type="button" class="btn-add-address-trigger" id="btnToggleAddressForm" aria-expanded="false" aria-controls="inlineAddressFormContainer">
+                        <i class="fa-solid fa-plus" aria-hidden="true"></i> Ajouter une adresse
+                    </button>
+                </div>
+
+                <div class="address-cards-grid" id="addressListContainer">
+                    <?php if(!empty($addresses)): foreach($addresses as $addr): ?>
+                        <div class="modern-selection-card js-address-card" data-id="<?= (int)$addr['id'] ?>">
+                            <div class="card-radio-select">
+                                <input type="radio" name="selected_address" id="addr_<?= (int)$addr['id'] ?>" value="<?= (int)$addr['id'] ?>">
+                                <!-- SÉCURITÉ : Échappement des données (XSS) -->
+                                <label for="addr_<?= (int)$addr['id'] ?>"><strong><?= $this->e($addr['last_name'] ?? '') ?></strong></label>
+                            </div>
+                            <p class="address-text-summary"><?= $this->e($addr['address'] ?? '') ?></p>
+                            <span class="address-city-zip"><?= $this->e($addr['city'] ?? $addr['city_name'] ?? '') ?> (<?= $this->e($addr['postal_code'] ?? '') ?>)</span>
+                        </div>
+                    <?php endforeach; else: ?>
+                        <p class="empty-section-notice" id="emptyAddressNotice">Aucune adresse enregistrée. Veuillez en ajouter une ci-dessous.</p>
+                    <?php endif; ?>
+                </div>
+
+               
