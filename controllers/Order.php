@@ -222,6 +222,36 @@ class Order extends Controller
         exit;
     }
 
-   
+    public function saveOrder(): void 
+    {
+        $this->checkLogin();
+        $this->checkCartNotEmpty(); 
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit('Méthode non autorisée');
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        // SÉCURITÉ : Nettoyage et préparation des données avant de les passer au modèle
+        $cleanData = [
+            'code_promo'     => trim(strip_tags($_POST['code_promo'] ?? '')),
+            'payment_method' => (int)($_POST['payment_method'] ?? 1),
+            'card_number'    => trim(strip_tags($_POST['card_number'] ?? ''))
+        ];
+
+        $orderId = $this->model->saveOrder($cleanData);
+        
+        if ($orderId > 0) {
+            Model::sessionSet('selected_address_id', null);
+            Model::sessionSet('selected_shipping_type_id', null);
+            
+            header('Location: ' . URL . 'Checkout/index/' . $orderId);
+        } else {
+            header('Location: ' . URL . 'Checkout/showError?error=' . urlencode("Erreur lors de la création de la commande"));
+        }
+        exit;
+    }
 }
 ?>
