@@ -87,4 +87,27 @@ $totalPayable = (float)($orderInfo['total_amount'] ?? ($subTotal + $shippingCost
                         </p>
                     </div>
 
-                    
+                    <div class="checkout-section-card margin-top-md">
+                        <h4 class="summary-sub-title"><i class="fa-solid fa-box-open" aria-hidden="true"></i> Articles commandés</h4>
+                        <div class="invoice-products-grid margin-top-sm">
+                            <?php if (is_array($basketProducts)): foreach ($basketProducts as $item): 
+                                $qty = (int)($item['quantity'] ?? 1);
+                                $price = (float)($item['price'] ?? 0);
+                            ?>
+                                <div class="invoice-product-row">
+                                    <div class="product-details-container">
+                                        <p class="product-title-text"><?= $this->e($item['title'] ?? 'Produit') ?></p>
+                                        <span class="product-meta-text">Qté : <strong><?= $qty ?></strong> | P.U : <?= number_format($price, 2, ',', ' ') ?> €</span>
+                                    </div>
+                                    <div class="product-total-price">
+                                        <?= number_format($price * $qty, 2, ',', ' ') ?> €
+                                    </div>
+                                </div>
+                            <?php endforeach; endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+               
+
+<script src="<?= URL ?>public/assets/js/checkout.js" defer></script>
