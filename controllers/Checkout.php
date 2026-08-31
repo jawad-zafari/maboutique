@@ -48,6 +48,43 @@ class Checkout extends Controller
         $this->view('checkout/error', $data);
     }
 
-    
+    // Simulation du traitement de paiement (AJAX)
+    public function processMockPaymentAjax(string $orderId): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(['status' => 'error', 'message' => 'Méthode non autorisée.']);
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+        
+        $orderIdInt = (int)$orderId;
+        $orderInfo = $this->model->getOrderInfo($orderIdInt);
+        
+        if (!$orderInfo) {
+            echo json_encode(['status' => 'error', 'message' => 'Commande introuvable ou accès refusé.']);
+            exit;
+        }
+
+        // Idempotence : Si déjà payée
+        if (!empty($orderInfo['is_paid'])) {
+            echo json_encode(['status' => 'success']);
+            exit;
+        }
+
+        $successChance = rand(1, 100);
+        
+        if ($successChance <= 85) {
+            $transactionId = 'TXN-' . date('YmdHis') . '-' . rand(1000, 9999);
+            $this->model->markOrderAsPaid($orderIdInt, $transactionId);
+            
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Paiement refusé par votre établissement bancaire (Simulation).']);
+        }
+        exit;
+    }
+
+   
 }
 ?>
