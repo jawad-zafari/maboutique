@@ -324,7 +324,66 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    
-    
+    // VÉRIFICATION DU CODE PROMO VIA AJAX
+    const btnVerifyPromo = document.getElementById('btnVerifyPromo');
+    const codePromoInput = document.getElementById('codePromoInput');
+    const summaryDiscountLine = document.getElementById('summaryDiscountLine');
+    const summaryDiscountValue = document.getElementById('summaryDiscountValue');
+    const finalTotalAmount = document.getElementById('finalTotalAmount');
+
+    if (btnVerifyPromo && codePromoInput) {
+        btnVerifyPromo.addEventListener('click', async () => {
+            const code = codePromoInput.value.trim();
+            if (code === '') return;
+
+            btnVerifyPromo.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>';
+
+            try {
+                // Formatage de l'URL pour éviter les failles d'injection
+                const formData = new FormData();
+                formData.append('code', code);
+                formData.append('csrf_token', getCsrfToken());
+                
+                const response = await fetch(`${baseUrl}Order/checkPromoCode`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                const promoData = data[0]; 
+                const newTotal = parseFloat(data[1]); 
+                
+                if (promoData && promoData.discount_percent) {
+                    codePromoInput.classList.remove('input-error');
+                    codePromoInput.classList.add('input-success');
+                    showOrderToast("Code de réduction appliqué avec succès !", "success");
+                    
+                    if(summaryDiscountLine && summaryDiscountValue) {
+                        summaryDiscountLine.classList.remove('display-none-box');
+                        // Calcul purement visuel (la sécurité est gérée côté serveur)
+                        summaryDiscountValue.textContent = 'Appliqué : -' + promoData.discount_percent + '%';
+                    }
+                } else {
+                    codePromoInput.classList.remove('input-success');
+                    codePromoInput.classList.add('input-error');
+                    showOrderToast("Le code saisi est invalide ou expiré.", "danger");
+                    
+                    if(summaryDiscountLine) {
+                        summaryDiscountLine.classList.add('display-none-box');
+                    }
+                }
+                
+                if (finalTotalAmount) {
+                    finalTotalAmount.textContent = new Intl.NumberFormat('fr-FR', { minimumFractionDigits: 2 }).format(newTotal) + ' €';
+                }
+            } catch (error) { 
+                console.error("Erreur Promo:", error);
+                showOrderToast("Erreur lors de la vérification du code.", "danger"); 
+            }
+            
+            btnVerifyPromo.innerHTML = 'Appliquer';
+        });
+    }
 
 });
