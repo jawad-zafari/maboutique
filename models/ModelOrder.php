@@ -103,6 +103,11 @@ class ModelOrder extends Model
         $addressId = (int)Model::sessionGet('selected_address_id');
         $shippingMethodId = (int)Model::sessionGet('selected_shipping_type_id');
 
-        
+        if (!$userId || !$addressId || !$shippingMethodId) {
+            return 0;
+        }
+
+       
+    }
 }
 ?>
