@@ -64,5 +64,27 @@ $totalPayable = (float)($orderInfo['total_amount'] ?? ($subTotal + $shippingCost
                 </div>
             <?php endif; ?>
 
-           
-            
+            <div class="checkout-grid-layout margin-top-md">
+                
+                <div class="checkout-left-column">
+                    <div class="checkout-section-card">
+                        <div class="invoice-header-bar">
+                            <div class="invoice-ref-box">
+                                <span class="ref-label">N° de commande :</span>
+                                <span class="ref-code"><?= $this->e($orderInfo['barcode'] ?? '') ?></span>
+                            </div>
+                            <div class="invoice-date-box">
+                                <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                                <?= $this->e($orderInfo['created_date'] ?? '') ?>
+                            </div>
+                        </div>
+
+                        <h4 class="summary-sub-title margin-top-md"><i class="fa-solid fa-truck" aria-hidden="true"></i> Informations d'expédition</h4>
+                        <p class="address-text-summary margin-top-sm">
+                            <strong><?= $this->e($orderInfo['last_name'] ?? '') ?></strong> (<?= $this->e($orderInfo['mobile'] ?? '') ?>)<br>
+                            <?= $this->e($orderInfo['address_data'] ?? '') ?><br>
+                            <?= $this->e($orderInfo['city'] ?? '') ?> (<?= $this->e($orderInfo['postal_code'] ?? '') ?>)
+                        </p>
+                    </div>
+
+                    
