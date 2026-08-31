@@ -115,4 +115,39 @@ $csrfToken = $this->e($data['csrf_token'] ?? '');
 
             </div>
 
-           
+            <div class="checkout-right-column">
+                <div class="checkout-summary-card">
+                    <h3>Récapitulatif final</h3>
+                    
+                    <div class="summary-lines-box">
+                        <div class="summary-line">
+                            <span class="label">Sous-total articles</span>
+                            <span class="value"><?= number_format($totalProductsPrice, 2, ',', ' ') ?> €</span>
+                        </div>
+                        
+                        <div class="summary-line">
+                            <span class="label">Frais de transport</span>
+                            <span class="value"><?= $shippingPrice > 0 ? number_format($shippingPrice, 2, ',', ' ') . ' €' : 'Gratuit' ?></span>
+                        </div>
+                        
+                        <?php if($totalDiscount > 0): ?>
+                            <div class="summary-line text-danger">
+                                <span class="label">Remise initiale</span>
+                                <span class="value">- <?= number_format($totalDiscount, 2, ',', ' ') ?> €</span>
+                            </div>
+                        <?php endif; ?>
+
+                        <div class="summary-line text-danger display-none-box" id="summaryDiscountLine">
+                            <span class="label">Remise code promo</span>
+                            <span class="value" id="summaryDiscountValue">- 0,00 €</span>
+                        </div>
+                        
+                        <div class="summary-line-separator"></div>
+                        
+                        <div class="summary-line total-large-line">
+                            <span class="label">Total TTC</span>
+                            <span id="finalTotalAmount" class="value color-success font-size-large"><?= number_format($finalTotal, 2, ',', ' ') ?> €</span>
+                        </div>
+                    </div>
+
+                   
