@@ -111,5 +111,16 @@
     text-align: center;
     overflow: hidden;
 
+    /* Le texte de message en premier plan */
+    .empty-msg-text {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #495057;
+        z-index: 2;
+        position: relative;
+        padding: 0 20px;
+        line-height: 1.5;
+    }
+
    
 }
