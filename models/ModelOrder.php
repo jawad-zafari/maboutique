@@ -123,6 +123,14 @@ class ModelOrder extends Model
         $shippingPrice = $this->getShippingPrice($shippingMethodId);
 
         $codePromo = $cleanData['code_promo'] ?? '';
+        if (!empty($codePromo)) {
+            $promo = $this->verifyPromoCode($codePromo);
+            if ($promo && isset($promo['discount_percent'])) {
+                $promoDiscount = ($totalProductsPrice * (float)$promo['discount_percent']) / 100;
+                $totalDiscount += $promoDiscount;
+            }
+        }
+
        
     }
 }
