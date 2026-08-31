@@ -151,7 +151,31 @@ class ModelOrder extends Model
             $maskedCard = 'N/A';
         }
 
-       
+        // L'adresse vient de la BDD, elle est déjà brute et sécurisée via PDO
+        $lastName    = $addressInfo['last_name'] ?? '';
+        $mobile      = $addressInfo['mobile'] ?? '';
+        $province    = $addressInfo['province_name'] ?? '';
+        $city        = $addressInfo['city_name'] ?? '';
+        $postalCode  = $addressInfo['postal_code'] ?? '';
+        $addressText = $addressInfo['address'] ?? '';
+
+        $cartDataString = serialize($cartItems);
+
+        $timestamp = time();
+        $date = date('Y-m-d H:i:s');
+        $barcode = 'ORD-' . $timestamp . '-' . rand(100, 999);
+
+        $sql = "INSERT INTO orders 
+                (transaction_id_before, transaction_id_after, barcode, tracking_code, last_name, province, city, postal_code, mobile, phone, address_data, cart_data, total_amount, shipping_method_id, shipping_price, user_id, is_paid, payment_method_id, pay_card_number, pay_bank_name, created_timestamp, created_date) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?)";
+        
+        $params = [
+            '', '', $barcode, '', $lastName, $province, $city, $postalCode, $mobile, '', 
+            $addressText, $cartDataString, $totalAmount, $shippingMethodId, $shippingPrice, 
+            $userId, $paymentMethodId, $maskedCard, $payBankName, $timestamp, $date
+        ];
+        
+      
     }
 }
 ?>
