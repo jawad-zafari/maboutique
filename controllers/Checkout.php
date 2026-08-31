@@ -99,7 +99,21 @@ class Checkout extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
+            // Nettoyage strict et extraction manuelle (Anti Mass-Assignment)
+            $cleanData = [
+                'creditcard' => trim(strip_tags($_POST['creditcard'] ?? '')),
+                'bank'       => trim(strip_tags($_POST['bank'] ?? '')),
+                'day'        => (int)($_POST['day'] ?? 0),
+                'month'      => (int)($_POST['month'] ?? 0),
+                'year'       => (int)($_POST['year'] ?? 0)
+            ];
+
+            if (empty($cleanData['creditcard'])) {
+                header('Location: ' . URL . 'Checkout/bankTransfer/' . $orderIdInt . '?error=missing_card');
+                exit;
+            }
+
            
-    
+    }
 }
 ?>
