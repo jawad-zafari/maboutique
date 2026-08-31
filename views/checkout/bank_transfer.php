@@ -28,4 +28,41 @@ $orderId = (int)($orderInfo['id'] ?? 0);
                 </div>
             </div>
 
-           
+            <div class="form-grid margin-top-md">
+                <div class="form-group grid-full-width"> 
+                    <label>Date du virement :</label>
+                    <div class="date-select-group">
+                        <select name="day" class="form-control" aria-label="Jour du virement">
+                            <?php for ($i = 1; $i <= 31; $i++): ?>
+                                <option value="<?= $i ?>"><?= sprintf("%02d", $i) ?></option>
+                            <?php endfor; ?>
+                        </select>
+                        <select name="month" class="form-control" aria-label="Mois du virement">
+                            <?php for ($i = 1; $i <= 12; $i++): ?>
+                                <option value="<?= $i ?>"><?= sprintf("%02d", $i) ?></option>
+                            <?php endfor; ?>
+                        </select>
+                        <select name="year" class="form-control" aria-label="Année du virement">
+                            <?php 
+                            $currentYear = (int)date('Y'); 
+                            for ($i = $currentYear; $i >= $currentYear - 2; $i--): 
+                            ?>
+                                <option value="<?= $i ?>"><?= $i ?></option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-actions-right">
+            <button type="submit" class="btn-action">
+                <i class="fa-solid fa-check" aria-hidden="true"></i> Enregistrer les informations
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<script src="<?= URL ?>public/assets/js/checkout.js" defer></script>
