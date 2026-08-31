@@ -51,6 +51,25 @@ class ModelIndex extends Model
         return $result;
     }
 
+    public function getMostViewedProducts()
+    {
+        // SÉCURITÉ : Requête préparée pour récupérer la limite
+        $sqlLimit = "SELECT * FROM settings WHERE setting_key = ?";
+        $resultLimit = $this->doSelect($sqlLimit, ['limit_slider'], true);
+        
+        // SÉCURITÉ : Forçage du type en entier (Integer) pour prévenir l'injection SQL
+        $limit = isset($resultLimit['setting_value']) ? (int)$resultLimit['setting_value'] : 10;
+
+        $sql = "SELECT * FROM products ORDER BY views DESC LIMIT " . $limit;
+        $result = $this->doSelect($sql);
+
+        foreach ($result as $key => $row) {
+            $priceCalculate = $this->calculateDiscount($row['price'], $row['discount_percent']);
+            $result[$key]['price_total'] = $priceCalculate[1];
+        }
+        return $result;
+    }
+
    
 }
 ?>
