@@ -44,6 +44,12 @@ class ModelOrder extends Model
         return (int)self::$conn->lastInsertId();
     }
 
-    
+    public function getShippingTypes(): array 
+    {
+        $sql = "SELECT * FROM shipping_methods";
+        return $this->doSelect($sql);
+    }
+
+   
 }
 ?>
