@@ -1,0 +1,15 @@
+.cart-modern-container {
+    width: 100%; max-width: 1200px; margin: 30px auto; padding: 0 15px; font-family: $font-main;
+}
+
+.cart-header-main {
+    margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid #f1f3f5;
+    h2 { font-size: 1.5rem; font-weight: 800; color: #1a1a2e; margin: 0; display: flex; align-items: center; gap: 12px; }
+    i { color: $color-primary; }
+}
+
+.cart-grid-layout {
+    display: grid; grid-template-columns: 1fr; gap: 25px; align-items: start;
+    @media (min-width: $breakpoint-lg) { grid-template-columns: 1fr 380px; gap: 40px; }
+}
+
