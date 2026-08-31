@@ -4,11 +4,11 @@ class Index extends Controller
     public function __construct()
     {
         parent::__construct();
-        // Initialisation de la session
+        // Initialisation de la session globale
         Model::sessionInit();
     }
 
-    public function index()
+    public function index() : void
     {
         // Récupération des données dynamiques via le modèle
         $slider1 = $this->model->getMainSliders();
