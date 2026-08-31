@@ -81,6 +81,37 @@ document.addEventListener("DOMContentLoaded", () => {
         attachCardClickEvent(card);
     });
 
-   
+    // GESTION DU MODE DE PAIEMENT (Bascule Dynamique)
+    const paymentCards = document.querySelectorAll('.js-payment-card');
+    const cardDetailsBox = document.getElementById('cardPaymentDetails');
+    const bankDetailsBox = document.getElementById('bankTransferDetails');
+
+    if (paymentCards.length > 0) {
+        paymentCards.forEach(card => {
+            card.addEventListener('click', function() {
+                paymentCards.forEach(c => {
+                    c.classList.remove('active');
+                    const radio = c.querySelector('input[type="radio"]');
+                    if (radio) radio.checked = false;
+                });
+
+                this.classList.add('active');
+                const selectedRadio = this.querySelector('input[type="radio"]');
+                if (selectedRadio) selectedRadio.checked = true;
+
+                const method = this.getAttribute('data-method');
+
+                if (method === '1') {
+                    if (cardDetailsBox) cardDetailsBox.classList.remove('display-none-box');
+                    if (bankDetailsBox) bankDetailsBox.classList.add('display-none-box');
+                } else if (method === '2') {
+                    if (cardDetailsBox) cardDetailsBox.classList.add('display-none-box');
+                    if (bankDetailsBox) bankDetailsBox.classList.remove('display-none-box');
+                }
+            });
+        });
+    }
+
+    
 
 });
