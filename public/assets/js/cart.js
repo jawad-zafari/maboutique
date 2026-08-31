@@ -117,5 +117,48 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }, true);
 
+    // GESTION DES QUANTITÉS ET SUPPRESSION (Délégation d'événements)
+    document.body.addEventListener('click', (e) => {
+        
+        const btnMinus = e.target.closest('.btn-qty.minus');
+        if (btnMinus) {
+            const cartRow = btnMinus.getAttribute('data-row');
+            const container = btnMinus.closest('.quantity-selector-modern') || btnMinus.closest('.qty-wrapper');
+            if (container) {
+                const input = container.querySelector('.input-qty');
+                let currentVal = parseInt(input.value, 10);
+                if (currentVal > 1) {
+                    currentVal--;
+                    input.value = currentVal;
+                    updateCartItem(currentVal, cartRow);
+                }
+            }
+            return;
+        }
+
+        const btnPlus = e.target.closest('.btn-qty.plus');
+        if (btnPlus) {
+            const cartRow = btnPlus.getAttribute('data-row');
+            const container = btnPlus.closest('.quantity-selector-modern') || btnPlus.closest('.qty-wrapper');
+            if (container) {
+                const input = container.querySelector('.input-qty');
+                let currentVal = parseInt(input.value, 10);
+                // Limite théorique pour éviter les abus (Anti-Spam)
+                if (currentVal < 99) {
+                    currentVal++;
+                    input.value = currentVal;
+                    updateCartItem(currentVal, cartRow);
+                }
+            }
+            return;
+        }
+
+        const btnRemove = e.target.closest('.btn-remove-item');
+        if (btnRemove) {
+            const cartRow = btnRemove.getAttribute('data-row');
+            deleteCartItem(cartRow);
+        }
+    });
+
     
 });
