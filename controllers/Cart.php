@@ -37,7 +37,9 @@ class Cart extends Controller
         // Vérification stricte du jeton CSRF
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
-       
+        $this->model->deleteCartItem((int)$cartRowId);
+        
+        
     }
 
     
