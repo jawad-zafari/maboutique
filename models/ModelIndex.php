@@ -100,6 +100,17 @@ class ModelIndex extends Model
         return $this->doSelect($sql);
     }
 
+    //  Récupère les marques (Catégories définies comme marques)
+     
+    public function getBrands($limit = 6)
+    {
+        // SÉCURITÉ : Forçage du type (Integer)
+        $safeLimit = (int)$limit;
+        // SÉCURITÉ : Utilisation de requête préparée
+        $sql = "SELECT * FROM categories WHERE is_brand = ? ORDER BY id DESC LIMIT " . $safeLimit;
+        return $this->doSelect($sql, [1]);
+    }
+
    
 }
 ?>
