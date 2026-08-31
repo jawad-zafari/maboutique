@@ -81,5 +81,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 3000); // 3000ms = 3 secondes
     }
 
+    // VALIDATION DU FORMULAIRE VIREMENT BANCAIRE (Côté Client)
+    const formBankTransfer = document.querySelector('form[action*="Checkout/bankTransfer"]');
     
+    if (formBankTransfer) {
+        formBankTransfer.addEventListener('submit', (e) => {
+            const creditCardInput = document.getElementById('creditcard');
+            if (creditCardInput) {
+                // Suppression des espaces pour vérifier la longueur
+                const cardValue = creditCardInput.value.replace(/\s+/g, '');
+                if (cardValue.length < 4) {
+                    e.preventDefault(); 
+                    showPaymentToast("Veuillez saisir un numéro de compte ou de référence valide.");
+                    creditCardInput.classList.add('is-invalid');
+                    creditCardInput.focus();
+                }
+            }
+        });
+    }
 });
