@@ -1,6 +1,6 @@
 <?php 
 $orderInfo = $data['orderInfo'] ?? []; 
-// SÉCURITÉ CRITIQUE : Prévention des attaques PHP Object Injection via unserialize
+// Prévention des attaques PHP Object Injection via unserialize
 $cart = !empty($orderInfo['cart_data']) ? unserialize($orderInfo['cart_data'], ['allowed_classes' => false]) : [];
 
 $subTotal = 0;
