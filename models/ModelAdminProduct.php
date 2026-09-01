@@ -142,6 +142,36 @@ class ModelAdminProduct extends Model
         return is_array($result) ? $result : [];
     }
 
+    public function addGallery(int $productId, ?array $files): void
+    {
+        if (empty($files['name'][0])) return;
+        
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+        $folder = 'public/images/products/' . $productId . '/gallery/large/';
+        $smallFolder = 'public/images/products/' . $productId . '/gallery/small/';
+        
+        if (!file_exists($folder)) mkdir($folder, 0777, true);
+        if (!file_exists($smallFolder)) mkdir($smallFolder, 0777, true);
+
+        for ($i = 0; $i < count($files['name']); $i++) {
+            if ($files['error'][$i] === 0) {
+                $ext = strtolower(pathinfo($files['name'][$i], PATHINFO_EXTENSION));
+                if (!in_array($ext, $allowedExtensions)) continue;
+                
+                $mime = mime_content_type($files['tmp_name'][$i]);
+                if (strpos($mime, 'image/') !== 0) continue;
+
+                $fileName = time() . '_' . rand(1000, 9999) . '.' . $ext;
+                $dest = $folder . $fileName;
+
+                if (move_uploaded_file($files['tmp_name'][$i], $dest)) {
+                    $this->create_thumbnail($dest, $smallFolder . $fileName, 115, 115);
+                    $this->doQuery("INSERT INTO product_galleries (product_id, image_name) VALUES (?, ?)", [$productId, $fileName]);
+                }
+            }
+        }
+    }
+
    
 }
 ?>
