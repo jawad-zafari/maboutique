@@ -67,3 +67,13 @@
     } 
 }
 
+/* --- RÉSUMÉ FINANCIER (COLONNE DROITE) --- */
+.checkout-summary-card {
+    background-color: #ffffff; border-radius: 16px; padding: 25px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); border: 1px solid #e2e8f0; position: sticky; top: 20px;
+    h3 { margin: 0 0 20px 0; font-size: 1.15rem; font-weight: 800; color: #1a1a2e; border-bottom: 1px solid #f1f3f5; padding-bottom: 15px; }
+    .summary-lines-box { display: flex; flex-direction: column; gap: 12px; }
+    .summary-line { display: flex; justify-content: space-between; align-items: center; .label { color: #868e96; font-size: 0.9rem; font-weight: 600; } .value { color: #495057; font-size: 0.95rem; font-weight: 700; } }
+    .summary-line-separator { border-top: 2px dashed #e9ecef; margin: 10px 0; }
+    .total-large-line { padding-top: 5px; .label { color: #1a1a2e; font-size: 1.1rem; font-weight: 800; } .value { color: #0033fe; font-size: 1.3rem; font-weight: 900; } }
+}
+
