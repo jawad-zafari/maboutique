@@ -55,6 +55,49 @@ class ModelAdminProduct extends Model
         return is_array($result) ? $result : [];
     }
 
-   
+    public function addProductAction(array $data, int $productId, ?array $file): void
+    {
+        // Sauvegarde des données brutes (L'échappement XSS est délégué à la vue)
+        $title = trim($data['title'] ?? '');
+        
+        // Autorisation de tags spécifiques pour l'éditeur WYSIWYG
+        $description = strip_tags(trim($data['description'] ?? ''), '<b><i><strong><em><u><ul><li><ol><p><br>');
+        
+        $categoryId = (int)($data['categoryId'] ?? 0);
+        $price = (int)($data['price'] ?? 0);
+        $discount = (int)($data['discount'] ?? 0);
+
+        if (empty($title)) return;
+
+        if (empty($productId)) {
+            $sql = "INSERT INTO products (title, category_id, price, discount_percent, description) VALUES (?, ?, ?, ?, ?)";
+            $this->doQuery($sql, [$title, $categoryId, $price, $discount, $description]);
+            $productId = (int)self::$conn->lastInsertId();
+        } else {
+            $sql = "UPDATE products SET title = ?, category_id = ?, price = ?, discount_percent = ?, description = ? WHERE id = ?";
+            $this->doQuery($sql, [$title, $categoryId, $price, $discount, $description, $productId]);
+            
+            $this->doQuery("DELETE FROM product_colors WHERE product_id = ?", [$productId]);
+            $this->doQuery("DELETE FROM product_guarantees WHERE product_id = ?", [$productId]);
+        }
+
+        if (!empty($data['color']) && is_array($data['color'])) {
+            foreach ($data['color'] as $colorId) {
+                $this->doQuery("INSERT INTO product_colors (product_id, color_id) VALUES (?, ?)", [$productId, (int)$colorId]);
+            }
+        }
+        
+        if (!empty($data['garantee']) && is_array($data['garantee'])) {
+            foreach ($data['garantee'] as $gId) {
+                $this->doQuery("INSERT INTO product_guarantees (product_id, guarantee_id) VALUES (?, ?)", [$productId, (int)$gId]);
+            }
+        }
+
+        if ($file !== null) {
+            $this->uploadProductImage($file, $productId);
+        }
+    }
+
+    
 }
 ?>
