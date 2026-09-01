@@ -18,7 +18,9 @@
             // Inclusion dynamique du script JS
             if (file_exists($physicalPath)): 
         ?>
-            
+            <!-- échappement XSS -->
+            <script src="<?= URL ?><?= $this->e($scriptUrlPath) ?>" defer></script>
+        <?php endif; ?>
     <?php endif; ?>
     
 </body>
