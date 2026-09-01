@@ -92,3 +92,37 @@
     padding: 40px 20px; text-align: center; color: #495057; font-weight: bold;
 }
 
+//    STYLES DES ATTRIBUTS DU PRODUIT
+.attr-grid-layout {
+    display: grid; grid-template-columns: 1fr; gap: 15px;
+    @media (min-width: $breakpoint-md) { grid-template-columns: repeat(2, 1fr); }
+    @media (min-width: $breakpoint-lg) { grid-template-columns: repeat(3, 1fr); }
+}
+
+.attr-group-card {
+    background: $bg-white; border: 1px solid $border-color; border-radius: $radius-sm; padding: 15px;
+    box-shadow: $shadow-sm; display: flex; flex-direction: column; gap: 10px;
+    
+    .attr-title { font-weight: 700; font-size: $font-size-sm; color: $color-text; }
+    .attr-action-link {
+        margin-top: auto; text-align: right;
+        .link-success { color: $color-success; font-size: 0.8rem; font-weight: bold; text-decoration: none; &:hover { opacity: 0.8; } }
+    }
+}
+
+.border-top-dashed { border-top: 1px dashed $border-color; padding-top: 20px; margin-top: 20px; }
+
+/* Classes Utilitaires */
+.col-img { width: 80px; }
+.col-action { width: 70px; }
+.col-check { width: 60px; }
+.mt-20 { margin-top: 20px; }
+.mt-30 { margin-top: 30px; }
+.mb-15 { margin-bottom: 15px; }
+.mb-25 { margin-bottom: 25px; }
+.m-0 { margin: 0; }
+.flex-grow-1 { flex-grow: 1; }
+.align-self-end { align-self: flex-end; }
+.flex-end-container { display: flex; justify-content: flex-end; }
+.table-thumb-product { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; border: 1px solid #e2e8f0; }
+.empty-state-icon { font-size: 3rem; color: #ced4da; margin-bottom: 10px; }
