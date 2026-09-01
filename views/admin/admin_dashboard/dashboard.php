@@ -36,4 +36,13 @@
         </table>
     </div>
 
-   
+    <div class="dashboard-chart-wrapper">
+        <div id="salesChartContainer" class="dashboard-chart"
+             data-keys="<?= $jsonKeys ?>" 
+             data-values="<?= $jsonValues ?>"
+             aria-hidden="true">
+        </div>
+    </div>
+
+</div>
+
