@@ -77,6 +77,33 @@ class ModelAdminCategory extends Model
         }
     }
 
-   
+    public function deleteCategory($ids)
+    {
+        // Réinitialisation du tableau pour éviter les effets de bord lors d'appels multiples
+        $this->allChildrenIds = []; 
+        
+        $idsToVerify = array_map('intval', $ids);
+        
+        foreach ($idsToVerify as $id) {
+            $this->allChildrenIds[] = $id;
+            $this->getChildrenIds($id);
+        }
+        
+        $this->allChildrenIds = array_unique($this->allChildrenIds);
+        
+        if (!empty($this->allChildrenIds)) {
+            $idsString = implode(',', $this->allChildrenIds);
+            
+            // Suppression des catégories
+            $sql = "DELETE FROM categories WHERE id IN ($idsString)";
+            $this->doQuery($sql);
+            
+            // Nettoyage des attributs liés
+            $sqlAttr = "DELETE FROM attributes WHERE category_id IN ($idsString)";
+            $this->doQuery($sqlAttr);
+        }
+    }
+
+    
 }
 ?>
