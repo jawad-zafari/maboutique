@@ -65,6 +65,29 @@ function initAdminSidebar() {
         });
     }
 
-   
-
+    // FERMETURE AUTOMATIQUE POUR TOUS LES ÉCRANS
+    const navLinks = document.querySelectorAll('.sidebar-nav ul li a, .sidebar-footer .btn-footer');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Si la sidebar est ouverte, on la ferme peu importe la taille de l'écran
+            if (sidebar.classList.contains("open")) {
+                e.preventDefault(); 
+                
+                sidebar.classList.remove("open");
+                sidebar.setAttribute('aria-hidden', 'true');
+                toggleBtn.setAttribute('aria-expanded', 'false');
+                localStorage.setItem("adminSidebarState", "closed");
+                
+                if (overlay) overlay.classList.remove("active");
+                
+                // Attendre la fin de l'animation CSS (300ms) avant de charger la nouvelle page
+                setTimeout(() => {
+                    window.location.href = this.href;
+                }, 300); 
+            }
+        });
+    });
 }
+
+
