@@ -96,4 +96,31 @@ $pId = (int)($productInfo['id'] ?? 0);
                     </div>
                 </div>
 
-               
+                <div class="form-group">
+                    <label for="garanteeSelect">Ajouter des Garanties :</label>
+                    <select id="garanteeSelect" class="form-control">
+                        <option value="0">-- Sélectionner une garantie --</option>
+                        <?php foreach ($data['garantee'] ?? [] as $row): ?>
+                            <!-- SÉCURITÉ : data-title échappé pour protéger le JS (DOM-based XSS) -->
+                            <option value="<?= (int)$row['id']; ?>" data-title="<?= $this->e($row['title']) ?>">
+                                <?= $this->e($row['title']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <div id="garanteesContainer" class="tags-container" aria-live="polite">
+                        <?php foreach ($productInfo['garanteesInfo'] ?? [] as $row): ?>
+                            <span class="tag-item">
+                                <?= $this->e($row['title']) ?>
+                                <input type="hidden" name="garantee[]" value="<?= (int)$row['id']; ?>">
+                                <i class="fa-solid fa-circle-xmark btn-remove-tag" aria-hidden="true" title="Retirer cette garantie"></i>
+                            </span>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+            
+           
+
+        </div>
+    </form>
+</div>
