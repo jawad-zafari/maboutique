@@ -172,6 +172,28 @@ class ModelAdminProduct extends Model
         }
     }
 
+    public function deleteGallery(array $ids): void
+    {
+        if (empty($ids)) return;
+        
+        $safeIds = array_map('intval', $ids);
+        
+        foreach ($safeIds as $galleryId) {
+            $result = $this->doSelect("SELECT * FROM product_galleries WHERE id=?", [$galleryId], 'fetch');
+            if (!empty($result) && $result['image_name']) {
+                $productId = $result['product_id'];
+                
+                $galleryLargePath = 'public/images/products/' . $productId . '/gallery/large/' . $result['image_name'];
+                @unlink('public/images/products/' . $productId . '/gallery/small/' . $result['image_name']);
+                @unlink($galleryLargePath);
+            }
+        }
+        
+        $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
+        $sql = "DELETE FROM product_galleries WHERE id IN ($placeholders)";
+        $this->doQuery($sql, $safeIds);
+    }
+
    
 }
 ?>
