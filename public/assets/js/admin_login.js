@@ -40,7 +40,34 @@ document.addEventListener("DOMContentLoaded", () => {
                 passwordInput.style.borderColor = "#dc2626";
             }
 
-           
+            // Affichage dynamique des erreurs (Protection DOM-based XSS)
+            if (!isValid) {
+                event.preventDefault(); // Empêcher la soumission du formulaire
+                
+                // Construction du DOM de manière sécurisée
+                const icon = document.createElement('i');
+                icon.className = "fa-solid fa-triangle-exclamation";
+                icon.setAttribute('aria-hidden', 'true');
+                
+                const strong = document.createElement('strong');
+                strong.textContent = " Attention :";
+                
+                errorContainer.appendChild(icon);
+                errorContainer.appendChild(strong);
+                
+                const ul = document.createElement('ul');
+                ul.style.marginTop = "10px";
+                ul.style.paddingLeft = "20px";
+                
+                erreurs.forEach(msg => {
+                    const li = document.createElement('li');
+                    li.textContent = msg; // Assainissement natif via textContent
+                    ul.appendChild(li);
+                });
+                
+                errorContainer.appendChild(ul);
+                errorContainer.style.display = "block"; // Afficher la boîte d'erreur
+            }
         });
     }
 });
