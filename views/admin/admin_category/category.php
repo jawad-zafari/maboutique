@@ -29,4 +29,67 @@
         </div>
     </header>
 
-   
+    <form action="<?= URL ?>AdminCategory/deleteCategory/<?= (int)($data['categoryInfo']['id'] ?? 0) ?>" method="post" id="formActionAdmin">
+        
+        <input type="hidden" name="csrf_token" value="<?= $this->e($data['csrf_token'] ?? '') ?>">
+
+        <div class="admin-table-wrapper">
+            <table class="admin-table" aria-label="Liste des catégories">
+                <thead>
+                    <tr>
+                        <th scope="col" class="col-id">N°</th>
+                        <th scope="col">Titre de la catégorie</th>
+                        <th scope="col" class="text-center col-action">Sous-catégories</th>
+                        <th scope="col" class="text-center col-action">Attributs</th>
+                        <th scope="col" class="text-center col-action">Modifier</th>
+                        <th scope="col" class="text-center col-checkbox">
+                            <input type="checkbox" id="selectAllCheckboxes" class="admin-checkbox" aria-label="Sélectionner toutes les lignes">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                    $categories = $data['category'] ?? [];
+                    if(!empty($categories)): 
+                        foreach ($categories as $row): 
+                    ?>
+                    <tr>
+                        <td class="col-id"><strong><?= (int)$row['id']; ?></strong></td>
+                        
+                        <td>
+                            <!-- SÉCURITÉ : Protection XSS via la méthode e() du contrôleur -->
+                            <strong class="category-title-text"><?= $this->e($row['title']); ?></strong>
+                        </td>
+
+                        <td class="text-center">
+                            <a href="<?= URL ?>AdminCategory/showChildren/<?= (int)$row['id']; ?>" class="action-icon icon-children" title="Voir les sous-catégories" aria-label="Voir les sous-catégories">
+                                <i class="fa-solid fa-sitemap" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        
+                        <td class="text-center">
+                            <a href="<?= URL ?>AdminCategory/showAttributes/<?= (int)$row['id']; ?>" class="action-icon icon-list" title="Gérer les attributs" aria-label="Gérer les attributs">
+                                <i class="fa-solid fa-list-check" aria-hidden="true"></i>
+                            </a>
+                        </td>
+
+                        <td class="text-center">
+                            <a href="<?= URL ?>AdminCategory/addCategory/<?= (int)($data['categoryInfo']['id'] ?? 0) ?>/<?= (int)$row['id']; ?>" class="action-icon icon-edit" title="Modifier" aria-label="Modifier la catégorie">
+                                <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                            </a>
+                        </td>
+
+                        <td class="text-center">
+                            <input type="checkbox" name="id[]" value="<?= (int)$row['id']; ?>" class="admin-checkbox row-checkbox" aria-label="Sélectionner la ligne">
+                        </td>
+                    </tr>
+                    <?php endforeach; else: ?>
+                    <tr>
+                        <td colspan="6" class="text-empty-table">Aucune catégorie trouvée à ce niveau.</td>
+                    </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
