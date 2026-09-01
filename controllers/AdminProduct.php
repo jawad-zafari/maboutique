@@ -144,6 +144,24 @@ class AdminProduct extends Controller
         $this->view('admin/admin_product/reviews', $data);
     }
 
+    public function addReview(int $productId, int $reviewId = 0): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+            
+            $this->model->addReview($_POST, $productId, $reviewId);
+            header('Location: ' . URL . 'AdminProduct/reviews/' . $productId);
+            exit;
+        }
+
+        $data = [
+            'productInfo' => $this->model->getProductInfo($productId),
+            'naghdInfo' => $this->model->getReviewInfo($reviewId),
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        $this->view('admin/admin_product/add_review', $data);
+    }
+
     
 }
 ?>
