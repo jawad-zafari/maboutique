@@ -116,6 +116,23 @@ class ModelAdminCategory extends Model
         return $this->doSelect($sql, [(int)$categoryId, (int)$parentId]);
     }
 
-    
+    public function addAttribute($data, $categoryId, $editId)
+    {
+        // Les données sont stockées brutes. PDO protège.
+        $title = trim($data['title'] ?? '');
+        $parentId = (int)($data['parent'] ?? 0);
+        
+        if (empty($title)) return;
+
+        if ($editId > 0) {
+            $sql = "UPDATE attributes SET title = ?, parent_id = ? WHERE id = ?";
+            $this->doQuery($sql, [$title, $parentId, (int)$editId]);
+        } else {
+            $sql = "INSERT INTO attributes (title, category_id, parent_id) VALUES (?, ?, ?)";
+            $this->doQuery($sql, [$title, (int)$categoryId, $parentId]);
+        }
+    }
+
+   
 }
 ?>
