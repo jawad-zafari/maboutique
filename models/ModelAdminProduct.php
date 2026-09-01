@@ -247,6 +247,25 @@ class ModelAdminProduct extends Model
         return is_array($result) ? $result : [];
     }
 
-    
+    public function addReview(array $data, int $productId, int $reviewId): void
+    {
+        // Données stockées à l'état brut. PDO protège de l'injection SQL.
+        $title = trim($data['title'] ?? '');
+        
+        // Autorisation de balises HTML pour la description via un éditeur riche
+        $description = strip_tags(trim($data['description'] ?? ''), '<b><i><strong><em><u><ul><li><ol><p><br>');
+
+        if (empty($title)) return;
+
+        if (empty($reviewId)) {
+            $sql = "INSERT INTO reviews (product_id, title, description) VALUES (?, ?, ?)";
+            $this->doQuery($sql, [$productId, $title, $description]);
+        } else {
+            $sql = "UPDATE reviews SET title = ?, description = ? WHERE id = ?";
+            $this->doQuery($sql, [$title, $description, $reviewId]);
+        }
+    }
+
+
 }
 ?>
