@@ -49,6 +49,20 @@ class AdminOrder extends Controller
         exit;
     }
 
-    
+    public function detail(int $orderId): void
+    {
+        $orderStatuses = $this->model->orderStatus();
+        $orderInfo = $this->model->getOrderInfo($orderId);
+        
+        $data = [
+            'orderInfo' => $orderInfo,
+            'order_status' => $orderStatuses,
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        
+        $this->view('admin/admin_order/detail', $data);
+    }
+
+
 }
 ?>
