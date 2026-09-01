@@ -21,6 +21,15 @@ $pId = (int)($productInfo['id'] ?? 0);
         <!-- Jeton CSRF -->
         <input type="hidden" name="csrf_token" value="<?= $this->e($data['csrf_token'] ?? '') ?>">
 
-        
+        <div class="admin-form-box form-box-wide mx-auto">
+            
+            <div class="form-group">
+                <label for="productTitle">Titre du produit * :</label>
+                <!-- Injection des données sécurisées via la méthode e() -->
+                <input type="text" id="productTitle" name="title" class="form-control" value="<?= $isEdit ? $this->e($productInfo['title'] ?? '') : '' ?>" required aria-required="true">
+            </div>
+
+            
+        </div>
     </form>
 </div>
