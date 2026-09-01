@@ -16,6 +16,16 @@ class AdminDashboard extends Controller
         }
     }
 
-    
+    public function index()
+    {
+        // Récupération des statistiques optimisées depuis la base de données
+        $orderStatistics = $this->model->getStat();
+        
+        $data = [
+            'orderStat' => $orderStatistics
+        ];
+        
+           
+    }
 }
 ?>
