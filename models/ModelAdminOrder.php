@@ -68,6 +68,16 @@ class ModelAdminOrder extends Model
         return is_array($result) ? $result : [];
     }
 
-   
+    public function delete(array $data): void
+    {
+        if (empty($data['id']) || !is_array($data['id'])) return;
+        
+        // Placeholders dynamiques (?, ?, ?)
+        $safeIds = array_map('intval', $data['id']);
+        $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
+        
+        $sql = "DELETE FROM orders WHERE id IN ($placeholders)";
+        $this->doQuery($sql, $safeIds);
+    }
 }
 ?>
