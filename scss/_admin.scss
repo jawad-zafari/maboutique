@@ -225,3 +225,62 @@
     @media (min-width: $breakpoint-md) { width: auto !important; min-width: 250px; }
 }
 
+// CLASSES UTILITAIRES POUR IMAGES ET BOUTONS SPÉCIFIQUES
+
+.table-img-preview {
+    width: 50px;
+    height: 50px;
+    border-radius: $radius-sm;
+    object-fit: cover;
+    border: 1px solid $border-color;
+    transition: transform $transition-fast;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+.current-image-box {
+    margin-bottom: 10px; 
+    padding: 10px; 
+    border: 1px dashed $border-color; 
+    border-radius: $radius-sm; 
+    display: inline-block; 
+    background-color: $bg-light;
+
+    .image-label {
+        display: block; 
+        font-size: 0.85rem; 
+        color: $color-muted; 
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+
+    img {
+        max-width: 120px; 
+        border-radius: $radius-sm;
+        border: 1px solid $border-color;
+    }
+}
+
+.form-inline-action {
+    display: inline-block;
+    margin: 0;
+}
+
+.btn-icon-transparent {
+    background: none; 
+    border: none; 
+    padding: 0; 
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform $transition-fast;
+
+    &:hover { transform: scale(1.15); }
+
+    &.text-danger {
+        color: $color-danger;
+    }
+}
