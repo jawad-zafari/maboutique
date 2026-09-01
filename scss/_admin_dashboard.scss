@@ -1,0 +1,39 @@
+
+.dashboard-chart-wrapper {
+    background-color: $bg-white;
+    border-radius: $radius-sm;
+    box-shadow: $shadow-sm;
+    padding: 15px; 
+    margin-top: 20px;
+    
+    // la bordure générale doit être déclarée AVANT la bordure spécifique
+    border: 1px solid $border-color; 
+    border-top: 4px solid $color-primary; 
+
+    @media (min-width: $breakpoint-md) {
+        padding: 20px;
+    }
+
+    .dashboard-chart {
+        width: 100%;
+        height: 300px;
+        margin: 0 auto;
+
+        @media (min-width: $breakpoint-md) {
+            height: 400px;
+        }
+    }
+}
+
+// Classe utilitaire d'accessibilité 
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
