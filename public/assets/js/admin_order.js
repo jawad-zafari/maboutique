@@ -49,6 +49,23 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    
+    // GESTION DES BOUTONS INDÉPENDANTS (Impression et Retour)
+    const btnPrintInvoice = document.getElementById('btnPrintInvoice');
+    if (btnPrintInvoice) {
+        btnPrintInvoice.addEventListener('click', (event) => {
+            event.preventDefault();
+            window.print(); 
+        });
+    }
+
+    const btnBackHistory = document.getElementById('btnBackHistory');
+    if (btnBackHistory) {
+        btnBackHistory.addEventListener('click', (event) => {
+            event.preventDefault();
+            window.history.back(); 
+        });
+    }
+
+   
 
 });
