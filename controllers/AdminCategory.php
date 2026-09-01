@@ -64,6 +64,26 @@ class AdminCategory extends Controller
         $this->view('admin/admin_category/add_category', $data);
     }
 
-   
+    public function deleteCategory($parentId = 0)
+    {
+        // La suppression DOIT être une requête POST
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit;
+        }
+
+        // VÉRIFICATION CSRF
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        $ids = $_POST['id'] ?? [];
+        if (!empty($ids)) {
+            $this->model->deleteCategory($ids);
+        }
+        
+        header('Location: ' . URL . 'AdminCategory/showChildren/' . (int)$parentId);
+        exit;
+    }
+
+    
 }
 ?>
