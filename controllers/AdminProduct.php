@@ -27,6 +27,31 @@ class AdminProduct extends Controller
         $this->view('admin/admin_product/products', $data);
     }
 
-    
+    //  * Ajoute ou modifie un produit
+    public function addProduct(int $productId = 0): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // VÉRIFICATION CSRF CENTRALISÉE
+            $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+            
+            $image = $_FILES['image'] ?? null;
+            $this->model->addProductAction($_POST, $productId, $image);
+            
+            header('Location: ' . URL . 'AdminProduct/index?success=product_saved');
+            exit;
+        }
+
+        $data = [
+            'category' => $this->model->getCategory(),
+            'color' => $this->model->getColor(),
+            'garantee' => $this->model->getGarantee(),
+            'productInfo' => $this->model->getProductInfo($productId),
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        
+        $this->view('admin/admin_product/add_product', $data);
+    }
+
+   
 }
 ?>
