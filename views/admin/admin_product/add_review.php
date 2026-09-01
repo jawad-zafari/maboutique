@@ -21,6 +21,30 @@ $rId = (int)($reviewInfo['id'] ?? 0);
         </div>
     </header>
 
-   
+    <div class="admin-form-box form-box-wide mx-auto">
+        
+        <form action="<?= URL ?>AdminProduct/addReview/<?= $pId ?>/<?= $rId > 0 ? $rId : '' ?>" method="post" id="formReviewManage">
+            
+            <input type="hidden" name="csrf_token" value="<?= $this->e($data['csrf_token'] ?? '') ?>">
+            
+            <div class="form-group">
+                <label for="reviewTitle">Titre de la critique * :</label>
+                <!-- SÉCURITÉ : Injection propre avec e() -->
+                <input type="text" id="reviewTitle" name="title" class="form-control" value="<?= $isEdit ? $this->e($reviewInfo['title'] ?? '') : '' ?>" required aria-required="true" placeholder="Ex: Performances exceptionnelles...">
+            </div>
+
+            <div class="form-group mt-20">
+                <label for="editorDescription">Description détaillée * :</label>
+                <textarea id="editorDescription" name="description" class="form-control textarea-tall" required aria-required="true" aria-label="Description de la critique"><?= $this->e($reviewInfo['description'] ?? '') ?></textarea>
+            </div>
+
+            <div class="mt-20 flex-end-container">
+                <button type="submit" class="btn-admin-submit btn-wide" aria-label="Enregistrer la critique">
+                    <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Enregistrer la critique
+                </button>
+            </div>
+
+        </form>
+    </div>
 </div>
 <script src="<?= URL ?>public/assets/js/admin_product.js" defer></script>
