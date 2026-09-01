@@ -20,6 +20,19 @@ class ModelAdminProduct extends Model
         return '';
     }
 
-    
+    public function getProduct(): array
+    {
+        $sql = "SELECT * FROM products ORDER BY id DESC";
+        $products = $this->doSelect($sql);
+        
+        if (is_array($products)) {
+            foreach($products as $key => $p) {
+                $products[$key]['thumb_url'] = $this->findProductImage((int)$p['id'], 220);
+            }
+        }
+        return is_array($products) ? $products : [];
+    }
+
+   
 }
 ?>
