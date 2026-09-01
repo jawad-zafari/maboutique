@@ -56,7 +56,41 @@ document.addEventListener("DOMContentLoaded", () => {
                         return;
                     }
 
-                   
+                    // Création sécurisée des éléments DOM (Évite DOM-based XSS)
+                    const span = document.createElement('span');
+                    span.className = 'tag-item';
+                    span.textContent = title + " "; 
+
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = inputName;
+                    input.value = value;
+
+                    const icon = document.createElement('i');
+                    icon.className = 'fa-solid fa-circle-xmark btn-remove-tag';
+                    icon.setAttribute('aria-hidden', 'true');
+                    icon.title = 'Retirer cet élément';
+
+                    span.appendChild(input);
+                    span.appendChild(icon);
+                    containerEl.appendChild(span);
+                    
+                    this.selectedIndex = 0; 
+                }
+            });
+        }
+    }
+
+    setupTagSelection('colorSelect', 'colorsContainer', 'color[]');
+    setupTagSelection('garanteeSelect', 'garanteesContainer', 'garantee[]');
+
+    // Suppression d'un tag (Délégation d'événements pour les éléments injectés dynamiquement)
+    document.body.addEventListener('click', (event) => {
+        if (event.target.classList.contains('btn-remove-tag')) {
+            const tagItem = event.target.closest('.tag-item');
+            if (tagItem) tagItem.remove();
+        }
     });
 
+   
 });
