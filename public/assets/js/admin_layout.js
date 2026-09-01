@@ -90,4 +90,9 @@ function initAdminSidebar() {
     });
 }
 
-
+// Initialisation sûre au chargement complet du DOM
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initAdminSidebar);
+} else {
+    initAdminSidebar();
+}
