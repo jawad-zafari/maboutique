@@ -153,6 +153,21 @@ class ModelAdminCategory extends Model
         return $this->doSelect($sql, [(int)$attrId]);
     }
 
-    
+    public function saveAttrVal($data, $attrId)
+    {
+        $safeAttrId = (int)$attrId;
+
+        // Insérer les nouvelles valeurs brutes
+        $attrValNew = array_filter($data['attrvalnew'] ?? []);
+        foreach ($attrValNew as $val) {
+            $rawVal = trim($val);
+            if (!empty($rawVal)) {
+                $sql = "INSERT INTO attribute_values (attribute_id, value) VALUES (?, ?)";
+                $this->doQuery($sql, [$safeAttrId, $rawVal]);
+            }
+        }
+        
+       
+    }
 }
 ?>
