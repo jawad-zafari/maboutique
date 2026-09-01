@@ -24,6 +24,26 @@ document.addEventListener("DOMContentLoaded", () => {
         toast.style.backgroundColor = (type === 'danger') ? '#e03131' : '#2b8a3e';
         toast.innerHTML = ''; // Nettoyage sécurisé
         
-       
+        const icon = document.createElement('i');
+        icon.className = type === 'danger' ? 'fa-solid fa-circle-exclamation' : 'fa-solid fa-circle-check';
+        icon.style.marginRight = '10px';
+        
+        // textNode empêche l'injection de code HTML/JS (DOM-based XSS)
+        const textNode = document.createTextNode(message);
+        
+        toast.appendChild(icon);
+        toast.appendChild(textNode);
+
+        toast.style.opacity = '1';
+        toast.style.display = 'block';
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => { toast.style.display = 'none'; }, 300);
+        }, 3500);
+    }
+
+    
+    
 
 });
