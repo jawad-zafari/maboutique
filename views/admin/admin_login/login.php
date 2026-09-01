@@ -60,5 +60,6 @@
         </div>
     </div>
 
+    <script src="<?= URL ?>public/assets/js/admin_login.js" defer></script>
 </body>
 </html>
