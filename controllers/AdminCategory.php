@@ -140,6 +140,23 @@ class AdminCategory extends Controller
         exit;
     }
 
-    
+    public function attributeValues($attributeId)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submited'])) {
+            $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+            $this->model->saveAttrVal($_POST, (int)$attributeId);
+            
+            header('Location: ' . URL . 'AdminCategory/attributeValues/' . (int)$attributeId);
+            exit;
+        }
+
+        $data = [
+            'attrval' => $this->model->getAttrVal((int)$attributeId),
+            'attrInfo' => $this->model->attrInfo((int)$attributeId),
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+
+        $this->view('admin/admin_category/attr_val', $data);
+    }
 }
 ?>
