@@ -119,7 +119,11 @@ $pId = (int)($productInfo['id'] ?? 0);
                 </div>
             </div>
             
-           
+            <div class="form-action-right mt-30 flex-end-container">
+                <button type="submit" class="btn-admin-submit-new" aria-label="Enregistrer les informations du produit">
+                    <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Enregistrer le produit
+                </button>
+            </div>
 
         </div>
     </form>
