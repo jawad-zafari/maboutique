@@ -70,7 +70,37 @@ $orderId = (int)($orderInfo['id'] ?? 0);
             </div>
         </div>
 
-       
+        <table class="invoice-table" aria-label="Détail de la facture">
+            <thead>
+                <tr>
+                    <th scope="col">Désignation du produit</th>
+                    <th scope="col" class="text-center">Quantité</th>
+                    <th scope="col" class="text-right">Prix Unitaire HT</th>
+                    <th scope="col" class="text-right">Prix Total TTC</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (!empty($cart)): foreach ($cart as $row): 
+                    $qty = (int)($row['quantity'] ?? 1);
+                    $unitPrice = (float)($row['price'] ?? 0);
+                ?>
+                <tr>
+                    <td>
+                        <strong><?= $this->e($row['title'] ?? '') ?></strong><br>
+                        <small class="text-muted"><?= $this->e($row['colorTitle'] ?? '') ?> - <?= $this->e($row['garanteeTitle'] ?? '') ?></small>
+                    </td>
+                    <td class="text-center"><?= $qty ?></td>
+                    <td class="text-right"><?= number_format($unitPrice * 0.8, 2, ',', ' ') ?> €</td>
+                    <td class="text-right"><strong><?= number_format($unitPrice * $qty, 2, ',', ' ') ?> €</strong></td>
+                </tr>
+                <?php endforeach; else: ?>
+                <tr><td colspan="4" class="text-center">Aucun produit détaillé trouvé.</td></tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+
+        
+    </div>
 
     <script src="<?= URL ?>public/assets/js/admin_order.js" defer></script>
 </body>
