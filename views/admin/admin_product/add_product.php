@@ -55,8 +55,24 @@ $pId = (int)($productInfo['id'] ?? 0);
 
             <div class="admin-divider"></div>
 
-            
+            <div class="form-group">
+                <label for="productImage">Image Principale (Format JPG/PNG/WEBP) :</label>
+                <?php if ($isEdit): ?>
+                    <div class="current-image-box mb-10">
+                        <span class="image-label text-muted">Image actuelle :</span>
+                        <img src="<?= URL ?>public/images/products/<?= $pId ?>/product_220.jpg?v=<?= time() ?>" alt="Aperçu" class="preview-thumb-small" onerror="this.style.display='none'">
+                    </div>
+                <?php endif; ?>
+                <input type="file" id="productImage" name="image" class="form-control" accept="image/jpeg, image/png, image/webp" <?= !$isEdit ? 'required' : '' ?>>
+            </div>
 
-        </div>
+            <div class="form-group mt-20">
+                <label for="editorDescription">Description détaillée du produit :</label>
+                <textarea id="editorDescription" name="description" class="form-control textarea-tall" aria-label="Description"><?= $this->e($productInfo['description'] ?? '') ?></textarea>
+            </div>
+
+            <div class="admin-divider"></div>
+
+            
     </form>
 </div>
