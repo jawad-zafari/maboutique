@@ -1,23 +1,21 @@
 <?php
 
+
 class Model
 {
     public static ?PDO $conn = null;
-    public $totalMenu = array();
+    public array $totalMenu = [];
 
     public function __construct()
     {
-        // Chemin d'accès au fichier de configuration
         $envPath = __DIR__ . '/env.php';
 
-        // Vérification de l'existence du fichier de configuration
         if (file_exists($envPath)) {
             require_once $envPath;
         } else {
-            die("Erreur : Le fichier de configuration 'core/env.php' est introuvable. Veuillez le créer à partir de env.example.php.");
+            die("Erreur : Le fichier de configuration 'core/env.php' est introuvable.");
         }
 
-        // Vérification des constantes requises pour la base de données
         if (!defined('DB_HOST') || !defined('DB_USER') || !defined('DB_PASS') || !defined('DB_NAME')) {
             die("Erreur : Les variables de connexion à la base de données sont incomplètes.");
         }
@@ -27,27 +25,25 @@ class Model
         $password   = DB_PASS;
         $dbname     = DB_NAME;
 
-        $initCommand = defined('Pdo\Mysql::ATTR_INIT_COMMAND') ? \Pdo\Mysql::ATTR_INIT_COMMAND : \PDO::MYSQL_ATTR_INIT_COMMAND;
-
-        // Configuration des options PDO
-        $attr = array(
-            $initCommand => "SET NAMES utf8mb4",
+        // Configuration des options PDO 
+        $attr = [
+            1002 => "SET NAMES utf8mb4", 
             PDO::ATTR_EMULATE_PREPARES => false,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        );
+        ];
 
-        // Initialisation de la connexion à la base de données (Singleton)
+        // Modèle Singleton pour la connexion PDO
         if (self::$conn === null) {
             try {
                 self::$conn = new PDO('mysql:host=' . $servername . ';dbname=' . $dbname, $username, $password, $attr);
             } catch (PDOException $e) {
-                die("Erreur critique : Connexion à la base de données échouée. Vérifiez vos identifiants.");
+                die("Erreur critique : Connexion à la base de données échouée.");
             }
         }
     }
 
     // Récupère les paramètres globaux du système depuis la base de données
-    public static function getoption()
+    public static function getoption(): array
     {
         if (self::$conn === null) {
             new self();
@@ -56,7 +52,7 @@ class Model
         $stmt = self::$conn->prepare($sql);
         $stmt->execute();
         $optionsList = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $options_new = array();
+        $options_new = [];
 
         foreach ($optionsList as $option) {
             $setting = $option['setting_key'];
@@ -66,19 +62,21 @@ class Model
         return $options_new;
     }
 
-    public function calculateDiscount($price, $discount)
+    // Calcule la remise sur le prix d'un produit
+    public function calculateDiscount(float $price, float $discount): array
     {
         $price_discount = ($discount * $price) / 100;
         $price_total = $price - $price_discount;
-        return array($price_discount, $price_total);
+        return [$price_discount, $price_total];
     }
 
-    public function calculateProductsPrices($products)
+    // Applique le calcul de remise à une liste de produits
+    public function calculateProductsPrices(array $products): array
     {
-        if (!is_array($products)) return array();
+        if (empty($products)) return [];
         foreach ($products as $key => $product) {
-            $price = $product['price'] ?? 0;
-            $discount = $product['discount_percent'] ?? 0;
+            $price = (float)($product['price'] ?? 0);
+            $discount = (float)($product['discount_percent'] ?? 0);
             $prices = $this->calculateDiscount($price, $discount);
 
             $products[$key]['price_discount'] = $prices[0];
@@ -87,8 +85,8 @@ class Model
         return $products;
     }
 
-    // Exécute une requête SELECT de manière sécurisée
-    public function doSelect($sql, $values = array(), $fetch = '', $fetchStyle = PDO::FETCH_ASSOC)
+    // Exécute une requête SELECT de manière sécurisée (Requêtes préparées)
+    public function doSelect(string $sql, array $values = [], string $fetch = '', int $fetchStyle = PDO::FETCH_ASSOC): mixed
     {
         $stmt = self::$conn->prepare($sql);
         foreach ($values as $key => $value) {
@@ -96,7 +94,7 @@ class Model
         }
         $stmt->execute();
 
-        if ($fetch == '') {
+        if ($fetch === '') {
             $result = $stmt->fetchAll($fetchStyle);
         } else {
             $result = $stmt->fetch($fetchStyle);
@@ -105,7 +103,7 @@ class Model
     }
 
     // Exécute une requête INSERT, UPDATE ou DELETE
-    public function doQuery($sql, $values = array())
+    public function doQuery(string $sql, array $values = []): void
     {
         $stmt = self::$conn->prepare($sql);
         foreach ($values as $key => $value) {
@@ -117,23 +115,27 @@ class Model
     // Récupère le nombre total de favoris pour un utilisateur spécifique
     public function getFavoriteCount(int $userId): int
     {
-        if (!$userId) {
+        if ($userId <= 0) {
             return 0;
         }
 
         $sql = "SELECT COUNT(*) as total FROM favorites WHERE user_id = ?";
-        $result = $this->doSelect($sql, [$userId], 1);
+        $result = $this->doSelect($sql, [$userId], 'fetch');
 
         return isset($result['total']) ? (int)$result['total'] : 0;
     }
 
     // Redimensionne et sauvegarde une image
-    public function create_thumbnail($file, $pathToSave, $w, $h = '', $crop = false)
+    public function create_thumbnail(string $file, string $pathToSave, int $w, int $h = 0, bool $crop = false): bool
     {
         if (!file_exists($file)) return false;
 
         $new_height = $h;
-        list($width, $height) = getimagesize($file);
+        $imageSize = getimagesize($file);
+        if (!$imageSize) return false;
+        
+        $width = $imageSize[0];
+        $height = $imageSize[1];
         if (!$width || !$height) return false;
 
         $r = $width / $height;
@@ -144,21 +146,19 @@ class Model
             } else {
                 $height = (int) round($height - ($height * abs($r - $w / $h)));
             }
-            $newwidth = (int) $w;
-            $newheight = (int) $h;
+            $newwidth = $w;
+            $newheight = $h;
         } else {
             if ($w / $h > $r) {
                 $newwidth = (int) round($h * $r);
-                $newheight = (int) $h;
+                $newheight = $h;
             } else {
                 $newheight = (int) round($w / $r);
-                $newwidth = (int) $w;
+                $newwidth = $w;
             }
         }
 
-        $what = getimagesize($file);
-
-        switch (strtolower($what['mime'])) {
+        switch (strtolower($imageSize['mime'])) {
             case 'image/png': $src = imagecreatefrompng($file); break;
             case 'image/jpeg': $src = imagecreatefromjpeg($file); break;
             case 'image/gif': $src = imagecreatefromgif($file); break;
@@ -166,20 +166,20 @@ class Model
             default: return false;
         }
 
-        if ($new_height != '') {
-            $newheight = (int) $new_height;
+        if ($new_height !== 0) {
+            $newheight = $new_height;
         }
 
         $dst = imagecreatetruecolor($newwidth, $newheight);
 
-        if (strtolower($what['mime']) == 'image/png' || strtolower($what['mime']) == 'image/webp') {
+        if (strtolower($imageSize['mime']) === 'image/png' || strtolower($imageSize['mime']) === 'image/webp') {
             imagealphablending($dst, false);
             imagesavealpha($dst, true);
             $transparent = imagecolorallocatealpha($dst, 255, 255, 255, 127);
             imagefilledrectangle($dst, 0, 0, $newwidth, $newheight, $transparent);
         }
 
-        imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, (int) $width, (int) $height);
+        imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
 
         $ext = strtolower(pathinfo($pathToSave, PATHINFO_EXTENSION));
         switch ($ext) {
@@ -189,36 +189,36 @@ class Model
             default: imagejpeg($dst, $pathToSave, 95);
         }
 
-        unset($src);
-        unset($dst);
+        imagedestroy($src);
+        imagedestroy($dst);
 
         return true;
     }
 
     // Gestion propre du démarrage de la session
-    public static function sessionInit()
+    public static function sessionInit(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
     }
 
-    public static function sessionSet($name, $value)
+    public static function sessionSet(string $name, mixed $value): void
     {
         self::sessionInit();
         $_SESSION[$name] = $value;
     }
 
-    public static function sessionGet($name)
+    public static function sessionGet(string $name): mixed
     {
         self::sessionInit();
-        return isset($_SESSION[$name]) ? $_SESSION[$name] : false;
+        return $_SESSION[$name] ?? false;
     }
 
-    // Génère un identifiant unique pour le panier
-    public static function getCartCookie()
+    // Génère un identifiant unique pour le panier via un cookie
+    public static function getCartCookie(): string
     {
-        if (isset($_COOKIE['cart']) && !empty($_COOKIE['cart'])) {
+        if (!empty($_COOKIE['cart'])) {
             return $_COOKIE['cart'];
         } else {
             $expire = time() + 7 * 24 * 3600;
@@ -235,7 +235,8 @@ class Model
         }
     }
 
-    public function getCart()
+    // Récupère les données complètes du panier de l'utilisateur
+    public function getCart(): array
     {
         $sql = "SELECT c.quantity AS quantity, c.id AS cartRow, p.*, cl.title AS colorTitle, g.title AS garanteeTitle
          FROM cart_items c 
@@ -245,38 +246,35 @@ class Model
          WHERE c.session_cookie = ?";
 
         $cookie = self::getCartCookie();
-        $params = array($cookie);
-        $result = $this->doSelect($sql, $params);
+        $result = $this->doSelect($sql, [$cookie]);
         $discountTotalAll = 0;
+        $priceTotalAll = 0;
 
         foreach ($result as $key => $row) {
             $discount = (($row['discount_percent'] ?? 0) * ($row['price'] ?? 0)) / 100;
-            $discountTotal = ($row['quantity'] ?? 1) * $discount;
-            $discountTotalAll = $discountTotalAll + $discountTotal;
+            $quantity = (int)($row['quantity'] ?? 1);
+            $discountTotal = $quantity * $discount;
+            $discountTotalAll += $discountTotal;
             $result[$key]['discountTotal'] = $discountTotal;
-        }
 
-        $priceTotalall = 0;
-        foreach ($result as $row) {
-            $price = $row['price'] ?? 0;
-            $quantity = $row['quantity'] ?? 1;
+            $price = (float)($row['price'] ?? 0);
             $priceTotal = $price * $quantity;
-            $priceTotalall = $priceTotalall + $priceTotal;
+            $priceTotalAll += $priceTotal;
         }
 
-        return array($result, $priceTotalall, $discountTotalAll);
+        return [$result, $priceTotalAll, $discountTotalAll];
     }
 
     // Calcule les frais de livraison (Méthodes locales uniquement)
-    public function calculatePostPrice($cityId = 0)
+    public function calculatePostPrice(int $cityId = 0): array
     {
         $sql = "SELECT id, price FROM shipping_methods";
         $methods = $this->doSelect($sql);
         
-        $prices = array(
+        $prices = [
             'express' => 5.00, 
             'standard' => 0.00
-        );
+        ];
 
         if (is_array($methods)) {
             foreach ($methods as $method) {
@@ -294,12 +292,12 @@ class Model
         return $prices;
     }
 
-    public static function getCurrentDate($format = 'Y-m-d H:i:s') 
+    public static function getCurrentDate(string $format = 'Y-m-d H:i:s'): string 
     {
         return date($format);
     }
 
-    public static function formatDateForDB($dateStr, $format = '/')
+    public static function formatDateForDB(string $dateStr, string $format = '/'): string
     {
         try {
             $cleanDate = str_replace('/', '-', $dateStr);
@@ -310,7 +308,7 @@ class Model
         }
     }
 
-    public static function formatDateForDisplay($dateStr, $format = '/')
+    public static function formatDateForDisplay(string $dateStr, string $format = '/'): string
     {
         try {
             $cleanDate = str_replace('/', '-', $dateStr);
@@ -321,14 +319,15 @@ class Model
         }
     }
 
-    public function getMenu($parentId = 0)
+    // Récupère l'arborescence des catégories (Menu)
+    public function getMenu(int $parentId = 0): array
     {
-        $data = array();
+        $data = [];
         $sql = "SELECT * FROM categories WHERE parent_id = ?";
-        $result = $this->doSelect($sql, array($parentId));
+        $result = $this->doSelect($sql, [$parentId]);
         foreach ($result as $row) {
-            $children = $this->getMenu($row['id']);
-            if (is_array($children) && count($children) > 0) {
+            $children = $this->getMenu((int)$row['id']);
+            if (!empty($children)) {
                 $row['children'] = $children;
             }
             $data[] = $row;
@@ -336,16 +335,17 @@ class Model
         return $data;
     }
 
-    public static function getUserLevel()
+    // Récupère le niveau d'accès de l'utilisateur (Pour le RBAC)
+    public static function getUserLevel(): int
     {
         self::sessionInit();
-        $userId = self::sessionGet('userId');
-        if (!$userId) return 0;
+        $userId = (int)self::sessionGet('userId');
+        if ($userId <= 0) return 0;
 
-        $sql = "SELECT * FROM users WHERE id = ?";
-        $model_instance = new Model();
-        $userInfo = $model_instance->doSelect($sql, array($userId), 1);
-        return $userInfo['role_id'] ?? 0;
+        $sql = "SELECT role_id FROM users WHERE id = ?";
+        $model_instance = new self();
+        $userInfo = $model_instance->doSelect($sql, [$userId], 'fetch');
+        return (int)($userInfo['role_id'] ?? 0);
     }
 }
 ?>
