@@ -31,6 +31,24 @@ class AdminOrder extends Controller
         $this->view('admin/admin_order/orders', $data);
     }
 
+    public function bulkUpdateStatus(): void
+    {
+        // Bloquer tout accès direct via GET
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit('Méthode non autorisée');
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        if (isset($_POST['id']) && !empty($_POST['bulk_status_id'])) {
+            $this->model->bulkUpdateStatus($_POST['id'], (int)$_POST['bulk_status_id']);
+        }
+        
+        header('Location: ' . URL . 'AdminOrder/index');
+        exit;
+    }
+
     
 }
 ?>
