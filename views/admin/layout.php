@@ -91,4 +91,38 @@ require 'views/header.php';
                         </a>
                     </li>
                     
-                   
+                    <?php 
+                    // Vérification via la variable globale
+                    if (isset($userLevel) && (int)$userLevel === 1): 
+                    ?>
+                    <li class="<?= ($activeMenu === 'user') ? 'active' : '' ?>">
+                        <a href="<?= URL ?>AdminUser/index" title="Utilisateurs" <?= ($activeMenu === 'user') ? 'aria-current="page"' : '' ?>>
+                            <i class="fa-solid fa-users" aria-hidden="true"></i> 
+                            <span class="nav-text">Utilisateurs</span>
+                        </a>
+                    </li>
+                    <?php endif; ?>
+                    
+                    <li class="<?= ($activeMenu === 'setting') ? 'active' : '' ?>">
+                        <a href="<?= URL ?>AdminSetting/index" title="Paramètres" <?= ($activeMenu === 'setting') ? 'aria-current="page"' : '' ?>>
+                            <i class="fa-solid fa-gears" aria-hidden="true"></i> 
+                            <span class="nav-text">Paramètres</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="<?= URL ?>Index/index" class="btn-footer btn-home" title="Retour à l'accueil du site">
+                    <i class="fa-solid fa-house" aria-hidden="true"></i> 
+                    <span class="nav-text">Retour au site</span>
+                </a>
+                <a href="<?= URL ?>AdminLogin/logout" class="btn-footer btn-logout" title="Déconnexion de la session d'administration">
+                    <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> 
+                    <span class="nav-text">Déconnexion</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <main class="admin-main-content">
