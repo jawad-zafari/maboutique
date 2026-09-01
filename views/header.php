@@ -1,14 +1,5 @@
 <?php
-/**
- * @var array $menuList
- * @var array $cartItems
- * @var int $cartCount
- * @var int $favCount
- * @var int|bool $userId
- * @var int $userLevel
- * @var string $csrf_token
- * @var array $option
- */
+
 ?>
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
@@ -38,6 +29,7 @@
 
        <div class="search-container">
             <form action="<?= URL ?>Search/index" method="POST" id="headerSearchForm" class="search-form-wrapper">
+                <!-- Protection XSS avec la méthode e() pour le jeton CSRF -->
                 <input type="hidden" name="csrf_token" value="<?= $this->e($csrf_token ?? '') ?>">
                 <input type="text" id="headerKeyword" name="keyword" class="search-input" placeholder="Rechercher un produit..." autocomplete="off" aria-label="Champ de recherche">
                 <button type="submit" class="search-btn" aria-label="Lancer la recherche">
@@ -50,7 +42,8 @@
 
         <div class="header-actions">
             
-            <?php if ((int)$userLevel === 1): ?>
+            <!-- Vérification stricte de l'existence et de la valeur du rôle -->
+            <?php if (isset($userLevel) && (int)$userLevel === 1): ?>
                 <a href="<?= URL ?>AdminDashboard/index" class="btn-icon" aria-label="Administration" title="Administration">
                     <i class="fa-solid fa-user-gear" aria-hidden="true"></i>
                 </a>
@@ -58,10 +51,11 @@
 
             <a href="<?= URL ?>Account/favorites" class="btn-icon" aria-label="Mes favoris" title="Mes favoris">
                 <i class="fa-regular fa-heart" aria-hidden="true"></i>
-                <span class="cart-counter <?= (int)$favCount === 0 ? 'is-hidden' : '' ?>" id="navFavCounterBadge"><?= (int)$favCount ?></span>
+                <span class="cart-counter <?= (int)($favCount ?? 0) === 0 ? 'is-hidden' : '' ?>" id="navFavCounterBadge"><?= (int)($favCount ?? 0) ?></span>
             </a>
 
-            <?php if ($userId == false): ?>
+           
+            <?php if (empty($userId)): ?>
                 <a href="<?= URL ?>Login/index" class="btn-icon" aria-label="Se connecter ou s'inscrire" title="Se connecter / S'inscrire">
                     <i class="fa-solid fa-user" aria-hidden="true"></i>
                 </a>
@@ -73,7 +67,7 @@
 
             <a href="#" class="btn-icon cart-btn" aria-label="Voir mon panier" title="Mon panier">
                 <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i> 
-                <span class="cart-counter" id="navCartCounterBadge"><?= (int)$cartCount ?></span>
+                <span class="cart-counter" id="navCartCounterBadge"><?= (int)($cartCount ?? 0) ?></span>
             </a>
 
             <button class="btn-mobile-menu" id="btnToggleNav" aria-label="Ouvrir le menu de navigation">
@@ -92,14 +86,14 @@
                 <li class="menu-item all-products-link" role="none"><a href="<?= URL ?>Collection/index/latest" role="menuitem">TOUT</a></li>            
                 <?php if(!empty($menuList)): foreach ($menuList as $menu1): ?>
                     <li class="menu-item" role="none">
-                        <a href="<?= URL ?>Collection/index/category/<?= (int)$menu1['id'] ?>/1" role="menuitem">
+                        <a href="<?= URL ?>Collection/index/category/<?= (int)($menu1['id'] ?? 0) ?>/1" role="menuitem">
                             <?= $this->e($menu1['title'] ?? '') ?>
                             <?php if (!empty($menu1['children'])): ?><i class="fa-solid fa-angle-down nav-dropdown-icon" aria-hidden="true"></i><?php endif; ?>
                         </a>
                         <?php if (!empty($menu1['children'])): ?>
                             <ul class="menu-level-2" role="menu">
                                 <?php foreach ($menu1['children'] as $menu2): ?>
-                                    <li role="none"><a href="<?= URL ?>Collection/index/category/<?= (int)$menu2['id'] ?>/1" role="menuitem"><?= $this->e($menu2['title'] ?? '') ?></a></li>
+                                    <li role="none"><a href="<?= URL ?>Collection/index/category/<?= (int)($menu2['id'] ?? 0) ?>/1" role="menuitem"><?= $this->e($menu2['title'] ?? '') ?></a></li>
                                 <?php endforeach; ?>
                             </ul>
                         <?php endif; ?>
