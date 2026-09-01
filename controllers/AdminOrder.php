@@ -88,6 +88,22 @@ class AdminOrder extends Controller
         $this->view('admin/admin_order/factor', $data, 1, 1);
     }
 
-    
+    public function delete(): void
+    {
+        // Sécurisation de l'action de suppression
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit('Méthode non autorisée');
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        if (!empty($_POST['id'])) {
+            $this->model->delete($_POST);
+        }
+        
+        header('Location: ' . URL . 'AdminOrder/index');
+        exit;
+    }
 }
 ?>
