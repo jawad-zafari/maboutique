@@ -25,4 +25,57 @@ $pId = (int)($productInfo['id'] ?? 0);
         </div>
     </header>
 
-   
+    <form action="<?= URL ?>AdminProduct/attributes/<?= $pId ?>" method="post" id="formProductAttributes">
+        
+        <!-- SÉCURITÉ : Jeton CSRF -->
+        <input type="hidden" name="csrf_token" value="<?= $this->e($data['csrf_token'] ?? '') ?>">
+
+        <div class="admin-form-box">
+            <div class="attr-grid-layout">
+                
+                <?php if(!empty($attr)): foreach ($attr as $row): ?>
+                    <div class="attr-group-card">
+                        <label for="attr_<?= (int)$row['id'] ?>" class="attr-title"><?= $this->e($row['title']) ?></label>
+                        
+                        <select id="attr_<?= (int)$row['id'] ?>" name="x<?= (int)$row['id'] ?>" class="form-control">
+                            <option value="">-- Sélectionner une valeur --</option>
+                            <?php 
+                            $possibleValues = $row['possible_values'] ?? [];
+                            $selectedValueId = $row['selected_val'] ?? null;
+                            foreach ($possibleValues as $val): 
+                                $selected = ($selectedValueId == $val['id']) ? 'selected' : '';
+                            ?>
+                                <option value="<?= (int)$val['id'] ?>" <?= $selected ?>>
+                                    <?= $this->e($val['value']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        
+                        <div class="attr-action-link">
+                            <a href="<?= URL ?>AdminCategory/attributeValues/<?= (int)$row['id'] ?>" class="link-success" aria-label="Gérer les valeurs de cet attribut">
+                                <i class="fa-solid fa-gear" aria-hidden="true"></i> Gérer les valeurs
+                            </a>
+                        </div>
+                        
+                        <input type="hidden" name="id[]" value="<?= (int)$row['id'] ?>">
+                    </div>
+                <?php endforeach; else: ?>
+                    <div class="text-empty-table text-center full-width">
+                        Aucun attribut n'est disponible pour la catégorie de ce produit.
+                    </div>
+                <?php endif; ?>
+
+            </div>
+
+            <?php if(!empty($attr)): ?>
+                <div class="border-top-dashed mt-20 flex-end-container">
+                    <button type="submit" class="btn-admin-submit btn-wide" aria-label="Mettre à jour les attributs">
+                        <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Mettre à jour les attributs
+                    </button>
+                </div>
+            <?php endif; ?>
+            
+        </div>
+    </form>
+</div>
+<script src="<?= URL ?>public/assets/js/admin_product.js" defer></script>
