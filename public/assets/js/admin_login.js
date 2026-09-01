@@ -33,6 +33,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 emailInput.style.borderColor = "#dc2626";
             }
 
+            // Validation du mot de passe
+            if (passwordValue === "") {
+                isValid = false;
+                erreurs.push("Le mot de passe est requis.");
+                passwordInput.style.borderColor = "#dc2626";
+            }
+
            
         });
     }
