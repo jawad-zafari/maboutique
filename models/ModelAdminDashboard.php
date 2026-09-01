@@ -22,7 +22,31 @@ class ModelAdminDashboard extends Model
             $orderStat[$date] = 0;
         }
 
+        // on compte directement dans la base de données
+        $sql = "SELECT DATE(created_date) as order_date, COUNT(id) as total_orders 
+                FROM orders 
+                WHERE created_date >= ? 
+                GROUP BY DATE(created_date)";
+        
+        // Ajout de l'heure pour correspondre au format datetime de la base de données
+        $results = $this->doSelect($sql, [$lastWeekDate . ' 00:00:00']);
+
        
+    }
+
+    //  Génère un tableau contenant toutes les dates entre deux périodes
+    private function getRange($startDate, $lastDate)
+    {
+        $dates = [];
+        $current = strtotime($startDate);
+        $last = strtotime($lastDate);
+
+        while ($current <= $last) {
+            $dates[] = date('Y-m-d', $current);
+            $current = strtotime('+1 day', $current);
+        }
+
+        return $dates;
     }
 }
 ?>
