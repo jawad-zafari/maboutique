@@ -21,6 +21,28 @@ class ModelAdminCategory extends Model
         return $this->doSelect($sql, [(int)$categoryId]);
     }
 
-   
+    public function getParents($categoryId)
+    {
+        $categoryInfo = $this->categoryInfo((int)$categoryId);
+        if (!$categoryInfo) return [];
+
+        $parentId = $categoryInfo['parent_id'];
+        $allParents = [];
+
+        while ($parentId != 0) {
+            $sql = "SELECT * FROM categories WHERE id = ?";
+            $parentCategory = $this->doSelect($sql, [(int)$parentId], true);
+            if ($parentCategory) {
+                $allParents[] = $parentCategory;
+                $parentId = $parentCategory['parent_id'];
+            } else {
+                break;
+            }
+        }
+
+        return $allParents;
+    }
+
+    
 }
 ?>
