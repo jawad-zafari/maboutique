@@ -6,4 +6,14 @@
         </div>
     </header>
 
+    <?php 
+    // Encodage strict JSON pour JavaScript
+    $orderStat = $data['orderStat'] ?? [];
+    $keys = array_keys($orderStat);
+    $values = array_values($orderStat);
+    
+    $jsonKeys = htmlspecialchars(json_encode($keys), ENT_QUOTES, 'UTF-8');
+    $jsonValues = htmlspecialchars(json_encode($values), ENT_QUOTES, 'UTF-8');
+    ?>
+
    
