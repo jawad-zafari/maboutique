@@ -96,5 +96,32 @@ class AdminCategory extends Controller
         $this->view('admin/admin_category/show_attr', $data);
     }
 
+    public function addAttribute($categoryId, $parentId = 0, $editId = 0)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+            
+            $this->model->addAttribute($_POST, (int)$categoryId, (int)$editId);
+            header('Location: ' . URL . 'AdminCategory/showAttributes/' . (int)$categoryId . '/' . (int)$parentId);
+            exit;
+        }
+
+        $data = [
+            'categoryId' => (int)$categoryId,
+            'parentId' => (int)$parentId,
+            'categoryInfo' => $this->model->categoryInfo((int)$categoryId),
+            'attrInfo' => $this->model->attrInfo((int)$parentId),
+            'attr' => $this->model->getAttr((int)$categoryId, 0),
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+
+        if ($editId > 0) {
+            $data['editInfo'] = $this->model->attrInfo((int)$editId);
+        }
+
+        $this->view('admin/admin_category/add_attr', $data);
+    }
+
+   
 }
 ?>
