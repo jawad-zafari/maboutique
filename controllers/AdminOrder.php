@@ -63,6 +63,22 @@ class AdminOrder extends Controller
         $this->view('admin/admin_order/detail', $data);
     }
 
+    public function editOrder(int $orderId): void
+    {
+        // Bloquer tout accès direct via GET
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit('Méthode non autorisée');
+        }
 
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        $this->model->editOrder($orderId, $_POST);
+        
+        header('Location: ' . URL . 'AdminOrder/detail/' . $orderId);
+        exit;
+    }
+
+    
 }
 ?>
