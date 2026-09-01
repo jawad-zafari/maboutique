@@ -43,3 +43,83 @@ window.showGlobalAdminToast = function(message, type = 'danger') {
     }, 3500);
 };
 
+// MODAL GLOBAL DE CONFIRMATION (A11y Compliant)
+window.showGlobalAdminConfirm = function(message, onConfirmCallback) {
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(15, 23, 42, 0.7)';
+    overlay.style.zIndex = '10500';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+
+    const modal = document.createElement('div');
+    modal.style.backgroundColor = '#fff';
+    modal.style.padding = '30px';
+    modal.style.borderRadius = '10px';
+    modal.style.maxWidth = '450px';
+    modal.style.textAlign = 'center';
+    modal.style.boxShadow = '0 20px 25px -5px rgba(0,0,0,0.1)';
+    modal.setAttribute('role', 'alertdialog');
+    modal.setAttribute('aria-modal', 'true');
+
+    const icon = document.createElement('i');
+    icon.className = 'fa-solid fa-circle-exclamation';
+    icon.style.fontSize = '3.5rem';
+    icon.style.color = '#ef4444';
+    icon.style.marginBottom = '20px';
+
+    const text = document.createElement('p');
+    text.textContent = message;
+    text.style.fontSize = '1.1rem';
+    text.style.color = '#1e293b';
+    text.style.marginBottom = '25px';
+
+    const btnGroup = document.createElement('div');
+    btnGroup.style.display = 'flex';
+    btnGroup.style.justifyContent = 'center';
+    btnGroup.style.gap = '15px';
+
+    const btnCancel = document.createElement('button');
+    btnCancel.type = 'button';
+    btnCancel.textContent = 'Annuler';
+    btnCancel.style.padding = '10px 20px';
+    btnCancel.style.border = '1px solid #cbd5e1';
+    btnCancel.style.backgroundColor = '#f8fafc';
+    btnCancel.style.color = '#475569';
+    btnCancel.style.borderRadius = '6px';
+    btnCancel.style.cursor = 'pointer';
+    btnCancel.style.fontWeight = 'bold';
+
+    const btnConfirm = document.createElement('button');
+    btnConfirm.type = 'button';
+    btnConfirm.textContent = 'Confirmer';
+    btnConfirm.style.padding = '10px 20px';
+    btnConfirm.style.border = 'none';
+    btnConfirm.style.backgroundColor = '#ef4444';
+    btnConfirm.style.color = '#fff';
+    btnConfirm.style.borderRadius = '6px';
+    btnConfirm.style.cursor = 'pointer';
+    btnConfirm.style.fontWeight = 'bold';
+
+    const closeModal = () => document.body.removeChild(overlay);
+
+    btnCancel.addEventListener('click', closeModal);
+    btnConfirm.addEventListener('click', () => {
+        closeModal();
+        onConfirmCallback();
+    });
+
+    btnGroup.appendChild(btnCancel);
+    btnGroup.appendChild(btnConfirm);
+    modal.appendChild(icon);
+    modal.appendChild(text);
+    modal.appendChild(btnGroup);
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+};
+
