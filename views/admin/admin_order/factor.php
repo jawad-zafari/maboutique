@@ -58,6 +58,20 @@ $orderId = (int)($orderInfo['id'] ?? 0);
             </div>
         </header>
 
-        
+        <hr class="invoice-divider">
+
+        <div class="invoice-addresses">
+            <div class="address-box">
+                <h4>Client & Adresse de livraison :</h4>
+                <p><strong>Code client :</strong> #<?= (int)($orderInfo['user_id'] ?? 0) ?></p>
+                <p><?= nl2br($this->e($orderInfo['address_data'] ?? 'Adresse non spécifiée')) ?></p>
+                <p><strong>Code Postal :</strong> <?= $this->e($orderInfo['postal_code'] ?? '-') ?></p>
+                <p><strong>Téléphone :</strong> <?= $this->e($orderInfo['phone'] ?? '-') ?></p>
+            </div>
+        </div>
+
+       
+
+    <script src="<?= URL ?>public/assets/js/admin_order.js" defer></script>
 </body>
 </html>
