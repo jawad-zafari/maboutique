@@ -122,6 +122,18 @@ class ModelAdminProduct extends Model
         }
     }
 
+    //   Supprime plusieurs produits
+    public function deleteProduct(array $ids): void
+    {
+        if (empty($ids)) return;
+        
+        $safeIds = array_map('intval', $ids);
+        $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
+        
+        $sql = "DELETE FROM products WHERE id IN ($placeholders)";
+        $this->doQuery($sql, $safeIds);
+    }
+
    
 }
 ?>
