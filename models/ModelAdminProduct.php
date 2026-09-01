@@ -216,6 +216,22 @@ class ModelAdminProduct extends Model
         return is_array($attributes) ? $attributes : [];
     }
 
+    public function editAttribute(array $data, int $productId): void
+    {
+        $ids = $data['id'] ?? [];
+        if (!is_array($ids)) return;
+
+        foreach ($ids as $attrId) {
+            $valId = $data['x' . $attrId] ?? '';
+            
+            $this->doQuery("DELETE FROM product_attribute_values WHERE product_id = ? AND attribute_id = ?", [$productId, (int)$attrId]);
+            
+            if (!empty($valId)) {
+                $this->doQuery("INSERT INTO product_attribute_values (product_id, attribute_id, value_id) VALUES (?, ?, ?)", [$productId, (int)$attrId, (int)$valId]);
+            }
+        }
+    }
+
    
 }
 ?>
