@@ -35,6 +35,30 @@
 
             <div id="jsLoginErrorMessage" class="alert-message alert-danger display-none-box" role="alert" aria-live="assertive"></div>
 
-            
+            <form action="<?= URL ?>AdminLogin/checkUser" method="post" id="adminLoginForm">
+                
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($data['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                
+                <div class="form-group">
+                    <label for="email"><i class="fa-solid fa-envelope" aria-hidden="true"></i> Adresse e-mail :</label>
+                    <input type="email" id="email" name="email" class="form-control" dir="ltr" placeholder="admin@boutique.fr" autocomplete="username" required aria-required="true">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password"><i class="fa-solid fa-lock" aria-hidden="true"></i> Mot de passe :</label>
+                    <input type="password" id="password" name="password" class="form-control" dir="ltr" placeholder="••••••••" autocomplete="current-password" required aria-required="true">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-admin-login" aria-label="Se connecter au panneau d'administration">
+                        Se connecter <i class="fa-solid fa-arrow-right-to-bracket" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
 </body>
 </html>
