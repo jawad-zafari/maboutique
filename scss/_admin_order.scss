@@ -87,3 +87,59 @@
     }
 }
 
+//    INTERFACE ACTIONS EN MASSE ET BADGES
+.admin-actions-bulk {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    background-color: $bg-white;
+    padding: 15px 20px;
+    border-radius: $radius-lg;
+    border: 1px solid $border-color;
+    box-shadow: $shadow-sm;
+
+    .bulk-status-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        @media (min-width: $breakpoint-md) { width: auto; }
+        
+        .select-bulk {
+            min-width: 260px;
+            font-family: $font-main;
+        }
+    }
+}
+
+.badge-payment {
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    display: inline-block;
+    text-transform: uppercase;
+    box-shadow: $shadow-sm;
+    
+    &.paid { background-color: #ebfbee; color: $color-success; border: 1px solid #b2f2bb; }
+    &.unpaid { background-color: #fff5f5; color: $color-danger; border: 1px solid #ffc9c9; }
+}
+
+.order-status-badge {
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: inline-block;
+    box-shadow: $shadow-sm;
+
+    &.badge-default { background-color: #f1f3f5; color: #495057; border: 1px solid #dee2e6; }
+    &.badge-warning { background-color: #fff3cd; color: #f5821e; border: 1px solid #ffe69c; } 
+    &.badge-primary { background-color: #e7f5ff; color: $color-primary; border: 1px solid #a5d8ff; } 
+    &.badge-success { background-color: #ebfbee; color: $color-success; border: 1px solid #b2f2bb; } 
+    &.badge-danger  { background-color: #fff5f5; color: $color-danger; border: 1px solid #ffc9c9; } 
+}
