@@ -17,6 +17,16 @@ class AdminCategory extends Controller
         }
     }
 
-   
+    public function index()
+    {
+        $data = [
+            'category' => $this->model->getChildren(0),
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        
+        $this->view('admin/admin_category/category', $data); 
+    }
+
+    
 }
 ?>
