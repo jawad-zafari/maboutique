@@ -43,6 +43,12 @@ class ModelAdminCategory extends Model
         return $allParents;
     }
 
+    public function categoryInfo($categoryId)
+    {
+        $sql = "SELECT * FROM categories WHERE id = ?";
+        return $this->doSelect($sql, [(int)$categoryId], true);
+    }
+
     
 }
 ?>
