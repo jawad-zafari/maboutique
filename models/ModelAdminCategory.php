@@ -167,7 +167,22 @@ class ModelAdminCategory extends Model
             }
         }
         
-       
+        //  Mettre à jour ou supprimer les valeurs existantes
+        foreach ($data as $key => $val) {
+            $keyParts = explode('-', $key);
+            if (isset($keyParts[1]) && is_numeric($keyParts[1])) {
+                $valId = (int)$keyParts[1];
+                $rawVal = trim($val);
+
+                if ($rawVal !== '') {
+                    $sql = "UPDATE attribute_values SET value = ? WHERE id = ?";
+                    $this->doQuery($sql, [$rawVal, $valId]);
+                } else {
+                    $sqlDelete = "DELETE FROM attribute_values WHERE id = ?";
+                    $this->doQuery($sqlDelete, [$valId]);
+                }
+            }
+        }
     }
 }
 ?>
