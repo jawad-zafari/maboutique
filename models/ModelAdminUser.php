@@ -30,6 +30,17 @@ class ModelAdminUser extends Model
         $this->doQuery($sql, $safeIds);
     }
     
+    public function changeLevel2(array $ids): void
+    {
+        if (empty($ids)) return;
+        
+        $safeIds = array_map('intval', $ids);
+        $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
+        
+        $sql = "UPDATE users SET role_id = 2 WHERE id IN ($placeholders)";
+        $this->doQuery($sql, $safeIds);
+    }
+
    
 }
 ?>
