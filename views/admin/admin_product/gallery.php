@@ -43,4 +43,35 @@ $pId = (int)($productInfo['id'] ?? 0);
         </form>
     </div>
 
-    
+    <form action="<?= URL ?>AdminProduct/deleteGallery/<?= $pId ?>" method="post" id="formGallerySelection">
+        
+        <input type="hidden" name="csrf_token" value="<?= $this->e($data['csrf_token'] ?? '') ?>">
+        
+        <?php if(!empty($gallery)): ?>
+        <div class="mb-15 flex-end-container">
+            <button type="button" id="btnDeleteGallery" class="btn-admin-danger" aria-label="Supprimer les images cochées">
+                <i class="fa-solid fa-trash" aria-hidden="true"></i> Supprimer la sélection
+            </button>
+        </div>
+        <?php endif; ?>
+
+        <div class="gallery-grid-layout">
+            <?php if(!empty($gallery)): foreach ($gallery as $row): ?>
+                <div class="gallery-card-item">
+                    <div class="checkbox-wrapper" aria-label="Sélectionner l'image pour suppression">
+                        <input type="checkbox" name="id[]" value="<?= (int)$row['id'] ?>" class="admin-checkbox row-checkbox">
+                    </div>
+                    <div class="card-image-wrapper">
+                        <!-- SÉCURITÉ : Échappement du nom de fichier image -->
+                        <img src="<?= URL ?>public/images/products/<?= $pId ?>/gallery/small/<?= $this->e($row['image_name']) ?>" alt="Image supplémentaire" loading="lazy">
+                    </div>
+                </div>
+            <?php endforeach; else: ?>
+                <div class="gallery-empty-state">
+                    <i class="fa-regular fa-image empty-state-icon" aria-hidden="true"></i>
+                    <p>Aucune image dans la galerie pour ce produit.</p>
+                </div>
+            <?php endif; ?>
+        </div>
+    </form>
+</div>
