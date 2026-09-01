@@ -59,3 +59,36 @@
     &.success { background-color: #e6fcf5; color: #2b8a3e; border: 1px solid #c3fae8; }
 }
 
+//    STYLES DE LA GRILLE GALERIE ET ZONE D'UPLOAD
+.gallery-upload-zone {
+    display: flex; flex-direction: column; gap: 15px; padding: 20px; background-color: #f8fafc;
+    border: 2px dashed #cbd5e1; border-radius: $radius-md; align-items: flex-start;
+    @media (min-width: $breakpoint-md) { flex-direction: row; align-items: flex-end; }
+}
+
+.gallery-grid-layout {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px;
+    @media (min-width: 576px) { grid-template-columns: repeat(3, 1fr); }
+    @media (min-width: $breakpoint-md) { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    @media (min-width: $breakpoint-lg) { grid-template-columns: repeat(5, 1fr); }
+}
+
+.gallery-card-item {
+    background-color: #fff; border: 1px solid $border-color; border-radius: 12px; padding: 10px;
+    display: flex; flex-direction: column; gap: 10px; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    transition: transform $transition-fast, box-shadow $transition-fast;
+    &:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.08); border-color: #adb5bd; }
+
+    .checkbox-wrapper { position: absolute; top: 15px; right: 15px; z-index: 10; background: rgba(255, 255, 255, 0.9); border-radius: 4px; padding: 2px; }
+    .card-image-wrapper {
+        width: 100%; aspect-ratio: 1 / 1; background-color: $bg-light; border-radius: 8px; overflow: hidden;
+        display: flex; align-items: center; justify-content: center; border: 1px solid #f1f3f5;
+        img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    }
+}
+
+.gallery-empty-state {
+    grid-column: 1 / -1; background-color: #f8f9fa; border: 2px dashed #dee2e6; border-radius: 12px;
+    padding: 40px 20px; text-align: center; color: #495057; font-weight: bold;
+}
+
