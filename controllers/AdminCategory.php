@@ -39,6 +39,31 @@ class AdminCategory extends Controller
         $this->view('admin/admin_category/category', $data);
     }
 
+    public function addCategory($parentId = 0, $editId = 0)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // SÉCURITÉ : Vérification unifiée du jeton CSRF
+            $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+            
+            $this->model->addCategory($_POST, (int)$parentId, (int)$editId);
+            header('Location: ' . URL . 'AdminCategory/showChildren/' . (int)$parentId);
+            exit;
+        }
+
+        $data = [
+            'parentId' => (int)$parentId,
+            'edit' => (int)$editId,
+            'category' => $this->model->getCategory(),
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+
+        if ($editId > 0) {
+            $data['categoryInfo'] = $this->model->categoryInfo((int)$editId);
+        }
+
+        $this->view('admin/admin_category/add_category', $data);
+    }
+
    
 }
 ?>
