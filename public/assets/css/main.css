@@ -8765,9 +8765,6 @@ div.alert-danger-modern[role=alert]:not(#jsLoginErrorMessage) {
   }
 }
 
-/* ========================================================
-   INTERFACE ACTIONS EN MASSE ET BADGES
-   ======================================================== */
 .admin-actions-bulk {
   display: flex;
   flex-wrap: wrap;
