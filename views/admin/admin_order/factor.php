@@ -19,3 +19,45 @@ if (!empty($orderInfo['created_timestamp'])) {
 }
 $orderId = (int)($orderInfo['id'] ?? 0);
 ?>
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <base href="<?= URL ?>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facture N° <?= $orderId ?></title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="<?= URL ?>public/assets/css/main.css">
+</head>
+<body class="invoice-body">
+
+    <div class="invoice-actions-bar no-print">
+        <button type="button" id="btnPrintInvoice" class="btn-admin-primary">
+            <i class="fa-solid fa-print" aria-hidden="true"></i> Imprimer cette facture
+        </button>
+        <button type="button" id="btnBackHistory" class="btn-admin-back">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Fermer / Retour
+        </button>
+    </div>
+
+    <div class="invoice-container">
+        
+        <header class="invoice-header">
+            <div class="company-info">
+                <h2>MA BOUTIQUE</h2>
+                <p>123 Avenue du Commerce, 75000 Paris</p>
+                <p>SIRET : 123 456 789 00012 | TVA : FR123456789</p>
+                <p>Email : contact@maboutique.com</p>
+            </div>
+            <div class="invoice-details">
+                <h1>FACTURE</h1>
+                <p><strong>N° Facture :</strong> FACT-<?= $orderId ?></p>
+                <p><strong>Date :</strong> <?= $this->e($invoiceDate) ?></p>
+                <p><strong>Mode de paiement :</strong> <?= $this->e($orderInfo['payTypeTitle'] ?? 'Carte Bancaire') ?></p>
+            </div>
+        </header>
+
+        
+</body>
+</html>
