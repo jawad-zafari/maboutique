@@ -9,6 +9,12 @@ class ModelAdminCategory extends Model
         parent::__construct();
     }
 
-    
+    public function getCategory()
+    {
+        $sql = "SELECT * FROM categories";
+        return $this->doSelect($sql);
+    }
+
+   
 }
 ?>
