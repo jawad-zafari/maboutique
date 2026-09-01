@@ -182,3 +182,46 @@
     }
 }
 
+// Boutons
+%btn-admin-base {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px; padding: 10px 16px; font-size: $font-size-sm;
+    font-weight: 600; border: none; border-radius: $radius-sm;
+    cursor: pointer; font-family: $font-main;
+    transition: all $transition-fast; text-decoration: none;
+
+    @media (min-width: $breakpoint-lg) { padding: 12px 22px; font-size: $font-size-md; }
+}
+
+.btn-admin-primary {
+    @extend %btn-admin-base;
+    background-color: $color-primary; color: #fff;
+    &:hover { opacity: 0.9; box-shadow: $shadow-glow; transform: translateY(-2px); }
+}
+
+.btn-admin-danger {
+    @extend %btn-admin-base;
+    background-color: $color-danger; color: #fff;
+    &:hover { opacity: 0.9; transform: translateY(-2px); }
+}
+
+.btn-admin-submit {
+    @extend %btn-admin-base;
+    background-color: $color-success; color: #fff;
+    margin-top: 10px; width: 100%;
+    
+    @media (min-width: $breakpoint-sm) { width: auto; }
+    &:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+}
+
+.btn-admin-back {
+    @extend %btn-admin-base;
+    background-color: $color-muted; color: #fff;
+    &:hover { opacity: 0.9; transform: translateY(-2px); }
+}
+
+.btn-wide {
+    width: 100% !important;
+    @media (min-width: $breakpoint-md) { width: auto !important; min-width: 250px; }
+}
+
