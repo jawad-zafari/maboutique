@@ -84,6 +84,17 @@ class AdminCategory extends Controller
         exit;
     }
 
-    
+    public function showAttributes($categoryId, $attrId = 0)
+    {
+        $data = [
+            'attr' => $this->model->getAttr((int)$categoryId, (int)$attrId),
+            'categoryInfo' => $this->model->categoryInfo((int)$categoryId),
+            'attrInfo' => $this->model->attrInfo((int)$attrId),
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        
+        $this->view('admin/admin_category/show_attr', $data);
+    }
+
 }
 ?>
