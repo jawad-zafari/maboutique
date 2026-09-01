@@ -17,4 +17,21 @@ function initAdminSidebar() {
     const isMobile = window.innerWidth < 992;
     const savedState = localStorage.getItem("adminSidebarState");
     
-    
+    // La sidebar
+    if (savedState === "open" && !isMobile) {
+        sidebar.classList.add("open");
+        sidebar.setAttribute('aria-hidden', 'false');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+    } else {
+        sidebar.classList.remove("open");
+        sidebar.setAttribute('aria-hidden', 'true');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        
+        // Forcer la réinitialisation du localStorage si on est sur mobile
+        if (isMobile) {
+            localStorage.setItem("adminSidebarState", "closed");
+        }
+    }
+
+   
+}
