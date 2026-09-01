@@ -32,6 +32,18 @@ class ModelAdminOrder extends Model
         $this->doQuery($sql, $params);
     }
 
-   
+    public function getOrderInfo(int $orderId): array
+    {
+        $sql = "SELECT o.*, pa.title as payTypeTitle, po.title as postTitle
+                FROM orders o 
+                LEFT JOIN payment_methods pa ON o.payment_method_id = pa.id
+                LEFT JOIN shipping_methods po ON o.shipping_method_id = po.id
+                WHERE o.id = ?";
+
+        $result = $this->doSelect($sql, [$orderId], 'fetch');
+        return is_array($result) ? $result : [];
+    }
+
+    
 }
 ?>
