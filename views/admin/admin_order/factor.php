@@ -99,7 +99,27 @@ $orderId = (int)($orderInfo['id'] ?? 0);
             </tbody>
         </table>
 
+        <div class="invoice-summary">
+            <div class="summary-line">
+                <span>Sous-total HT</span>
+                <span><?= number_format($subTotal * 0.8, 2, ',', ' ') ?> €</span>
+            </div>
+            <div class="summary-line">
+                <span>TVA (20%)</span>
+                <span><?= number_format($subTotal * 0.2, 2, ',', ' ') ?> €</span>
+            </div>
+            <div class="summary-line">
+                <span>Frais de livraison</span>
+                <span><?= number_format($shippingPrice, 2, ',', ' ') ?> €</span>
+            </div>
+            <div class="summary-line total">
+                <span>TOTAL TTC</span>
+                <span><?= number_format($totalAmount, 2, ',', ' ') ?> €</span>
+            </div>
+        </div>
+
         
+
     </div>
 
     <script src="<?= URL ?>public/assets/js/admin_order.js" defer></script>
