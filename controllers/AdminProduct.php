@@ -112,6 +112,26 @@ class AdminProduct extends Controller
         exit;
     }
 
-   
+    // GESTION DES ATTRIBUTS
+
+    public function attributes(int $productId): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+            
+            $this->model->editAttribute($_POST, $productId);
+            header('Location: ' . URL . 'AdminProduct/attributes/' . $productId . '?success=1');
+            exit;
+        }
+
+        $data = [
+            'attr' => $this->model->getProductAttr($productId),
+            'productInfo' => $this->model->getProductInfo($productId),
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        $this->view('admin/admin_product/attributes', $data);
+    }
+
+    
 }
 ?>
