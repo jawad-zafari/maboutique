@@ -132,6 +132,18 @@ class AdminProduct extends Controller
         $this->view('admin/admin_product/attributes', $data);
     }
 
+    // GESTION DES AVIS (REVIEWS)
+
+    public function reviews(int $productId): void
+    {
+        $data = [
+            'naghd' => $this->model->getReview($productId),
+            'productInfo' => $this->model->getProductInfo($productId),
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        $this->view('admin/admin_product/reviews', $data);
+    }
+
     
 }
 ?>
