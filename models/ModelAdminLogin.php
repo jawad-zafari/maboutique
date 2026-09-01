@@ -33,8 +33,14 @@ class ModelAdminLogin extends Model
             return false;
         }
 
+        $password = $form['password'] ?? '';
+        
+        if (empty($emailSanitized) || empty($password)) {
+            $this->recordFailedAttempt();
+            return false;
+        }
+
        
-    }
 
     //  Enregistre une tentative de connexion échouée dans la session
     private function recordFailedAttempt()
