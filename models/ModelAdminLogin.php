@@ -40,7 +40,30 @@ class ModelAdminLogin extends Model
             return false;
         }
 
+        // Récupération de l'utilisateur par e-mail
+        $sql = "SELECT id, password, role_id FROM users WHERE email = ?";
+        $user = $this->doSelect($sql, [$emailSanitized], true);
+
+        if (!empty($user)) {
+            // Vérification du mot de passe haché et du contrôle d'accès (RBAC)
+            if (password_verify($password, $user['password']) && ($user['role_id'] == 1 || $user['role_id'] == 2)) {
+                
+                // Connexion réussie : Réinitialiser les tentatives échouées
+                $_SESSION['login_attempts'] = 0;
+                
+                // PRÉVENTION : Régénération de l'ID de session (Session Fixation)
+                session_regenerate_id(true);
+                
+                // Stockage sécurisé
+                Model::sessionSet('userId', (int)$user['id']);
+                Model::sessionSet('userLevel', (int)$user['role_id']);
+                
+                return true;
+            }
+        }
+
        
+    }
 
     //  Enregistre une tentative de connexion échouée dans la session
     private function recordFailedAttempt()
