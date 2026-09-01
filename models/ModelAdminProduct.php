@@ -37,6 +37,24 @@ class ModelAdminProduct extends Model
     public function getColor(): array { return $this->doSelect("SELECT * FROM colors") ?: []; }
     public function getGarantee(): array { return $this->doSelect("SELECT * FROM guarantees") ?: []; }
 
-    
+    public function getProductInfo(int $id): array 
+    {
+        if (empty($id)) return [];
+
+        $sql = "SELECT * FROM products WHERE id = ?";
+        $result = $this->doSelect($sql, [$id], 'fetch');
+        
+        if ($result && is_array($result)) {
+            $sqlColors = "SELECT c.* FROM product_colors pc JOIN colors c ON pc.color_id = c.id WHERE pc.product_id = ?";
+            $result['colorsInfo'] = $this->doSelect($sqlColors, [$id]);
+            
+            $sqlGarantees = "SELECT g.* FROM product_guarantees pg JOIN guarantees g ON pg.guarantee_id = g.id WHERE pg.product_id = ?";
+            $result['garanteesInfo'] = $this->doSelect($sqlGarantees, [$id]);
+        }
+        
+        return is_array($result) ? $result : [];
+    }
+
+   
 }
 ?>
