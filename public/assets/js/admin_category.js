@@ -48,6 +48,25 @@ document.addEventListener("DOMContentLoaded", () => {
         if (confirm(msg)) callback(); // Fallback de sécurité 
     };
 
-   
+    // 3. SOUMISSION : SUPPRESSION DE CATÉGORIES
+    const btnDeleteCategory = document.getElementById("btnDeleteCategory");
+    const formAdmin = document.getElementById("formActionAdmin");
 
+    if (btnDeleteCategory && formAdmin) {
+        btnDeleteCategory.addEventListener("click", () => {
+            const checkedBoxes = formAdmin.querySelectorAll(".row-checkbox:checked");
+            
+            if (checkedBoxes.length === 0) {
+                showAdminToast("Veuillez sélectionner au moins une catégorie à supprimer.");
+                return;
+            }
+
+            showCustomConfirm(
+                "Êtes-vous sûr de vouloir supprimer les catégories sélectionnées ? Toutes les sous-catégories et attributs liés seront définitivement supprimés.", 
+                () => { formAdmin.submit(); }
+            );
+        });
+    }
+
+    
 });
