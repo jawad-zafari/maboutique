@@ -27,6 +27,18 @@ class AdminCategory extends Controller
         $this->view('admin/admin_category/category', $data); 
     }
 
-    
+    public function showChildren($categoryId = 0)
+    {
+        $data = [
+            'categoryInfo' => $this->model->categoryInfo((int)$categoryId),
+            'category' => $this->model->getChildren((int)$categoryId),
+            'parents' => $this->model->getParents((int)$categoryId),
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        
+        $this->view('admin/admin_category/category', $data);
+    }
+
+   
 }
 ?>
