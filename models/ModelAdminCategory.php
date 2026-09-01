@@ -110,6 +110,12 @@ class ModelAdminCategory extends Model
         return $this->doSelect($sql, [(int)$attrId], true);
     }
 
-   
+    public function getAttr($categoryId, $parentId)
+    {
+        $sql = "SELECT * FROM attributes WHERE category_id = ? AND parent_id = ? ORDER BY id DESC";
+        return $this->doSelect($sql, [(int)$categoryId, (int)$parentId]);
+    }
+
+    
 }
 ?>
