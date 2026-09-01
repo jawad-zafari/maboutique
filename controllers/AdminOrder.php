@@ -79,6 +79,15 @@ class AdminOrder extends Controller
         exit;
     }
 
+    public function showInvoice(int $orderId): void
+    {
+        $orderInfo = $this->model->getOrderInfo($orderId);
+        $data = ['orderInfo' => $orderInfo];
+        
+        // Affichage de la facture
+        $this->view('admin/admin_order/factor', $data, 1, 1);
+    }
+
     
 }
 ?>
