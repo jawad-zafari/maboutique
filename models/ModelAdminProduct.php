@@ -33,6 +33,10 @@ class ModelAdminProduct extends Model
         return is_array($products) ? $products : [];
     }
 
-   
+    public function getCategory(): array { return $this->doSelect("SELECT * FROM categories") ?: []; }
+    public function getColor(): array { return $this->doSelect("SELECT * FROM colors") ?: []; }
+    public function getGarantee(): array { return $this->doSelect("SELECT * FROM guarantees") ?: []; }
+
+    
 }
 ?>
