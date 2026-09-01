@@ -16,6 +16,17 @@ class AdminProduct extends Controller
     }
 
     
-   
+    // Affiche la liste des produits
+     
+    public function index(): void
+    {
+        $data = [
+            'product' => $this->model->getProduct(),
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        $this->view('admin/admin_product/products', $data);
+    }
+
+    
 }
 ?>
