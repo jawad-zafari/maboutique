@@ -123,3 +123,24 @@ window.showGlobalAdminConfirm = function(message, onConfirmCallback) {
     document.body.appendChild(overlay);
 };
 
+// FONCTIONS GLOBALES SÉCURISÉES (Remplacent les anciennes fonctions)
+window.soumettreSuppression = function() {
+    const casesCochees = document.querySelectorAll('.admin-checkbox:checked');
+    
+    if (casesCochees.length === 0) {
+        window.showGlobalAdminToast("Veuillez sélectionner au moins un élément pour cette action.");
+        return;
+    }
+
+    window.showGlobalAdminConfirm("Êtes-vous sûr de vouloir supprimer les éléments sélectionnés ? Cette action est irréversible.", () => {
+        const form = document.getElementById('formActionAdmin');
+        if (form) form.submit();
+    });
+};
+
+window.soumettreFormulaire = function() {
+    const form = document.getElementById('formActionAdmin');
+    if (form) {
+        form.submit();
+    }
+};
