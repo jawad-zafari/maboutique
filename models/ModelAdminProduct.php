@@ -194,6 +194,28 @@ class ModelAdminProduct extends Model
         $this->doQuery($sql, $safeIds);
     }
 
+    // MÉTHODES DES ATTRIBUTS
+
+    public function getProductAttr(int $productId): array
+    {
+        $productInfo = $this->getProductInfo($productId);
+        $categoryId = (int)($productInfo['category_id'] ?? 0);
+        
+        $sql = "SELECT a.*, (SELECT value_id FROM product_attribute_values pav WHERE pav.attribute_id = a.id AND pav.product_id = ?) as selected_val 
+                FROM attributes a WHERE a.category_id = ?";
+        
+        $attributes = $this->doSelect($sql, [$productId, $categoryId]);
+
+        if (is_array($attributes)) {
+            foreach ($attributes as $key => $attr) {
+                $sqlVals = "SELECT * FROM attribute_values WHERE attribute_id = ?";
+                $attributes[$key]['possible_values'] = $this->doSelect($sqlVals, [(int)$attr['id']]);
+            }
+        }
+        
+        return is_array($attributes) ? $attributes : [];
+    }
+
    
 }
 ?>
