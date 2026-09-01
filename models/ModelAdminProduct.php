@@ -232,6 +232,14 @@ class ModelAdminProduct extends Model
         }
     }
 
-   
+    // MÉTHODES DES AVIS (REVIEWS)
+
+    public function getReview(int $productId): array
+    {
+        $result = $this->doSelect("SELECT * FROM reviews WHERE product_id = ? ORDER BY id DESC", [$productId]);
+        return is_array($result) ? $result : [];
+    }
+
+    
 }
 ?>
