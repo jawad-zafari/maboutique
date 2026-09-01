@@ -42,7 +42,21 @@ $pId = (int)($productInfo['id'] ?? 0);
                     </select>
                 </div>
                 
-                
+                <div class="form-group">
+                    <label for="productPrice">Prix (en €) * :</label>
+                    <input type="number" id="productPrice" name="price" class="form-control" value="<?= (int)($productInfo['price'] ?? 0) ?>" min="0" required aria-required="true">
+                </div>
+
+                <div class="form-group">
+                    <label for="productDiscount">Réduction (%) :</label>
+                    <input type="number" id="productDiscount" name="discount" class="form-control" value="<?= (int)($productInfo['discount_percent'] ?? 0) ?>" min="0" max="100">
+                </div>
+            </div>
+
+            <div class="admin-divider"></div>
+
+            
+
         </div>
     </form>
 </div>
