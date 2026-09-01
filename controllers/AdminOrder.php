@@ -17,6 +17,20 @@ class AdminOrder extends Controller
         }
     }
 
+    public function index(): void
+    {
+        $orders = $this->model->getOrders();
+        $statuses = $this->model->orderStatus();
+        
+        $data = [
+            'orders' => $orders,
+            'statuses' => $statuses,
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        
+        $this->view('admin/admin_order/orders', $data);
+    }
+
     
 }
 ?>
