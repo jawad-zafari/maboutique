@@ -45,7 +45,19 @@ class ModelAdminDashboard extends Model
         return $orderStat;
     }
 
-    
-    
+    //  Génère un tableau contenant toutes les dates entre deux périodes
+    private function getRange($startDate, $lastDate)
+    {
+        $dates = [];
+        $current = strtotime($startDate);
+        $last = strtotime($lastDate);
+
+        while ($current <= $last) {
+            $dates[] = date('Y-m-d', $current);
+            $current = strtotime('+1 day', $current);
+        }
+
+        return $dates;
+    }
 }
 ?>
