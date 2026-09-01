@@ -122,6 +122,24 @@ class AdminCategory extends Controller
         $this->view('admin/admin_category/add_attr', $data);
     }
 
-   
+    public function deleteAttribute($categoryId, $attributeId = 0)
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        $ids = $_POST['id'] ?? [];
+        if (!empty($ids)) {
+            $this->model->deleteAttr($ids);
+        }
+        
+        header('Location: ' . URL . 'AdminCategory/showAttributes/' . (int)$categoryId . '/' . (int)$attributeId);
+        exit;
+    }
+
+    
 }
 ?>
