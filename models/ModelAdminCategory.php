@@ -66,6 +66,17 @@ class ModelAdminCategory extends Model
         }
     }
 
-    
+    public function getChildrenIds($categoryId)
+    {
+        $sql = "SELECT id FROM categories WHERE parent_id = ?";
+        $children = $this->doSelect($sql, [(int)$categoryId]);
+        
+        foreach ($children as $child) {
+            $this->allChildrenIds[] = $child['id'];
+            $this->getChildrenIds($child['id']); // Récursivité 
+        }
+    }
+
+   
 }
 ?>
