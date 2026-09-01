@@ -3,7 +3,7 @@
 
 class Controller
 {
-    protected $model;
+    protected mixed $model = null;
 
     public function __construct()
     {
@@ -23,9 +23,8 @@ class Controller
         }
     }
 
-   
-    // Génère un jeton CSRF unique pour sécuriser les formulaires
      
+    // Génère un jeton CSRF unique pour sécuriser les formulaires
     public function generateCsrfToken(): string
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -37,9 +36,8 @@ class Controller
         return $_SESSION['csrf_token'];
     }
 
-    
+
     //   Vérifie la validité du jeton CSRF reçu
-    
     public function checkCsrfToken(string $token): bool
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -51,36 +49,58 @@ class Controller
         return true;
     }
 
-    
-    //   Échappe les données dynamiques avant l'affichage dans les vues (Protection XSS)
-    
+    // Échappe les données dynamiques avant l'affichage dans les vues (Protection XSS)
     public function e(?string $value): string
     {
         return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
     }
 
-// Méthode responsable de l'affichage de l'ensemble des sections de la vue.
-
+    // Méthode responsable de l'affichage de l'ensemble des vues avec injection sécurisée des données
     public function view(string $viewName, array $data = []): void
     {
         $controllerName = get_class($this);
 
-        // Injection des données globales pour le site public (Non-Admin)
-        if (strpos($controllerName, 'Admin') !== 0 || $controllerName === 'AdminLogin') {
-            Model::sessionInit();
-            $baseModel = new Model();
-            $userId = Model::sessionGet('userId');
+        Model::sessionInit();
+        $baseModel = new Model();
+        $userId = Model::sessionGet('userId');
 
+        // Chargées sur toutes les pages
+        
+        if (!isset($data['userId'])) {
+            $data['userId'] = $userId ?: false;
+        }
+
+        if (!isset($data['userLevel'])) {
+            // Permet d'éviter l'erreur "Undefined variable" dans les vues Admin
+            $data['userLevel'] = $userId ? Model::getUserLevel() : 0;
+        }
+
+        if (!isset($data['csrf_token'])) {
+            $data['csrf_token'] = $_SESSION['csrf_token'] ?? $this->generateCsrfToken();
+        }
+
+        // Chargées uniquement pour le site public
+        
+        if (strpos($controllerName, 'Admin') !== 0 || $controllerName === 'AdminLogin') {
+            
+            // Injection des options globales du site
+            if (!isset($data['option'])) {
+                $data['option'] = Model::getoption();
+            }
+
+            // Injection du Menu
             if (!isset($data['menuList'])) {
                 $data['menuList'] = $baseModel->getMenu(0);
             }
 
+            // Injection du Panier
             if (!isset($data['cartItems']) || !isset($data['priceTotalAll'])) {
                 $cartData = $baseModel->getCart();
                 $data['cartItems'] = $cartData[0] ?? [];
                 $data['priceTotalAll'] = $cartData[1] ?? 0;
             }
 
+            // Compteur d'articles
             if (!isset($data['cartCount'])) {
                 $cartCount = 0;
                 foreach ($data['cartItems'] as $item) {
@@ -89,27 +109,18 @@ class Controller
                 $data['cartCount'] = $cartCount;
             }
 
+            // Compteur de favoris
             if (!isset($data['favCount'])) {
-                $data['favCount'] = $userId ? $baseModel->getFavoriteCount($userId) : 0;
-            }
-
-            if (!isset($data['userId'])) {
-                $data['userId'] = $userId ?: false;
-            }
-
-            if (!isset($data['userLevel'])) {
-                $data['userLevel'] = $userId ? Model::getUserLevel() : 0;
-            }
-
-            if (!isset($data['csrf_token'])) {
-                $data['csrf_token'] = $_SESSION['csrf_token'] ?? $this->generateCsrfToken();
+                $data['favCount'] = $userId ? $baseModel->getFavoriteCount((int)$userId) : 0;
             }
         }
 
         // EXTR_SKIP empêche l'écrasement des variables internes de sécurité
         extract($data, EXTR_SKIP);
 
-        // 1. Administration
+        // CHARGEMENT DES VUES (ROUTING INTERNE)
+
+        // Mode Administration
         if (strpos($controllerName, 'Admin') === 0 && $controllerName !== 'AdminLogin') {
 
             $activeMenu = strtolower(str_replace('Admin', '', $controllerName));
@@ -126,7 +137,7 @@ class Controller
                 require 'views/admin/footer.php';
             }
 
-        // 2. Site public
+        // Mode Site Public (Client)
         } else {
             if (file_exists('views/header.php') && $controllerName !== 'AdminLogin') {
                 require 'views/header.php';
