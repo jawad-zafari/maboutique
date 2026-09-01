@@ -102,3 +102,22 @@
 .secure-badge-stepper { font-size: 0.8rem; color: #6c757d; margin-top: 15px; }
 //    STYLES MANQUANTS : ÉTAPE 2 (LIVRAISON & FORMULAIRE)
 
+/* --- Bouton et Formulaire d'ajout d'adresse --- */
+.btn-add-address-trigger {
+    background: none; border: 2px dashed #ced4da; color: #0033fe; padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s ease;
+    &:hover { border-color: #0033fe; background: rgba(0, 51, 254, 0.05); }
+}
+
+.inline-address-form-wrapper {
+    background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 10px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    .inline-form-title { margin-top: 0; color: #1a1a2e; margin-bottom: 15px; font-size: 1.1rem; font-weight: 800; }
+}
+
+.form-grid-double {
+    display: grid; grid-template-columns: 1fr; gap: 15px;
+    @media (min-width: 768px) { grid-template-columns: 1fr 1fr; }
+    .full-width { grid-column: 1 / -1; }
+}
+
+.flex-end-gap { display: flex; justify-content: flex-end; gap: 10px; }
+
