@@ -104,7 +104,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    
-    
+    // BOUTON RETOUR INTELLIGENT 
+    const backButtons = document.querySelectorAll('.js-back-button');
+    backButtons.forEach(btn => {
+        btn.addEventListener('click', (event) => {
+            event.preventDefault();
+            window.history.back();
+        });
+    });
 
 });
