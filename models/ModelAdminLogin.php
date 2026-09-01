@@ -36,6 +36,14 @@ class ModelAdminLogin extends Model
        
     }
 
-   
+    //  Enregistre une tentative de connexion échouée dans la session
+    private function recordFailedAttempt()
+    {
+        if (!isset($_SESSION['login_attempts'])) {
+            $_SESSION['login_attempts'] = 0;
+        }
+        $_SESSION['login_attempts']++;
+        $_SESSION['last_attempt_time'] = time();
+    }
 }
 ?>
