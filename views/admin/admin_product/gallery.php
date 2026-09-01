@@ -25,4 +25,22 @@ $pId = (int)($productInfo['id'] ?? 0);
         </div>
     </header>
 
+    <div class="admin-form-box form-box-wide mx-auto mb-25">
+        <form action="<?= URL ?>AdminProduct/addGallery/<?= $pId ?>" method="post" enctype="multipart/form-data" id="formAddGallery">
+            
+            <input type="hidden" name="csrf_token" value="<?= $this->e($data['csrf_token'] ?? '') ?>">
+            
+            <div class="form-group">
+                <label for="galleryImages">Ajouter de nouvelles images (Sélection multiple possible) :</label>
+                <input type="file" id="galleryImages" name="images[]" class="form-control" multiple accept="image/jpeg, image/png, image/webp" required>
+            </div>
+            
+            <div class="flex-end-container mt-15">
+                <button type="submit" class="btn-admin-submit" aria-label="Uploader les images">
+                    <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i> Uploader les images
+                </button>
+            </div>
+        </form>
+    </div>
+
     
