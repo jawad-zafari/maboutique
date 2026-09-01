@@ -41,3 +41,29 @@
 .address-city-zip { font-size: 0.85rem; color: #adb5bd; font-weight: 600; }
 .shipping-price-tag { position: absolute; top: 20px; right: 20px; font-weight: 800; }
 
+/* --- RÉSUMÉ DES ARTICLES (ÉTAPE 3 - NOUVEAU DESIGN) --- */
+.review-items-list { display: flex; flex-direction: column; gap: 15px; }
+.review-product-card { 
+    display: flex; align-items: center; gap: 15px; background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid #e9ecef; transition: 0.2s ease; 
+    @media (min-width: $breakpoint-md) { padding: 20px; gap: 20px; } 
+    &:hover { box-shadow: 0 4px 15px rgba(0,0,0,0.03); border-color: #dee2e6; } 
+    
+    .review-img-box { 
+        position: relative; width: 80px; height: 80px; flex-shrink: 0; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6; display: flex; justify-content: center; align-items: center; padding: 5px; 
+        @media (min-width: $breakpoint-md) { width: 90px; height: 90px; } 
+        img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 4px; } 
+        .review-qty-badge { position: absolute; top: -8px; right: -8px; background: #0033fe; color: #ffffff; font-size: 0.75rem; font-weight: 800; width: 24px; height: 24px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 5px rgba(0,51,254,0.3); } 
+    } 
+    
+    .review-details-box { 
+        flex-grow: 1; display: flex; flex-direction: column; gap: 6px; 
+        .review-title { margin: 0; font-size: 0.95rem; font-weight: 700; color: #1a1a2e; line-height: 1.4; } 
+        .review-attributes { display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.8rem; color: #6c757d; font-weight: 500; span { display: flex; align-items: center; gap: 5px; background: #f8f9fa; padding: 3px 8px; border-radius: 4px; i { color: #adb5bd; } } } 
+    } 
+    
+    .review-price-box { 
+        text-align: right; flex-shrink: 0; display: flex; flex-direction: column; 
+        .review-price { font-weight: 800; font-size: 1.05rem; color: #1a1a2e; } 
+    } 
+}
+
