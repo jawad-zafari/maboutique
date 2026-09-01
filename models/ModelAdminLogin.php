@@ -24,6 +24,15 @@ class ModelAdminLogin extends Model
             }
         }
 
+        // Nettoyage et validation stricte de l'e-mail
+        $emailRaw = $form['email'] ?? '';
+        $emailSanitized = filter_var($emailRaw, FILTER_SANITIZE_EMAIL);
+        
+        if (!filter_var($emailSanitized, FILTER_VALIDATE_EMAIL)) {
+            $this->recordFailedAttempt();
+            return false;
+        }
+
        
     }
 
