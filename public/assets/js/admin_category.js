@@ -68,5 +68,26 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    
+    // 4. SOUMISSION : SUPPRESSION D'ATTRIBUTS
+    const btnDeleteAttribute = document.getElementById("btnDeleteAttribute");
+    const formAttribute = document.getElementById("formAttributeSelection");
+
+    if (btnDeleteAttribute && formAttribute) {
+        btnDeleteAttribute.addEventListener("click", () => {
+            const checkedBoxes = formAttribute.querySelectorAll(".row-checkbox:checked");
+            
+            if (checkedBoxes.length === 0) {
+                showAdminToast("Veuillez sélectionner au moins un attribut à supprimer.");
+                return;
+            }
+
+            showCustomConfirm(
+                "Êtes-vous sûr de vouloir supprimer les attributs sélectionnés ? Les valeurs associées seront également perdues.", 
+                () => { formAttribute.submit(); }
+            );
+        });
+    }
+
+   
+
 });
