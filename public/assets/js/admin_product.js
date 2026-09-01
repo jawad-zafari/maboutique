@@ -38,6 +38,25 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    
+    // GESTION DES TAGS (COULEURS ET GARANTIES)
+    function setupTagSelection(selectId, containerId, inputName) {
+        const selectEl = document.getElementById(selectId);
+        const containerEl = document.getElementById(containerId);
+        
+        if (selectEl && containerEl) {
+            selectEl.addEventListener('change', function() {
+                const value = this.value;
+                const title = this.options[this.selectedIndex].getAttribute('data-title');
+                
+                if (value !== "0" && value !== "") {
+                    const existing = containerEl.querySelector(`input[value="${value}"]`);
+                    if (existing) {
+                        showToast("Cet élément est déjà ajouté.", "danger");
+                        this.selectedIndex = 0;
+                        return;
+                    }
+
+                   
+    });
 
 });
