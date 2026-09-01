@@ -118,7 +118,11 @@ $orderId = (int)($orderInfo['id'] ?? 0);
             </div>
         </div>
 
-        
+        <footer class="invoice-footer">
+            <p><strong>Merci pour votre confiance !</strong></p>
+            <p>Les produits livrés demeurent la propriété de MA BOUTIQUE jusqu'au paiement complet de la facture.</p>
+            <p class="mt-10">Si vous avez des questions concernant cette facture, veuillez contacter notre support à contact@maboutique.com</p>
+        </footer>
 
     </div>
 
