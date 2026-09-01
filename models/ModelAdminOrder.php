@@ -44,6 +44,24 @@ class ModelAdminOrder extends Model
         return is_array($result) ? $result : [];
     }
 
+    public function editOrder(int $orderId, array $data): void
+    {
+        // Les données sont stockées brutes. PDO empêche l'injection SQL.
+        $address = trim($data['address'] ?? '');
+        $postalCode = trim($data['postal_code'] ?? '');
+        $phone = trim($data['phone'] ?? '');
+        $trackingCode = trim($data['tracking_code'] ?? '');
+        $adminNote = trim($data['admin_note'] ?? '');
+        
+        // Typage strict
+        $payStatus = (int)($data['pay_status'] ?? 0);
+        $orderStatus = (int)($data['order_status'] ?? 1);
+
+        $sql = "UPDATE orders SET address_data = ?, postal_code = ?, phone = ?, is_paid = ?, status_id = ?, tracking_code = ?, admin_note = ? WHERE id = ?";
+        
+        $this->doQuery($sql, [$address, $postalCode, $phone, $payStatus, $orderStatus, $trackingCode, $adminNote, $orderId]);
+    }
+
     
 }
 ?>
