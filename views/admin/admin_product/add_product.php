@@ -73,6 +73,27 @@ $pId = (int)($productInfo['id'] ?? 0);
 
             <div class="admin-divider"></div>
 
-            
-    </form>
-</div>
+            <div class="form-row-half">
+                <div class="form-group">
+                    <label for="colorSelect">Ajouter des Couleurs :</label>
+                    <select id="colorSelect" class="form-control">
+                        <option value="0">-- Sélectionner une couleur --</option>
+                        <?php foreach ($data['color'] ?? [] as $row): ?>
+                            <!-- SÉCURITÉ : data-title échappé pour protéger le JS (DOM-based XSS) -->
+                            <option value="<?= (int)$row['id']; ?>" data-title="<?= $this->e($row['title']) ?>">
+                                <?= $this->e($row['title']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <div id="colorsContainer" class="tags-container" aria-live="polite">
+                        <?php foreach ($productInfo['colorsInfo'] ?? [] as $row): ?>
+                            <span class="tag-item">
+                                <?= $this->e($row['title']) ?>
+                                <input type="hidden" name="color[]" value="<?= (int)$row['id']; ?>">
+                                <i class="fa-solid fa-circle-xmark btn-remove-tag" aria-hidden="true" title="Retirer cette couleur"></i>
+                            </span>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+               
