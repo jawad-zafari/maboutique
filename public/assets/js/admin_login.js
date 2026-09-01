@@ -22,6 +22,18 @@ document.addEventListener("DOMContentLoaded", () => {
             // Validation stricte de l'email via Regex (Format RFC 5322 simplifié)
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-            
+            // Validation de l'email
+            if (emailValue === "") {
+                isValid = false;
+                erreurs.push("L'adresse e-mail est requise.");
+                emailInput.style.borderColor = "#dc2626"; // Indication visuelle d'erreur (Rouge)
+            } else if (!emailRegex.test(emailValue)) {
+                isValid = false;
+                erreurs.push("Le format de l'adresse e-mail est invalide.");
+                emailInput.style.borderColor = "#dc2626";
+            }
+
+           
+        });
     }
 });
