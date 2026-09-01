@@ -98,6 +98,30 @@ class ModelAdminProduct extends Model
         }
     }
 
-    
+    private function uploadProductImage(array $file, int $productId): void
+    {
+        if (!empty($file['name']) && $file['error'] === 0) {
+            
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+            $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            
+            if (!in_array($ext, $allowedExtensions)) return;
+            
+            $mime = mime_content_type($file['tmp_name']);
+            if (strpos($mime, 'image/') !== 0) return;
+
+            $folder = 'public/images/products/' . $productId . '/';
+            if (!file_exists($folder)) mkdir($folder, 0777, true);
+
+            $dest = $folder . 'product_220.' . $ext;
+            
+            if (move_uploaded_file($file['tmp_name'], $dest)) {
+                $this->create_thumbnail($dest, $folder . 'product_220.' . $ext, 220, 220);
+                $this->create_thumbnail($dest, $folder . 'product_350.' . $ext, 350, 350);
+            }
+        }
+    }
+
+   
 }
 ?>
