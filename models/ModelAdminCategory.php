@@ -104,6 +104,12 @@ class ModelAdminCategory extends Model
         }
     }
 
-    
+    public function attrInfo($attrId)
+    {
+        $sql = "SELECT * FROM attributes WHERE id = ?";
+        return $this->doSelect($sql, [(int)$attrId], true);
+    }
+
+   
 }
 ?>
