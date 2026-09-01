@@ -62,6 +62,12 @@ class ModelAdminOrder extends Model
         $this->doQuery($sql, [$address, $postalCode, $phone, $payStatus, $orderStatus, $trackingCode, $adminNote, $orderId]);
     }
 
-    
+    public function orderStatus(): array
+    {
+        $result = $this->doSelect("SELECT * FROM order_statuses");
+        return is_array($result) ? $result : [];
+    }
+
+   
 }
 ?>
