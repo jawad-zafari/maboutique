@@ -54,4 +54,17 @@ function initAdminSidebar() {
         }
     });
 
-    
+    // Fermer la sidebar en cliquant sur l'overlay (Mobile)
+    if (overlay) {
+        overlay.addEventListener("click", () => {
+            sidebar.classList.remove("open");
+            sidebar.setAttribute('aria-hidden', 'true');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            localStorage.setItem("adminSidebarState", "closed");
+            overlay.classList.remove("active");
+        });
+    }
+
+   
+
+}
