@@ -31,22 +31,21 @@ class ModelAdminDashboard extends Model
         // Ajout de l'heure pour correspondre au format datetime de la base de données
         $results = $this->doSelect($sql, [$lastWeekDate . ' 00:00:00']);
 
-    
-    }
-
-    //  Génère un tableau contenant toutes les dates entre deux périodes
-    private function getRange($startDate, $lastDate)
-    {
-        $dates = [];
-        $current = strtotime($startDate);
-        $last = strtotime($lastDate);
-
-        while ($current <= $last) {
-            $dates[] = date('Y-m-d', $current);
-            $current = strtotime('+1 day', $current);
+        // Fusion des résultats SQL avec notre tableau initialisé
+        if (!empty($results)) {
+            foreach ($results as $row) {
+                $orderDate = $row['order_date'];
+                // Si la date SQL existe dans notre plage de 7 jours, on met à jour la valeur
+                if (isset($orderStat[$orderDate])) {
+                    $orderStat[$orderDate] = (int)$row['total_orders'];
+                }
+            }
         }
 
-        return $dates;
+        return $orderStat;
     }
+
+    
+    
 }
 ?>
