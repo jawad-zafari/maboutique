@@ -28,4 +28,72 @@
         </div>
     </header>
 
-    
+    <form action="<?= URL ?>AdminCategory/deleteAttribute/<?= (int)($data['categoryInfo']['id'] ?? 0) ?>/<?= (int)($data['attrInfo']['id'] ?? 0) ?>" method="post" id="formAttributeSelection">
+        
+        <input type="hidden" name="csrf_token" value="<?= $this->e($data['csrf_token'] ?? '') ?>">
+
+        <div class="admin-table-wrapper">
+            <table class="admin-table" aria-label="Tableau des attributs">
+                <thead>
+                    <tr>
+                        <th scope="col" class="col-id">N°</th>
+                        <th scope="col">Titre de l'attribut</th>
+                        
+                        <?php if (empty($data['attrInfo']['id'])): ?>
+                            <th scope="col" class="text-center col-action">Sous-attributs</th>
+                        <?php endif; ?>
+
+                        <th scope="col" class="text-center col-action">Valeurs par défaut</th>
+                        <th scope="col" class="text-center col-action">Modifier</th>
+                        <th scope="col" class="text-center col-checkbox">
+                            <input type="checkbox" id="selectAllCheckboxes" class="admin-checkbox" aria-label="Sélectionner tout">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                    $attributes = $data['attr'] ?? [];
+                    if (!empty($attributes)): 
+                        foreach ($attributes as $row): 
+                    ?>
+                    <tr>
+                        <td class="col-id"><strong><?= (int)$row['id']; ?></strong></td>
+                        
+                        <td>
+                            <strong class="attribute-title-text"><?= $this->e($row['title']); ?></strong>
+                        </td>
+
+                        <?php if (empty($data['attrInfo']['id'])): ?>
+                            <td class="text-center">
+                                <a href="<?= URL ?>AdminCategory/showAttributes/<?= (int)($data['categoryInfo']['id'] ?? 0) ?>/<?= (int)$row['id']; ?>" class="action-icon icon-children" title="Gérer les sous-attributs" aria-label="Gérer les sous-attributs">
+                                    <i class="fa-solid fa-sitemap" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        <?php endif; ?>
+
+                        <td class="text-center">
+                            <a href="<?= URL ?>AdminCategory/attributeValues/<?= (int)$row['id']; ?>" class="action-icon icon-tags" title="Gérer les valeurs" aria-label="Gérer les valeurs">
+                                <i class="fa-solid fa-tags" aria-hidden="true"></i>
+                            </a>
+                        </td>
+
+                        <td class="text-center">
+                            <a href="<?= URL ?>AdminCategory/addAttribute/<?= (int)($data['categoryInfo']['id'] ?? 0) ?>/<?= (int)($data['attrInfo']['id'] ?? 0) ?>/<?= (int)$row['id'] ?>" class="action-icon icon-edit" title="Modifier" aria-label="Modifier l'attribut">
+                                <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                            </a>
+                        </td>
+
+                        <td class="text-center">
+                            <input type="checkbox" name="id[]" value="<?= (int)$row['id']; ?>" class="admin-checkbox row-checkbox" aria-label="Sélectionner cette ligne">
+                        </td>
+                    </tr>
+                    <?php endforeach; else: ?>
+                    <tr>
+                        <td colspan="<?= empty($data['attrInfo']['id']) ? '6' : '5' ?>" class="text-empty-table">Aucun attribut trouvé pour cette catégorie.</td>
+                    </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
