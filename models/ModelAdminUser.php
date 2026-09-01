@@ -52,6 +52,15 @@ class ModelAdminUser extends Model
         $this->doQuery($sql, $safeIds);
     }
 
-    
+    public function delete(array $ids): void
+    {
+        if (empty($ids)) return;
+        
+        $safeIds = array_map('intval', $ids);
+        $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
+        
+        $sql = "DELETE FROM users WHERE id IN ($placeholders)";
+        $this->doQuery($sql, $safeIds);
+    }
 }
 ?>
