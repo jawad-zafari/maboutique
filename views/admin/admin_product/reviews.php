@@ -24,4 +24,45 @@ $pId = (int)($productInfo['id'] ?? 0);
         </div>
     </header>
 
-   
+    <form action="<?= URL ?>AdminProduct/deleteReview/<?= $pId ?>" method="post" id="formReviewsSelection">
+        
+        <input type="hidden" name="csrf_token" value="<?= $this->e($data['csrf_token'] ?? '') ?>">
+
+        <div class="admin-table-wrapper">
+            <table class="admin-table" aria-label="Liste des critiques du produit">
+                <thead>
+                    <tr>
+                        <th scope="col">Titre de la critique</th>
+                        <th scope="col" class="text-center col-action">Modifier</th>
+                        <th scope="col" class="text-center col-checkbox">
+                            <input type="checkbox" id="selectAllCheckboxes" class="admin-checkbox" aria-label="Sélectionner tout">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if(!empty($reviews)): foreach ($reviews as $row): ?>
+                    <tr>
+                        <!-- SÉCURITÉ : Protection XSS -->
+                        <td><strong><?= $this->e($row['title'] ?? '') ?></strong></td>
+                        
+                        <td class="text-center">
+                            <a href="<?= URL ?>AdminProduct/addReview/<?= $pId ?>/<?= (int)$row['id'] ?>" class="action-icon icon-edit" title="Modifier cette critique" aria-label="Modifier">
+                                <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        
+                        <td class="text-center">
+                            <input type="checkbox" name="id[]" value="<?= (int)$row['id']; ?>" class="admin-checkbox row-checkbox" aria-label="Sélectionner">
+                        </td>
+                    </tr>
+                    <?php endforeach; else: ?>
+                    <tr>
+                        <td colspan="3" class="text-empty-table text-center">Aucune critique trouvée pour ce produit.</td>
+                    </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
+<script src="<?= URL ?>public/assets/js/admin_product.js" defer></script>
