@@ -7271,9 +7271,6 @@ div.alert-danger-modern[role=alert]:not(#jsLoginErrorMessage) {
   }
 }
 
-/* ====================================================================
-   STYLES DÉDIÉS À LA FACTURE (DESIGN LUXE ET ESPACEMENT OPTIMISÉ)
-   ==================================================================== */
 :root {
   --invoice-primary: #0033fe;
   --invoice-text: #333333;
@@ -7465,19 +7462,13 @@ div.alert-danger-modern[role=alert]:not(#jsLoginErrorMessage) {
   line-height: 1.5;
 }
 
-/* ====================================================================
-   CONFIGURATION AVANCÉE DE L'IMPRESSION EXCLUSIVE (ANTI-CHEVAUCHEMENT)
-   ==================================================================== */
 @media print {
-  /* 1. Cacher absolument tout le layout admin extérieur */
   body * {
     visibility: hidden !important;
   }
-  /* 2. Rendre uniquement la boîte de facture visible */
   .invoice-box, .invoice-box * {
     visibility: visible !important;
   }
-  /* 3. Ajustement millimétrique pour le papier A4 */
   .invoice-box {
     position: absolute;
     left: 0;
