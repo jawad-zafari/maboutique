@@ -62,7 +62,8 @@ class ModelAdminLogin extends Model
             }
         }
 
-       
+        $this->recordFailedAttempt();
+        return false;
     }
 
     //  Enregistre une tentative de connexion échouée dans la session
