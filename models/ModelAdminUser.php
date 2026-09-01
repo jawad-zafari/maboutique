@@ -18,6 +18,18 @@ class ModelAdminUser extends Model
         return is_array($result) ? $result : [];
     }
 
+    public function changeLevel1(array $ids): void
+    {
+        if (empty($ids)) return;
+        
+        // Génération dynamique des placeholders
+        $safeIds = array_map('intval', $ids);
+        $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
+        
+        $sql = "UPDATE users SET role_id = 1 WHERE id IN ($placeholders)";
+        $this->doQuery($sql, $safeIds);
+    }
+    
    
 }
 ?>
