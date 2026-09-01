@@ -1,0 +1,80 @@
+
+.facture-body { background-color: $bg-body; padding: 10px 0; @media (min-width: $breakpoint-md) { padding: 20px 0; } }
+
+.facture-container {
+    max-width: 800px; margin: 0 auto; background: $bg-white; padding: 15px; color: $color-text; box-shadow: $shadow-sm; border-radius: $radius-sm; border: 1px solid $border-color;
+    @media (min-width: $breakpoint-md) { padding: 40px; }
+
+    @media print { 
+        box-shadow: none; margin: 0; padding: 0; width: 100%; background: transparent; color: #000; border: none; 
+        .no-print { display: none !important; } 
+        * { text-shadow: none !important; color: #000 !important; background: transparent !important; border-color: #000 !important; } 
+    }
+}
+
+.facture-actions {
+    text-align: right; margin-bottom: 15px; @media (min-width: $breakpoint-md) { margin-bottom: 20px; }
+    
+    .btn-facture-print { background-color: $bg-light; color: $color-text; padding: 8px 15px; border: 1px solid $border-color; border-radius: $radius-sm; cursor: pointer; font-weight: bold; font-size: $font-size-xs; transition: all $transition-fast; @media (min-width: $breakpoint-md) { padding: 12px 25px; font-size: $font-size-sm; } &:hover { background-color: $color-primary; color: $bg-body; border-color: $color-primary; box-shadow: $shadow-glow; } }
+}
+
+.facture-header {
+    display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid $border-color; padding-bottom: 15px; margin-bottom: 20px; gap: 15px;
+    @media (min-width: $breakpoint-sm) { flex-direction: row; align-items: center; border-bottom-width: 2px; padding-bottom: 20px; margin-bottom: 30px; gap: 0; }
+
+    .brand-info {
+        h1 { margin: 0; font-size: $font-size-lg; color: $color-primary; text-shadow: $shadow-glow; @media (min-width: $breakpoint-sm) { font-size: $font-size-xl; } }
+        .facture-ref { margin: 4px 0; font-size: $font-size-sm; color: $color-text; @media (min-width: $breakpoint-sm) { margin: 8px 0 4px 0; font-size: $font-size-md; } }
+        .facture-date { margin: 0; color: $color-muted; font-size: $font-size-xs; @media (min-width: $breakpoint-sm) { font-size: $font-size-sm; } }
+    }
+    
+    .barcode-box img { max-width: 100px; height: auto; background-color: #fff; padding: 4px; border-radius: $radius-sm; @media (min-width: $breakpoint-sm) { max-width: 150px; } }
+}
+
+.facture-parties {
+    display: flex; flex-direction: column; margin-bottom: 20px; gap: 10px;
+    @media (min-width: $breakpoint-sm) { flex-direction: row; justify-content: space-between; margin-bottom: 40px; gap: 20px; }
+
+    .bloc-partie {
+        width: 100%; padding: 10px; border: 1px solid $border-color; border-radius: $radius-sm; background-color: $bg-light;
+        @media (min-width: $breakpoint-sm) { width: 48%; padding: 15px; }
+        
+        &.border-right { border-left: 3px solid $color-primary; @media (min-width: $breakpoint-sm) { border-left-width: 4px; } }
+        
+        .partie-title { margin-top: 0; margin-bottom: 8px; color: $color-primary; font-size: $font-size-sm; border-bottom: 1px solid $border-color; padding-bottom: 4px; @media (min-width: $breakpoint-sm) { margin-bottom: 12px; font-size: $font-size-md; padding-bottom: 5px; } }
+        p { margin: 3px 0; font-size: $font-size-xs; color: $color-text; @media (min-width: $breakpoint-sm) { margin: 4px 0; font-size: $font-size-sm; } }
+    }
+}
+
+.facture-table {
+    width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: $font-size-xs; 
+    @media (min-width: $breakpoint-sm) { margin-bottom: 40px; font-size: $font-size-sm; }
+
+    th, td { border: 1px solid $border-color; padding: 6px; text-align: left; color: $color-text; @media (min-width: $breakpoint-sm) { padding: 12px; } }
+    th { background-color: $bg-light; font-weight: bold; color: $color-primary; }
+    
+    .product-title { font-weight: bold; }
+    .product-options { font-size: $font-size-xs; color: $color-muted; display: block; margin-top: 4px; @media (min-width: $breakpoint-sm) { font-size: $font-size-sm; } }
+    .highlight-qty { font-weight: bold; color: $color-primary; }
+}
+
+.facture-footer-summary {
+    display: flex; justify-content: flex-end; margin-bottom: 30px; @media (min-width: $breakpoint-sm) { margin-bottom: 50px; }
+    
+    .summary-box {
+        width: 100%; padding: 10px; border: 1px solid $border-color; border-radius: $radius-sm; background-color: $bg-light;
+        @media (min-width: $breakpoint-sm) { width: 300px; padding: 15px; }
+        
+        .summary-item {
+            display: flex; justify-content: space-between; margin-bottom: 6px; font-size: $font-size-xs; color: $color-muted; @media (min-width: $breakpoint-sm) { margin-bottom: 10px; font-size: $font-size-sm; }
+            &.total-final { border-top: 1px solid $border-color; padding-top: 8px; margin-bottom: 0; font-weight: bold; font-size: $font-size-sm; color: $color-primary; text-shadow: $shadow-glow; @media (min-width: $breakpoint-sm) { padding-top: 10px; font-size: $font-size-md; } }
+        }
+    }
+}
+
+.facture-signatures {
+    margin-top: 30px; text-align: center; @media (min-width: $breakpoint-sm) { margin-top: 60px; }
+    
+    .signature-thankyou { font-style: italic; color: $color-muted; margin-bottom: 10px; font-size: $font-size-xs; @media (min-width: $breakpoint-sm) { margin-bottom: 15px; font-size: $font-size-sm; } }
+    .signature-stamp { font-weight: bold; margin-top: 20px; color: $color-primary; font-size: $font-size-sm; @media (min-width: $breakpoint-sm) { margin-top: 30px; font-size: $font-size-md; } }
+}
