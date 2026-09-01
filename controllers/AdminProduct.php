@@ -72,6 +72,18 @@ class AdminProduct extends Controller
         exit;
     }
 
+    // GESTION DE LA GALERIE D'IMAGES
+
+    public function gallery(int $productId): void
+    {
+        $data = [
+            'gallery' => $this->model->getGallery($productId),
+            'productInfo' => $this->model->getProductInfo($productId),
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        $this->view('admin/admin_product/gallery', $data);
+    }
+
     
 }
 ?>
