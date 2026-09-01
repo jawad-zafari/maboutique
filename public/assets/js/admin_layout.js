@@ -33,5 +33,25 @@ function initAdminSidebar() {
         }
     }
 
-   
-}
+    // Événement du bouton (Toggle)
+    toggleBtn.addEventListener('click', () => {
+        const isOpen = sidebar.classList.toggle("open");
+        
+        if (isOpen) {
+            localStorage.setItem("adminSidebarState", "open");
+            sidebar.setAttribute('aria-hidden', 'false');
+            toggleBtn.setAttribute('aria-expanded', 'true');
+            if (window.innerWidth < 992 && overlay) {
+                overlay.classList.add("active");
+            }
+        } else {
+            localStorage.setItem("adminSidebarState", "closed");
+            sidebar.setAttribute('aria-hidden', 'true');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            if (overlay) {
+                overlay.classList.remove("active");
+            }
+        }
+    });
+
+    
