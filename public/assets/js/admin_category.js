@@ -43,7 +43,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 3500);
     }
 
-    
-    
+    // 2. UTILISATION DU CONFIRM GLOBAL POUR RESTER COHÉRENT
+    const showCustomConfirm = window.showGlobalAdminConfirm || function(msg, callback) {
+        if (confirm(msg)) callback(); // Fallback de sécurité 
+    };
+
+   
 
 });
