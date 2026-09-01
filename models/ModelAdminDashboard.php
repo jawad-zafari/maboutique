@@ -31,7 +31,7 @@ class ModelAdminDashboard extends Model
         // Ajout de l'heure pour correspondre au format datetime de la base de données
         $results = $this->doSelect($sql, [$lastWeekDate . ' 00:00:00']);
 
-       
+    
     }
 
     //  Génère un tableau contenant toutes les dates entre deux périodes
