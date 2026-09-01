@@ -134,6 +134,14 @@ class ModelAdminProduct extends Model
         $this->doQuery($sql, $safeIds);
     }
 
+    // MÉTHODES DE LA GALERIE
+
+    public function getGallery(int $productId): array
+    {
+        $result = $this->doSelect("SELECT * FROM product_galleries WHERE product_id = ? ORDER BY id DESC", [$productId]);
+        return is_array($result) ? $result : [];
+    }
+
    
 }
 ?>
