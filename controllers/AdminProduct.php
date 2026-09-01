@@ -84,6 +84,16 @@ class AdminProduct extends Controller
         $this->view('admin/admin_product/gallery', $data);
     }
 
-    
+    public function addGallery(int $productId): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+            $this->model->addGallery($productId, $_FILES['images'] ?? null);
+        }
+        header('Location: ' . URL . 'AdminProduct/gallery/' . $productId . '?success=image_added');
+        exit;
+    }
+
+   
 }
 ?>
