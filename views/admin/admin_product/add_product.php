@@ -16,4 +16,11 @@ $pId = (int)($productInfo['id'] ?? 0);
         </div>
     </header>
 
-    
+    <form action="<?= URL ?>AdminProduct/addProduct/<?= $pId; ?>" method="post" enctype="multipart/form-data" id="formAddProduct">
+        
+        <!-- Jeton CSRF -->
+        <input type="hidden" name="csrf_token" value="<?= $this->e($data['csrf_token'] ?? '') ?>">
+
+        
+    </form>
+</div>
