@@ -215,3 +215,38 @@
     p { margin: 5px 0; line-height: 1.5; }
 }
 
+//    CONFIGURATION AVANCÉE DE L'IMPRESSION EXCLUSIVE (ANTI-CHEVAUCHEMENT)
+@media print {
+    //Cacher absolument tout le layout admin extérieur 
+    body * { visibility: hidden !important; }
+    
+    //Rendre uniquement la boîte de facture visible 
+    .invoice-box, .invoice-box * { visibility: visible !important; }
+    
+    // Ajustement millimétrique pour le papier A4   
+    .invoice-box {
+        position: absolute; 
+        left: 0; 
+        top: 0;
+        width: 100% !important; 
+        max-width: 100% !important;
+        border: none !important; 
+        box-shadow: none !important;
+        padding: 20px 10px !important; 
+        margin: 0 !important;
+        background: #ffffff !important;
+    }
+    
+    .invoice-controls { display: none !important; }
+    
+    @page { 
+        margin: 2cm 1.5cm; 
+    }
+    
+    .facture-body { background-color: #fff; padding: 0; }
+    .address-block { border: none; background: transparent; padding: 0; }
+    .invoice-table th { background-color: transparent !important; border-bottom: 2px solid #000; color: #000; }
+    .invoice-header { border-bottom-color: #000; }
+    .summary-line.total { border-top-color: #000; color: #000; }
+    * { -webkit-print-color-adjust: exact !important; color-adjust: exact !important; }
+}
