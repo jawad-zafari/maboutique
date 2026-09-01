@@ -133,6 +133,20 @@ class ModelAdminCategory extends Model
         }
     }
 
+    public function deleteAttr($ids)
+    {
+        $idsString = implode(',', array_map('intval', $ids));
+        
+        if (!empty($idsString)) {
+            $sql = "DELETE FROM attributes WHERE id IN ($idsString) OR parent_id IN ($idsString)";
+            $this->doQuery($sql);
+            
+            // Nettoyage des valeurs orphelines
+            $sqlVal = "DELETE FROM attribute_values WHERE attribute_id IN ($idsString)";
+            $this->doQuery($sqlVal);
+        }
+    }
+
    
 }
 ?>
