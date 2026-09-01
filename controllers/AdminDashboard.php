@@ -25,7 +25,8 @@ class AdminDashboard extends Controller
             'orderStat' => $orderStatistics
         ];
         
-           
+        // Chargement de la vue du tableau de bord
+        $this->view('admin/admin_dashboard/dashboard', $data);    
     }
 }
 ?>
