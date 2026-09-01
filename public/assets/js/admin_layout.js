@@ -11,4 +11,10 @@ function initAdminSidebar() {
     
     if (!sidebar || !toggleBtn) return;
 
+    // Indiquer aux lecteurs d'écran quel élément est contrôlé par ce bouton
+    toggleBtn.setAttribute('aria-controls', 'adminSidebar');
+
+    const isMobile = window.innerWidth < 992;
+    const savedState = localStorage.getItem("adminSidebarState");
+    
     
