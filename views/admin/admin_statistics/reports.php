@@ -77,7 +77,11 @@
 
             </div>
 
-            
+            <div class="mt-25 border-top-dashed" style="padding-top: 20px;">
+                <button type="submit" class="btn-admin-submit btn-wide w-100" aria-label="Générer le rapport statistique">
+                    <i class="fa-solid fa-file-invoice" aria-hidden="true"></i> Générer le rapport
+                </button>
+            </div>
 
         </div>
     </form>
