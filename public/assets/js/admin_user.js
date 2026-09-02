@@ -28,7 +28,33 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-           
+            const actionValue = actionSelect.value;
+            let urlAction = "";
+            let messageConfirmation = "";
+
+            switch (actionValue) {
+                case "1":
+                    urlAction = "AdminUser/changeLevel1";
+                    messageConfirmation = "Voulez-vous vraiment promouvoir les utilisateurs sélectionnés au rang d'Administrateur ?";
+                    break;
+                case "2":
+                    urlAction = "AdminUser/changeLevel2";
+                    messageConfirmation = "Voulez-vous vraiment définir les utilisateurs sélectionnés comme Employés ?";
+                    break;
+                case "3":
+                    urlAction = "AdminUser/changeLevel3";
+                    messageConfirmation = "Voulez-vous vraiment passer les utilisateurs sélectionnés en Utilisateur Normal ?";
+                    break;
+                case "4":
+                    urlAction = "AdminUser/delete";
+                    messageConfirmation = "ATTENTION : Voulez-vous vraiment supprimer définitivement ces comptes utilisateurs ? Cette action est irréversible !";
+                    break;
+                default:
+                    showToast("Action sélectionnée non valide.", "danger");
+                    return;
+            }
+
+            
     }
 
 });
