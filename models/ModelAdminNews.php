@@ -21,6 +21,23 @@ class ModelAdminNews extends Model
         return $result[0] ?? [];
     }
 
-   
+    public function addNews(array $data, array $files): void
+    {
+        // Les données sont stockées brutes. PDO empêche l'injection SQL.
+        $title = $data['title'] ?? '';
+        $shortDesc = $data['short_desc'] ?? '';
+        $createdAt = date('Y-m-d'); 
+
+        if (empty($title)) return;
+
+        $sql = "INSERT INTO news (title, short_desc, image_path, created_at) VALUES (?, ?, '', ?)";
+        $this->doQuery($sql, [$title, $shortDesc, $createdAt]);
+        
+        $newsId = (int) self::$conn->lastInsertId();
+
+        $this->uploadImage($files, $newsId);
+    }
+
+    
 }
 ?>
