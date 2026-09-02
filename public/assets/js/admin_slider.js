@@ -33,6 +33,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // SÉLECTIONNER / DÉSÉLECTIONNER TOUT
+    const selectAllCheckboxes = document.getElementById("selectAllCheckboxes");
+    if (selectAllCheckboxes) {
+        selectAllCheckboxes.addEventListener("change", (event) => {
+            const isChecked = event.target.checked;
+            const rowCheckboxes = document.querySelectorAll(".row-checkbox");
+            rowCheckboxes.forEach(cb => cb.checked = isChecked);
+        });
+    }
+
    
 
 });
