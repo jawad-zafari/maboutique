@@ -15,6 +15,19 @@ class AdminSlider extends Controller
         }
     }
 
+    public function index(): void
+    {
+        $sliders = $this->model->getslider();
+        
+        $data = [
+            'slider' => $sliders,
+            'editSlider' => null,
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        
+        $this->view('admin/admin_slider/slider', $data);
+    }
+
     
 }
 ?>
