@@ -15,6 +15,18 @@ class AdminStat extends Controller
         }
     }
 
+    public function index(): void
+    {
+        $currentYear = date('Y');
+        
+        $data = [
+            'currentYear' => $currentYear,
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        
+        $this->view('admin/admin_statistics/reports', $data);
+    }
+
     
 }
 ?>
