@@ -64,7 +64,20 @@
                                 <?php endfor; ?>
                             </select>
                         </div>
-                        
+                        <div class="form-group m-0">
+                            <label for="endYear" class="sr-only">Année de fin</label>
+                            <select id="endYear" name="year2" class="form-control" aria-label="Sélectionner l'année de fin">
+                                <?php for ($i = 2020; $i <= (int)($data['currentYear'] ?? 2026); $i++): ?>
+                                    <option value="<?= $i ?>"><?= $i ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            
 
         </div>
     </form>
