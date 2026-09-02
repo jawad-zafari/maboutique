@@ -15,7 +15,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 const year1 = parseInt(year1Element.value, 10);
                 const year2 = parseInt(year2Element.value, 10);
 
-               
+                // Validation de la cohérence des années
+                if (year2 < year1) {
+                    event.preventDefault(); 
+                    
+                    if (typeof window.showGlobalAdminToast === 'function') {
+                        window.showGlobalAdminToast("Erreur : L'année de fin ne peut pas être antérieure à l'année de début.", "danger");
+                    } else {
+                        alert("L'année de fin ne peut pas être antérieure à l'année de début.");
+                    }
+                }
             }
         });
     }
