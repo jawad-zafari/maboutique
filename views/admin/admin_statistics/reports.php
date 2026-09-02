@@ -11,7 +11,41 @@
         <!-- Jeton CSRF sécurisé -->
         <input type="hidden" name="csrf_token" value="<?= $this->e($data['csrf_token'] ?? '') ?>">
 
-        
+        <div class="stats-filter-card form-box-wide mx-auto">
+            
+            <div class="form-row-half">
+                
+                <div class="filter-section">
+                    <h4><i class="fa-solid fa-calendar-days" aria-hidden="true"></i> Date de début</h4>
+                    <div class="date-selectors-grid">
+                        <div class="form-group m-0">
+                            <label for="startDay" class="sr-only">Jour de début</label>
+                            <select id="startDay" name="day1" class="form-control" aria-label="Sélectionner le jour de début">
+                                <?php for ($i = 1; $i <= 31; $i++): ?>
+                                    <option value="<?= sprintf('%02d', $i) ?>"><?= sprintf('%02d', $i) ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                        <div class="form-group m-0">
+                            <label for="startMonth" class="sr-only">Mois de début</label>
+                            <select id="startMonth" name="month1" class="form-control" aria-label="Sélectionner le mois de début">
+                                <?php for ($i = 1; $i <= 12; $i++): ?>
+                                    <option value="<?= sprintf('%02d', $i) ?>"><?= sprintf('%02d', $i) ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                        <div class="form-group m-0">
+                            <label for="startYear" class="sr-only">Année de début</label>
+                            <select id="startYear" name="year1" class="form-control" aria-label="Sélectionner l'année de début">
+                                <?php for ($i = 2020; $i <= (int)($data['currentYear'] ?? 2026); $i++): ?>
+                                    <option value="<?= $i ?>"><?= $i ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                
     </form>
 </div>
 
