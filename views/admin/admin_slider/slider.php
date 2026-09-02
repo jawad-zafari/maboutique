@@ -124,4 +124,37 @@ $sId = (int)($editSlider['id'] ?? 0);
                     </tr>
                 </thead>
                 <tbody>
-                  
+                    <?php if(!empty($sliders)): foreach ($sliders as $row): ?>
+                    <tr>
+                        <td class="text-center">
+                            <!-- Image du slide -->
+                            <img src="<?= URL . $this->e($row['image_path'] ?? '') ?>" alt="Slide" class="table-img-preview" onerror="this.src='https://placehold.co/100x50/f1f3f5/3b5bdb?text=Slide'">
+                        </td>
+                        <td>
+                            <strong><?= $this->e($row['title'] ?? '') ?></strong>
+                            <div class="text-muted"><small><i class="fa-solid fa-link" aria-hidden="true"></i> <?= $this->e($row['link'] ?? '#') ?></small></div>
+                            <div class="help-text">Bouton : <?= $this->e($row['button_text'] ?? '') ?> (Couleur: <?= $this->e($row['text_color'] ?? '') ?>)</div>
+                        </td>
+                        <td class="text-center">
+                            <a href="<?= URL ?>AdminSlider/edit/<?= (int)$row['id']; ?>" class="action-icon icon-edit" title="Modifier ce slide" aria-label="Modifier le slide <?= $this->e($row['title'] ?? '') ?>">
+                                <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <input type="checkbox" name="id[]" value="<?= (int)$row['id']; ?>" class="admin-checkbox row-checkbox" aria-label="Sélectionner ce slide">
+                        </td>
+                    </tr>
+                    <?php endforeach; else: ?>
+                    <tr>
+                        <td colspan="4" class="text-empty-table text-center">Aucun slide n'a été ajouté au diaporama.</td>
+                    </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </form>
+    <?php endif; ?>
+
+</div>
+
+<script src="<?= URL ?>public/assets/js/admin_slider.js" defer></script>
