@@ -2,6 +2,24 @@
 
 document.addEventListener("DOMContentLoaded", () => {
     
-   
+    // VALIDATION DU FORMULAIRE DE STATISTIQUES
+    const formStatistics = document.getElementById('formStatistics');
+
+    if (formStatistics) {
+        formStatistics.addEventListener('submit', (event) => {
+            
+            const year1Element = document.querySelector('select[name="year1"]');
+            const year2Element = document.querySelector('select[name="year2"]');
+            
+            if (year1Element && year2Element) {
+                const year1 = parseInt(year1Element.value, 10);
+                const year2 = parseInt(year2Element.value, 10);
+
+               
+            }
+        });
+    }
+
+    
 
 });
