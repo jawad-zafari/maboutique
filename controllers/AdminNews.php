@@ -72,6 +72,26 @@ class AdminNews extends Controller
         $this->view('admin/admin_news/edit', $data);
     }
 
+    public function doEdit(int $id): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        $cleanData = [];
+        foreach ($_POST as $key => $value) {
+            $cleanData[$key] = is_string($value) ? trim($value) : $value;
+        }
+
+        $this->model->editNews($id, $cleanData, $_FILES);
+        
+        header('Location: ' . URL . 'AdminNews/index');
+        exit;
+    }
+
     
 }
 ?>
