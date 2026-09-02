@@ -62,8 +62,18 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // FONCTIONNALITÉ UX : SÉLECTIONNER / DÉSÉLECTIONNER TOUT
+    const selectAllCheckboxes = document.getElementById("selectAllCheckboxes");
     
-        
+    if (selectAllCheckboxes) {
+        selectAllCheckboxes.addEventListener("change", (event) => {
+            const isChecked = event.target.checked;
+            const rowCheckboxes = document.querySelectorAll(".row-checkbox");
+            
+            rowCheckboxes.forEach(checkbox => {
+                checkbox.checked = isChecked;
+            });
+        });
     }
 
 });
