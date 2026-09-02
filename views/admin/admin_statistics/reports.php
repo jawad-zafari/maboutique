@@ -45,7 +45,20 @@
                     </div>
                 </div>
 
-                
+                <div class="filter-section">
+                    <h4><i class="fa-solid fa-calendar-check" aria-hidden="true"></i> Date de fin</h4>
+                    <div class="date-selectors-grid">
+                        <div class="form-group m-0">
+                            <label for="endDay" class="sr-only">Jour de fin</label>
+                            <select id="endDay" name="day2" class="form-control" aria-label="Sélectionner le jour de fin">
+                                <?php for ($i = 1; $i <= 31; $i++): ?>
+                                    <option value="<?= sprintf('%02d', $i) ?>"><?= sprintf('%02d', $i) ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                        
+
+        </div>
     </form>
 </div>
 
