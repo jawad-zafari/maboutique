@@ -38,7 +38,12 @@ class ModelAdminStat extends Model
             }
         }
 
-       
+        return [
+            'result' => is_array($result) ? $result : [],
+            'order_paied' => $ordersPaid,
+            'startDate' => $startDate,
+            'endDate' => $endDate
+        ];
     }
 }
 ?>
