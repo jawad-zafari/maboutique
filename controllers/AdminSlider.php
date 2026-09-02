@@ -56,6 +56,25 @@ class AdminSlider extends Controller
         exit;
     }
 
+    public function edit(int $id): void
+    {
+        $sliders = $this->model->getslider();
+        $editSlider = $this->model->getSliderById($id);
+
+        if (empty($editSlider)) {
+            header('Location: ' . URL . 'AdminSlider/index');
+            exit;
+        }
+
+        $data = [
+            'slider' => $sliders,
+            'editSlider' => $editSlider,
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+
+        $this->view('admin/admin_slider/slider', $data);
+    }
+
    
 }
 ?>
