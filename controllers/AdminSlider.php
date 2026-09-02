@@ -102,6 +102,18 @@ class AdminSlider extends Controller
         exit;
     }
 
-    
+    public function delete(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+            
+        $this->model->delete($_POST);
+        header('Location: ' . URL . 'AdminSlider/index?success=delete');
+        exit;
+    }
 }
 ?>
