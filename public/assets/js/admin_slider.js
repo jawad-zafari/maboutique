@@ -43,6 +43,22 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-   
+    // NETTOYAGE DES PARAMÈTRES D'URL (DISPARITION DOUCE DES ALERTES)
+    if (window.history.replaceState && window.location.search !== '') {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('success') || urlParams.has('error')) {
+            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
+            
+            const stickyAlerts = document.querySelectorAll('.alert-sticky');
+            stickyAlerts.forEach(alertBox => {
+                setTimeout(() => {
+                    alertBox.style.transition = 'opacity 0.5s ease';
+                    alertBox.style.opacity = '0';
+                    setTimeout(() => alertBox.remove(), 500);
+                }, 4000);
+            });
+        }
+    }
 
 });
