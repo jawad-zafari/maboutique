@@ -59,6 +59,21 @@ class ModelAdminQuestion extends Model
         }
     }
 
-    
+    public function unconfirm(array $ids): void
+    {
+        if (empty($ids)) return;
+        
+        // SÉCURITÉ : Nettoyage des IDs pour éviter les injections SQL
+        $safeIds = array_map('intval', $ids);
+        $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
+        
+        // SÉCURITÉ : Utilisation de requêtes préparées pour désapprouver les questions et leurs réponses
+        $params = array_merge($safeIds, $safeIds);
+        
+        $sql = "UPDATE questions SET is_approved = 0 WHERE id IN ($placeholders) OR parent_id IN ($placeholders)";
+        $this->doQuery($sql, $params);
+    }
+
+   
 }
 ?>
