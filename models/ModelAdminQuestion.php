@@ -74,6 +74,17 @@ class ModelAdminQuestion extends Model
         $this->doQuery($sql, $params);
     }
 
-   
+    public function delete(array $ids): void
+    {
+        if (empty($ids)) return;
+        
+        $safeIds = array_map('intval', $ids);
+        $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
+        
+        $params = array_merge($safeIds, $safeIds);
+        
+        $sql = "DELETE FROM questions WHERE id IN ($placeholders) OR parent_id IN ($placeholders)";
+        $this->doQuery($sql, $params);
+    }
 }
 ?>
