@@ -7,6 +7,13 @@ class ModelAdminComment extends Model
         parent::__construct();
     }
 
+    public function getComment(): array
+    {
+        $sql = "SELECT * FROM comments ORDER BY id DESC";
+        $result = $this->doSelect($sql);
+        return is_array($result) ? $result : [];
+    }
+
     
 }
 ?>
