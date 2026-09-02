@@ -21,7 +21,65 @@
         <!-- Jeton CSRF sécurisé -->
         <input type="hidden" name="csrf_token" value="<?= $this->e($data['csrf_token'] ?? '') ?>">
 
-        
+        <div class="admin-table-wrapper">
+            <table class="admin-table" aria-label="Liste des questions des utilisateurs">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center col-id">N°</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Question de l'utilisateur</th>
+                        <th scope="col">Réponse de l'administrateur</th>
+                        <th scope="col" class="text-center">Statut</th>
+                        <th scope="col" class="text-center col-checkbox">
+                            <input type="checkbox" id="selectAllCheckboxes" class="admin-checkbox" aria-label="Sélectionner tout">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                    $i = 1; 
+                    $questions = $data['questions'] ?? [];
+                    if (!empty($questions)): 
+                        foreach ($questions as $row): 
+                            $qId = (int)$row['id'];
+                    ?>
+                    <tr>
+                        <td class="text-center font-weight-bold"><?= $i ?></td>
+                        <td><?= $this->e($row['created_at'] ?? '') ?></td>
+                        
+                        <!-- Question de l'utilisateur -->
+                        <td>
+                            <textarea name="question_<?= $qId ?>" class="form-control textarea-small" rows="2" aria-label="Question <?= $i ?>"><?= $this->e($row['content'] ?? '') ?></textarea>
+                        </td>
+                        
+                        <td>
+                            <textarea name="answer_<?= $qId ?>" class="form-control textarea-small" rows="2" placeholder="Saisir la réponse..." aria-label="Réponse de l'admin pour la question <?= $i ?>"><?= $this->e($row['admin_answer'] ?? '') ?></textarea>
+                        </td>
+
+                        <td class="text-center">
+                            <?php if (isset($row['is_approved']) && $row['is_approved'] == 1): ?>
+                                <span class="status-badge status-approved"><i class="fa-solid fa-check" aria-hidden="true"></i> Approuvé</span>
+                            <?php else: ?>
+                                <span class="status-badge status-rejected"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Masqué</span>
+                            <?php endif; ?>
+                        </td>
+
+                        <td class="text-center">
+                            <input type="checkbox" name="id[]" value="<?= $qId ?>" class="admin-checkbox row-checkbox" aria-label="Sélectionner la ligne <?= $i ?>">
+                        </td>
+                    </tr>
+                    <?php 
+                        $i++; 
+                        endforeach; 
+                    else: 
+                    ?>
+                    <tr>
+                        <td colspan="6" class="text-empty-table text-center">Aucune question trouvée.</td>
+                    </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
     </form>
 </div>
 
