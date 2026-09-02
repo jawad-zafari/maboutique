@@ -16,7 +16,13 @@
         </div>
     </header>
 
-    
+    <form id="formQuestionsManage" action="" method="post">
+        
+        <!-- Jeton CSRF sécurisé -->
+        <input type="hidden" name="csrf_token" value="<?= $this->e($data['csrf_token'] ?? '') ?>">
+
+        
+    </form>
 </div>
 
 <script src="<?= URL ?>public/assets/js/admin_question.js" defer></script>
