@@ -17,6 +17,77 @@
         </div>
     </header>
 
+    <form id="formCommentsManage" action="" method="post">
+        
+        <!-- Jeton CSRF sécurisé avec la méthode e() -->
+        <input type="hidden" name="csrf_token" value="<?= $this->e($data['csrf_token'] ?? '') ?>">
+
+        <div class="admin-table-wrapper">
+            <table class="admin-table" aria-label="Liste des commentaires à modérer">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 50px;" class="text-center">N°</th>
+                        <th scope="col" style="width: 120px;">Date</th>
+                        <th scope="col">Titre du commentaire</th>
+                        <th scope="col">Points forts</th>
+                        <th scope="col">Points faibles</th>
+                        <th scope="col">Texte du commentaire</th>
+                        <th scope="col" style="width: 130px;" class="text-center">Statut</th>
+                        <th scope="col" style="width: 60px;" class="text-center">
+                            <input type="checkbox" id="selectAllCheckboxes" class="admin-checkbox" aria-label="Sélectionner toutes les lignes">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                    $i = 1; 
+                    $comments = $data['comment'] ?? [];
+                    if (!empty($comments)): 
+                        foreach ($comments as $row): 
+                    ?>
+                    <tr>
+                        <td class="text-center font-weight-bold"><?= $i ?></td>
+                        <td><?= $this->e($row['created_at'] ?? '') ?></td>
+                        
+                        <!-- Protection XSS -->
+                        <td>
+                            <input type="text" name="title_<?= (int)$row['id'] ?>" value="<?= $this->e($row['title'] ?? '') ?>" class="input-comment-small" aria-label="Modifier le titre du commentaire <?= $i ?>">
+                        </td>
+                        <td>
+                            <input type="text" name="positive_points_<?= (int)$row['id'] ?>" value="<?= $this->e($row['positive_points'] ?? '') ?>" class="input-comment-small" aria-label="Modifier les points positifs <?= $i ?>">
+                        </td>
+                        <td>
+                            <input type="text" name="negative_points_<?= (int)$row['id'] ?>" value="<?= $this->e($row['negative_points'] ?? '') ?>" class="input-comment-small" aria-label="Modifier les points faibles <?= $i ?>">
+                        </td>
+                        <td>
+                            <textarea name="content_<?= (int)$row['id'] ?>" class="textarea-comment" rows="2" aria-label="Modifier le corps du commentaire <?= $i ?>"><?= $this->e($row['content'] ?? '') ?></textarea>
+                        </td>
+
+                        <td class="text-center">
+                            <?php if (isset($row['is_approved']) && $row['is_approved'] == 1): ?>
+                                <span class="status-badge status-approved"><i class="fa-solid fa-check" aria-hidden="true"></i> Approuvé</span>
+                            <?php else: ?>
+                                <span class="status-badge status-rejected"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Masqué</span>
+                            <?php endif; ?>
+                        </td>
+
+                        <td class="text-center">
+                            <input type="checkbox" name="id[]" value="<?= (int)$row['id']; ?>" class="admin-checkbox row-checkbox" aria-label="Sélectionner cette ligne pour la modération">
+                        </td>
+                    </tr>
+                    <?php 
+                        $i++; 
+                        endforeach; 
+                    else: 
+                    ?>
+                    <tr>
+                        <td colspan="8" class="text-empty-table">Aucun commentaire trouvé dans la base de données.</td>
+                    </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </form>
 </div>
 
 <script src="<?= URL ?>public/assets/js/admin_comment.js" defer></script>
