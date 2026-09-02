@@ -15,6 +15,16 @@ class AdminComment extends Controller
         }
     }
 
+    public function index(): void
+    {
+        $data = [
+            'comment' => $this->model->getComment(),
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        
+        $this->view('admin/admin_comment/comment', $data);
+    }
+
    
 }
 ?>
