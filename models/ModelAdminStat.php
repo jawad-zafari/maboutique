@@ -29,6 +29,16 @@ class ModelAdminStat extends Model
         
         $ordersPaid = 0;
 
-        
+        if (!empty($result) && is_array($result)) {
+            foreach ($result as $row) {
+                // Compter uniquement les commandes payées
+                if (isset($row['is_paid']) && (int)$row['is_paid'] === 1) {
+                    $ordersPaid++;
+                }
+            }
+        }
+
+       
+    }
 }
 ?>
