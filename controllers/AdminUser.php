@@ -81,6 +81,22 @@ class AdminUser extends Controller
         exit;
     }
 
-   
+    public function delete(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit('Méthode non autorisée');
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        $ids = $_POST['id'] ?? [];
+        if (!empty($ids) && is_array($ids)) {
+            $this->model->delete($ids);
+        }
+        
+        header('Location: ' . URL . 'AdminUser/index');
+        exit;
+    }
 }
 ?>
