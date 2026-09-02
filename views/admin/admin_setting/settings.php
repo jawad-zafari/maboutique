@@ -62,6 +62,66 @@ $option = $data['option'] ?? [];
                 </div>
             </div>
 
+            <div class="admin-form-box">
+                <h3 class="settings-section-title">
+                    <i class="fa-solid fa-credit-card" aria-hidden="true"></i> Finances & Paiement
+                </h3>
+                
+                <div class="form-row-double">
+                    <div class="form-group">
+                        <label for="taxPercent">TVA applicable (%) :</label>
+                        <input type="number" id="taxPercent" name="tax_percent" class="form-control" value="<?= $this->e($option['tax_percent'] ?? '20') ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="shippingCost">Frais de port base (€) :</label>
+                        <input type="number" step="0.01" id="shippingCost" name="shipping_cost" class="form-control" value="<?= $this->e($option['shipping_cost'] ?? '5.00') ?>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="zarinpalMID">Clé API (Passerelle de paiement) :</label>
+                    <input type="text" id="zarinpalMID" name="zarinpalMID" class="form-control" value="<?= $this->e($option['zarinpalMID'] ?? '') ?>" dir="ltr" placeholder="ex: sk_live_123abc...">
+                </div>
+            </div>
+
+            <div class="admin-form-box">
+                <h3 class="settings-section-title">
+                    <i class="fa-solid fa-hashtag" aria-hidden="true"></i> Réseaux Sociaux
+                </h3>
+                
+                <div class="form-group">
+                    <label for="socialInstagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i> URL Instagram :</label>
+                    <input type="url" id="socialInstagram" name="social_instagram" class="form-control" value="<?= $this->e($option['social_instagram'] ?? '') ?>" dir="ltr">
+                </div>
+                <div class="form-group">
+                    <label for="socialFacebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i> URL Facebook :</label>
+                    <input type="url" id="socialFacebook" name="social_facebook" class="form-control" value="<?= $this->e($option['social_facebook'] ?? '') ?>" dir="ltr">
+                </div>
+            </div>
+
+            <div class="admin-form-box grid-full-width">
+                <h3 class="settings-section-title">
+                    <i class="fa-solid fa-palette" aria-hidden="true"></i> Charte Graphique (UI)
+                </h3>
+                
+                <div class="form-row-double">
+                    <div class="form-group">
+                        <label for="bodyColor">Couleur de fond globale :</label>
+                        <input id="bodyColor" class="form-control" data-jscolor="{}" type="text" name="body_color" value="<?= $this->e($option['body_color'] ?? '#f4f6f9') ?>" dir="ltr">
+                    </div>
+                    <div class="form-group">
+                        <label for="menuColor">Couleur principale du menu :</label>
+                        <input id="menuColor" class="form-control" data-jscolor="{}" type="text" name="menu_color" value="<?= $this->e($option['menu_color'] ?? '#0033fe') ?>" dir="ltr">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-25">
+            <button type="submit" class="btn-admin-submit btn-wide w-100" aria-label="Sauvegarder et appliquer définitivement la configuration du site">
+                <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Mettre à jour la configuration
+            </button>
+        </div>
 
     </form>
 </div>
