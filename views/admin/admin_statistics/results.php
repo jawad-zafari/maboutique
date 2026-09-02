@@ -101,3 +101,5 @@ foreach ($result as $row) {
     </div>
 
 </div>
+
+<script src="<?= URL ?>public/assets/js/admin_statistics.js" defer></script>
