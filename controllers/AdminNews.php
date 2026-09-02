@@ -38,6 +38,27 @@ class AdminNews extends Controller
         $this->view('admin/admin_news/add', $data);
     }
 
+    public function doAdd(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        // Nettoyage des données POST pour éviter les injections et les entrées malveillantes
+        $cleanData = [];
+        foreach ($_POST as $key => $value) {
+            $cleanData[$key] = is_string($value) ? trim($value) : $value;
+        }
+
+        $this->model->addNews($cleanData, $_FILES);
+        
+        header('Location: ' . URL . 'AdminNews/index');
+        exit;
+    }
+
     
 }
 ?>
