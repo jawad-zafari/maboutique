@@ -19,4 +19,63 @@
         </div>
     </header>
 
-   
+    <form id="formUsersManage" method="post">
+        
+        <!-- SÉCURITÉ : Jeton CSRF sécurisé avec e() -->
+        <input type="hidden" name="csrf_token" value="<?= $this->e($data['csrf_token'] ?? '') ?>">
+
+        <div class="admin-table-wrapper">
+            <table class="admin-table" aria-label="Liste des utilisateurs enregistrés">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center col-id">N°</th>
+                        <th scope="col">Nom & Prénom / Identifiant</th>
+                        <th scope="col">Téléphone Mobile</th>
+                        <th scope="col" class="text-center">Rôle actuel</th>
+                        <th scope="col" class="text-center col-checkbox">
+                            <input type="checkbox" id="selectAllCheckboxes" class="admin-checkbox" aria-label="Sélectionner tous les utilisateurs">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                    $i = 1; 
+                    $users = $data['users'] ?? [];
+                    if (!empty($users)): 
+                        foreach ($users as $row): 
+                            $roleId = (int)($row['role_id'] ?? 3);
+                    ?>
+                    <tr>
+                        <td class="text-center font-weight-bold"><?= $i ?></td>
+                        
+                        <!-- SÉCURITÉ : Protection XSS avec e() -->
+                        <td><strong><?= $this->e($row['family'] ?? 'Inconnu') ?></strong></td>
+                        
+                        <td><span dir="ltr"><?= $this->e($row['mobile'] ?? '') ?></span></td>
+                        
+                        <td class="text-center">
+                            <span class="badge-role role-<?= $roleId ?>">
+                                <?= $this->e($row['levelTitle'] ?? 'Utilisateur') ?>
+                            </span>
+                        </td>
+                        
+                        <td class="text-center">
+                            <input type="checkbox" name="id[]" value="<?= (int)$row['id']; ?>" class="admin-checkbox row-checkbox" aria-label="Sélectionner l'utilisateur <?= $this->e($row['family'] ?? 'Inconnu') ?>">
+                        </td>
+                    </tr>
+                    <?php 
+                        $i++; 
+                        endforeach; 
+                    else: 
+                    ?>
+                    <tr>
+                        <td colspan="5" class="text-empty-table text-center">Aucun utilisateur trouvé dans la base de données.</td>
+                    </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
+
+<script src="<?= URL ?>public/assets/js/admin_user.js" defer></script>
