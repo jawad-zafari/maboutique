@@ -75,6 +75,33 @@ class AdminSlider extends Controller
         $this->view('admin/admin_slider/slider', $data);
     }
 
-   
+    public function update(int $id): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+            
+        $cleanData = [];
+        foreach ($_POST as $key => $value) {
+            if ($key === 'link') {
+                $cleanData[$key] = filter_var(trim((string)$value), FILTER_SANITIZE_URL);
+            } else {
+                $cleanData[$key] = is_string($value) ? trim($value) : $value;
+            }
+        }
+
+        $result = $this->model->updateSlider($id, $cleanData, $_FILES);
+        if ($result) {
+            header('Location: ' . URL . 'AdminSlider/index?success=update');
+        } else {
+            header('Location: ' . URL . 'AdminSlider/edit/' . $id . '?error=upload');
+        }
+        exit;
+    }
+
+    
 }
 ?>
