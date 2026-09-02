@@ -29,8 +29,31 @@ foreach ($result as $row) {
         </div>
     </header>
 
-   
+    <div class="stats-summary-grid">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fa-solid fa-shopping-cart"></i></div>
+            <div class="stat-content">
+                <span class="stat-title">Total des commandes</span>
+                <span class="stat-value"><?= $totalOrders ?></span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon success"><i class="fa-solid fa-check-circle"></i></div>
+            <div class="stat-content">
+                <span class="stat-title">Commandes payées</span>
+                <span class="stat-value"><?= $paiedOrders ?> <small>(<?= $paiedPercentage ?>%)</small></span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon primary"><i class="fa-solid fa-euro-sign"></i></div>
+            <div class="stat-content">
+                <span class="stat-title">Chiffre d'affaires</span>
+                <span class="stat-value"><?= number_format($totalRevenue, 2, ',', ' ') ?> €</span>
+            </div>
+        </div>
     </div>
+
+    
 
 </div>
 
