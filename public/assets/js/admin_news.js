@@ -9,7 +9,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    
-    
+    // GESTION DE LA SUPPRESSION D'UNE ACTUALITÉ AVEC CONFIRMATION
+    const deleteTriggers = document.querySelectorAll('.btn-delete-trigger');
+
+    deleteTriggers.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            
+           
+    });
 
 });
