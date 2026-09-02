@@ -27,7 +27,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-
+            // Routage sécurisé vers le contrôleur
+            if (action === '1') {
+                form.action = baseUrl + 'AdminQuestion/confirm';
+                form.submit();
+            } else if (action === '2') {
+                form.action = baseUrl + 'AdminQuestion/unconfirm';
+                form.submit();
+            } else if (action === '3') {
+                // Utilisation du modal customisé (Anti-XSS et Accessible)
+                showConfirm("Voulez-vous vraiment supprimer définitivement ces questions ? Cette action est irréversible.", () => {
+                    form.action = baseUrl + 'AdminQuestion/delete';
+                    form.submit();
+                });
+            }
+        });
     }
+
+   
+    
 
 });
