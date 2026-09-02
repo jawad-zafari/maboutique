@@ -14,6 +14,13 @@ class ModelAdminSlider extends Model
         return is_array($result) ? $result : [];
     }
 
-   
+    public function getSliderById(int $id): array
+    {
+        $sql = "SELECT * FROM sliders WHERE id = ?";
+        $result = $this->doSelect($sql, [$id], 'fetch');
+        return is_array($result) ? $result : [];
+    }
+
+    
 }
 ?>
