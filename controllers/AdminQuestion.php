@@ -15,6 +15,18 @@ class AdminQuestion extends Controller
         }
     }
 
-   
+    public function index(): void
+    {
+        $questions = $this->model->getQuestions();
+        
+        $data = [
+            'questions' => $questions,
+            'csrf_token' => $this->generateCsrfToken() 
+        ];
+        
+        $this->view('admin/admin_question/question', $data);
+    }
+
+    
 }
 ?>
