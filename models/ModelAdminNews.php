@@ -65,6 +65,52 @@ class ModelAdminNews extends Model
         $this->doQuery($sql, [$id]);
     }
 
-   
+    // Récupère les informations d'une actualité spécifique
+
+    private function uploadImage(array $files, int $id, bool $isEdit = false): void
+    {
+        if (!empty($files['image']['name']) && $files['image']['error'] === 0) {
+            
+            // Liste blanche des extensions autorisées
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $fileName = $files['image']['name'];
+            $fileTmpName = $files['image']['tmp_name'];
+            
+            $extension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+            // Bloquer si l'extension n'est pas valide
+            if (!in_array($extension, $allowedExtensions)) {
+                return; 
+            }
+
+            // Vérification du type MIME réel
+            $mimeType = mime_content_type($fileTmpName);
+            if (strpos((string)$mimeType, 'image/') !== 0) {
+                return;
+            }
+
+            $uploadDir = 'public/images/news/';
+            if (!file_exists($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            $newFileName = 'news_' . $id . '_' . time() . '.' . $extension;
+            $destination = $uploadDir . $newFileName;
+
+            if (move_uploaded_file($fileTmpName, $destination)) {
+                
+                // Supprimer l'ancienne image si c'est une modification
+                if ($isEdit) {
+                    $oldNews = $this->getNewsById($id);
+                    if (!empty($oldNews['image_path']) && file_exists($oldNews['image_path'])) {
+                        unlink($oldNews['image_path']);
+                    }
+                }
+
+                $sqlUpdate = "UPDATE news SET image_path = ? WHERE id = ?";
+                $this->doQuery($sqlUpdate, [$destination, $id]);
+            }
+        }
+    }
 }
 ?>
