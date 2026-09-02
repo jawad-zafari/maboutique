@@ -56,6 +56,14 @@
                                 <?php endfor; ?>
                             </select>
                         </div>
+                        <div class="form-group m-0">
+                            <label for="endMonth" class="sr-only">Mois de fin</label>
+                            <select id="endMonth" name="month2" class="form-control" aria-label="Sélectionner le mois de fin">
+                                <?php for ($i = 1; $i <= 12; $i++): ?>
+                                    <option value="<?= sprintf('%02d', $i) ?>"><?= sprintf('%02d', $i) ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
                         
 
         </div>
