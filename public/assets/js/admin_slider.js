@@ -10,6 +10,29 @@ document.addEventListener("DOMContentLoaded", () => {
     const showToast = window.showGlobalAdminToast || alert;
     const showConfirm = window.showGlobalAdminConfirm || ((msg, cb) => { if(confirm(msg)) cb(); });
 
+    // SUPPRESSION DES SLIDES AVEC DIALOGUE DE CONFIRMATION
+    const btnDeleteSlider = document.getElementById('btnDeleteSlider');
+    const formSlidersSelection = document.getElementById('formSlidersSelection');
+
+    if (btnDeleteSlider && formSlidersSelection) {
+        btnDeleteSlider.addEventListener('click', (event) => {
+            event.preventDefault();
+            const checkedBoxes = formSlidersSelection.querySelectorAll('.row-checkbox:checked');
+
+            if (checkedBoxes.length === 0) {
+                showToast("Veuillez sélectionner au moins un slide à supprimer.", "danger");
+                return;
+            }
+
+            showConfirm(
+                "Êtes-vous sûr de vouloir supprimer définitivement les slides sélectionnés ? Les fichiers images correspondants seront supprimés du serveur.",
+                () => {
+                    formSlidersSelection.submit();
+                }
+            );
+        });
+    }
+
    
 
 });
