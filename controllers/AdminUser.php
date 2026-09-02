@@ -15,6 +15,18 @@ class AdminUser extends Controller
         }
     }
 
-   
+    public function index(): void
+    {
+        $users = $this->model->getUsers();
+        
+        $data = [
+            'users' => $users,
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        
+        $this->view('admin/admin_user/users', $data);
+    }
+
+    
 }
 ?>
