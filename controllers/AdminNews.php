@@ -29,6 +29,15 @@ class AdminNews extends Controller
         $this->view('admin/admin_news/news', $data);
     }
 
+    public function add(): void
+    {
+        $data = [
+            'activeMenu' => 'news',
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        $this->view('admin/admin_news/add', $data);
+    }
 
+    
 }
 ?>
