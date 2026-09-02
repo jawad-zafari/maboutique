@@ -16,7 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
         button.addEventListener('click', function(event) {
             event.preventDefault();
             
-           
+            // Récupération du formulaire parent pour la suppression
+            const parentForm = this.closest('.form-delete-news');
+            
+            if (parentForm) {
+                
+            }
+        });
     });
 
 });
