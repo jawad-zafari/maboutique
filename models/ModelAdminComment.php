@@ -39,6 +39,17 @@ class ModelAdminComment extends Model
         $this->doQuery($sqlApprove, $safeIds);
     }
 
+    public function unconfirm(array $ids): void
+    {
+        if (empty($ids)) return;
+
+        $safeIds = array_map('intval', $ids);
+        $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
+        
+        $sql = "UPDATE comments SET is_approved = 0 WHERE id IN ($placeholders)";
+        $this->doQuery($sql, $safeIds);
+    }
+
     
 }
 ?>
