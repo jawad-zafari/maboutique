@@ -27,6 +27,32 @@ class AdminQuestion extends Controller
         $this->view('admin/admin_question/question', $data);
     }
 
+    public function confirm(): void
+    {
+        //  SÉCURITÉ : Vérification stricte de la méthode POST
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        // SÉCURITÉ : Nettoyage des données POST pour éviter les injections et les entrées malveillantes
+        $cleanData = [];
+        foreach ($_POST as $key => $value) {
+            if (is_array($value)) {
+                $cleanData[$key] = $value;
+            } else {
+                $cleanData[$key] = is_string($value) ? trim($value) : $value;
+            }
+        }
+
+        $this->model->confirm($cleanData);
+        
+        header('Location: ' . URL . 'AdminQuestion/index');
+        exit;
+    }
+
     
 }
 ?>
