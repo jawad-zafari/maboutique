@@ -53,8 +53,51 @@ foreach ($result as $row) {
         </div>
     </div>
 
-    
+    <div class="admin-table-wrapper mt-25">
+        <table class="admin-table" aria-label="Détail des commandes de la période sélectionnée">
+            <thead>
+                <tr>
+                    <th scope="col" class="col-id text-center">N°</th>
+                    <th scope="col">Date de création</th>
+                    <th scope="col">Nom du client</th>
+                    <th scope="col">Montant</th>
+                    <th scope="col" class="text-center">Statut du paiement</th>
+                    <th scope="col">Ville de livraison</th>
+                    <th scope="col" class="text-center">Détails</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if(!empty($result)): foreach ($result as $row): 
+                    $isPaid = (int)($row['is_paid'] ?? 0);
+                ?>
+                <tr>
+                    <td class="text-center"><strong>#<?= (int)$row['id']; ?></strong></td>
+                    // Échappement des données pour éviter les failles XSS
+                    <td><?= $this->e($row['created_date'] ?? '') ?></td>
+                    <td><?= $this->e($row['last_name'] ?? 'Client') ?></td>
+                    <td><strong><?= number_format((float)($row['total_price'] ?? $row['amount'] ?? 0), 2, ',', ' '); ?> €</strong></td>
+                    
+                    <td class="text-center">
+                        <span class="badge-payment <?= $isPaid === 1 ? 'paid' : 'unpaid' ?>">
+                            <?= $isPaid === 1 ? 'Payé' : 'Non Payé' ?>
+                        </span>
+                    </td>
+                    
+                    <td><?= $this->e($row['city'] ?? '-') ?></td>
+                    
+                    <td class="text-center">
+                        <a href="<?= URL ?>AdminOrder/detail/<?= (int)$row['id']; ?>" class="action-icon icon-list" title="Voir les détails de la commande" aria-label="Voir la commande <?= (int)$row['id']; ?>">
+                            <i class="fa-solid fa-eye" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+                <?php endforeach; else: ?>
+                <tr>
+                    <td colspan="7" class="text-empty-table text-center">Aucune commande trouvée pour cette période.</td>
+                </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 
 </div>
-
-<script src="<?= URL ?>public/assets/js/admin_statistics.js" defer></script>
