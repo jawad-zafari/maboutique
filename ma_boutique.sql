@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 26, 2026 at 08:43 PM
+-- Generation Time: Sep 02, 2026 at 11:29 AM
 -- Server version: 8.4.3
 -- PHP Version: 8.5.0
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `digi_mvc`
+-- Database: `ma_boutique`
 --
 
 -- --------------------------------------------------------
@@ -76,9 +76,15 @@ CREATE TABLE `cart_items` (
 --
 
 INSERT INTO `cart_items` (`id`, `session_cookie`, `product_id`, `quantity`, `color_id`, `guarantee_id`) VALUES
-(1, '1783770881', 26, 1, 0, 0),
-(110, '1784404340', 6, 2, 0, 0),
-(111, '1784404340', 10, 1, 0, 0);
+(4, 'fd9ca00bacdbfebc41284b0f6aa132c8', 27, 1, 0, 0),
+(5, 'fd9ca00bacdbfebc41284b0f6aa132c8', 28, 1, 0, 0),
+(6, 'fd9ca00bacdbfebc41284b0f6aa132c8', 29, 1, 0, 0),
+(9, 'd179526981baf85217f9773c771444d3', 29, 1, 0, 0),
+(10, 'd179526981baf85217f9773c771444d3', 28, 1, 0, 0),
+(11, 'd179526981baf85217f9773c771444d3', 30, 1, 0, 0),
+(18, '5a38b3d9eb3ca46fafa959fef440bdcb', 28, 1, 0, 0),
+(19, '5a38b3d9eb3ca46fafa959fef440bdcb', 3, 1, 0, 0),
+(20, '5a38b3d9eb3ca46fafa959fef440bdcb', 8, 1, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -99,8 +105,8 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `title`, `parent_id`, `image_path`, `is_brand`) VALUES
-(1, 'Smartphone', 0, NULL, 0),
-(2, 'Ordinateurs Portables', 0, NULL, 0),
+(1, 'Smartphon', 0, NULL, 0),
+(2, 'Ordinateurs Portable', 0, NULL, 0),
 (3, 'Accessoire', 0, NULL, 0),
 (4, 'Audio & Écouteurs', 0, NULL, 0),
 (7, 'Apple', 0, 'public/images/brands/apple.png', 1),
@@ -153,13 +159,6 @@ CREATE TABLE `comments` (
   `is_approved` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `comments`
---
-
-INSERT INTO `comments` (`id`, `title`, `content`, `created_at`, `positive_points`, `negative_points`, `likes`, `dislikes`, `product_id`, `parameters`, `user_id`, `is_approved`) VALUES
-(1, 'dlgjdfjgk', 'dgldfkjg', '2026/07/15', 'dglkjfd', 'dglfdjg', 0, 0, 4, 'a:0:{}', 1, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -172,15 +171,6 @@ CREATE TABLE `comment_scores` (
   `parameter_id` int NOT NULL,
   `score` float NOT NULL DEFAULT '5'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `comment_scores`
---
-
-INSERT INTO `comment_scores` (`id`, `comment_id`, `parameter_id`, `score`) VALUES
-(1, 1, 1, 5),
-(2, 1, 2, 4),
-(3, 1, 3, 4.5);
 
 -- --------------------------------------------------------
 
@@ -218,7 +208,16 @@ CREATE TABLE `favorites` (
 --
 
 INSERT INTO `favorites` (`id`, `product_id`, `user_id`, `folder_id`, `title`) VALUES
-(43, 24, 2, 0, '');
+(60, 11, 2, 0, ''),
+(61, 8, 2, 0, ''),
+(66, 28, 2, 0, ''),
+(68, 17, 2, 0, ''),
+(71, 3, 2, 0, ''),
+(75, 27, 3, 0, ''),
+(79, 30, 4, 0, ''),
+(80, 6, 4, 0, ''),
+(81, 15, 4, 0, ''),
+(82, 8, 3, 0, '');
 
 -- --------------------------------------------------------
 
@@ -319,21 +318,10 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `transaction_id_before`, `transaction_id_after`, `total_amount`, `last_name`, `is_reversed`, `province`, `city`, `postal_code`, `mobile`, `phone`, `shipping_method_id`, `cart_data`, `address_data`, `shipping_price`, `user_id`, `status_id`, `is_paid`, `payment_method_id`, `pay_day`, `pay_month`, `pay_year`, `pay_card_number`, `pay_bank_name`, `created_timestamp`, `created_date`, `barcode`, `tracking_code`, `admin_note`) VALUES
-(1, 'cs_test_f3a0be4a3146706571e7b67823c849fd', 'pi_test_aef53565903ceedb', 405, '', 0, '', '', '', '', '', 1, 'a:1:{i:0;a:20:{s:5:\"tedad\";i:1;s:7:\"cartRow\";i:1;s:2:\"id\";i:26;s:5:\"title\";s:18:\"Samsung Galaxy A55\";s:5:\"price\";i:450;s:11:\"category_id\";i:1;s:11:\"description\";s:27:\"Le milieu de gamme parfait.\";s:14:\"stock_quantity\";i:150;s:16:\"discount_percent\";i:10;s:16:\"is_special_offer\";i:0;s:24:\"special_offer_expires_at\";i:0;s:12:\"is_exclusive\";i:0;s:5:\"views\";i:3400;s:9:\"color_ids\";s:5:\"1,2,4\";s:13:\"guarantee_ids\";s:1:\"1\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:202;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:45;}}', '', 0, 1, 5, 1, 1, 0, 0, 0, '', '', 1783803525, '1405/04/21', 'ORD-1783803525-7195', '', NULL),
-(2, 'cs_test_b7217d995d070ebb6efb0c6351d22fd6', 'pi_test_128c29ebdc33fdea', 405, '', 0, '', '', '', '', '', 1, 'a:1:{i:0;a:20:{s:5:\"tedad\";i:1;s:7:\"cartRow\";i:1;s:2:\"id\";i:26;s:5:\"title\";s:18:\"Samsung Galaxy A55\";s:5:\"price\";i:450;s:11:\"category_id\";i:1;s:11:\"description\";s:27:\"Le milieu de gamme parfait.\";s:14:\"stock_quantity\";i:150;s:16:\"discount_percent\";i:10;s:16:\"is_special_offer\";i:0;s:24:\"special_offer_expires_at\";i:0;s:12:\"is_exclusive\";i:0;s:5:\"views\";i:3400;s:9:\"color_ids\";s:5:\"1,2,4\";s:13:\"guarantee_ids\";s:1:\"1\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:202;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:45;}}', '', 0, 1, 5, 1, 1, 0, 0, 0, '', '', 1783803959, '1405/04/21', 'ORD-1783803959-5465', '', NULL),
-(3, 'cs_test_5ec490a0c4df773dae3253e762388326', 'pi_test_7e1ece5f1134b0c1', 4643, '', 0, '', '', '', '', '', 1, 'a:3:{i:0;a:20:{s:5:\"tedad\";i:1;s:7:\"cartRow\";i:2;s:2:\"id\";i:11;s:5:\"title\";s:11:\"Dell XPS 15\";s:5:\"price\";i:2400;s:11:\"category_id\";i:2;s:11:\"description\";s:38:\"L\'ordinateur portable Windows premium.\";s:14:\"stock_quantity\";i:25;s:16:\"discount_percent\";i:0;s:16:\"is_special_offer\";i:0;s:24:\"special_offer_expires_at\";i:0;s:12:\"is_exclusive\";i:1;s:5:\"views\";i:1200;s:9:\"color_ids\";s:1:\"1\";s:13:\"guarantee_ids\";s:1:\"2\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:1800;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:0;}i:1;a:20:{s:5:\"tedad\";i:1;s:7:\"cartRow\";i:3;s:2:\"id\";i:15;s:5:\"title\";s:23:\"Samsung Galaxy Z Fold 5\";s:5:\"price\";i:1800;s:11:\"category_id\";i:1;s:11:\"description\";s:30:\"Le smartphone pliable premium.\";s:14:\"stock_quantity\";i:10;s:16:\"discount_percent\";i:15;s:16:\"is_special_offer\";i:1;s:24:\"special_offer_expires_at\";i:1893456000;s:12:\"is_exclusive\";i:1;s:5:\"views\";i:2800;s:9:\"color_ids\";s:3:\"1,5\";s:13:\"guarantee_ids\";s:3:\"1,2\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:253;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:270;}i:2;a:20:{s:5:\"tedad\";i:1;s:7:\"cartRow\";i:4;s:2:\"id\";i:8;s:5:\"title\";s:17:\"iPad Air 5 - 64Go\";s:5:\"price\";i:750;s:11:\"category_id\";i:2;s:11:\"description\";s:27:\"Tablette Apple polyvalente.\";s:14:\"stock_quantity\";i:60;s:16:\"discount_percent\";i:5;s:16:\"is_special_offer\";i:0;s:24:\"special_offer_expires_at\";i:0;s:12:\"is_exclusive\";i:1;s:5:\"views\";i:1800;s:9:\"color_ids\";s:3:\"2,5\";s:13:\"guarantee_ids\";s:1:\"1\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:460;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";d:37.5;}}', '', 0, 1, 5, 1, 1, 0, 0, 0, '', '', 1783893872, '1405/04/22', 'ORD-1783893872-9793', '', NULL),
-(4, 'cs_test_e307a89aedaa01539daa3fe327eb5a3f', 'pi_test_607fb4602d2a51d1', 298, '', 0, '', '', '', '', '', 1, 'a:1:{i:0;a:20:{s:5:\"tedad\";i:1;s:7:\"cartRow\";i:68;s:2:\"id\";i:4;s:5:\"title\";s:15:\"Sony WH-1000XM5\";s:5:\"price\";i:350;s:11:\"category_id\";i:4;s:11:\"description\";s:37:\"Casque à réduction de bruit active.\";s:14:\"stock_quantity\";i:100;s:16:\"discount_percent\";i:15;s:16:\"is_special_offer\";i:1;s:24:\"special_offer_expires_at\";i:1893456000;s:12:\"is_exclusive\";i:0;s:5:\"views\";i:2900;s:9:\"color_ids\";s:3:\"1,4\";s:13:\"guarantee_ids\";s:1:\"1\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:250;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";d:52.5;}}', '', 0, 1, 5, 1, 1, 0, 0, 0, '', '', 1783953509, '1405/04/22', 'ORD-1783953509-8086', '', NULL),
-(5, 'cs_test_0ba6c640d369eac72f710482e126263d', 'pi_test_4e9c95733b3ff759', 1450, '', 0, '', '', '', '', '', 1, 'a:1:{i:0;a:20:{s:5:\"tedad\";i:1;s:7:\"cartRow\";i:72;s:2:\"id\";i:1;s:5:\"title\";s:25:\"iPhone 15 Pro Max - 256Go\";s:5:\"price\";i:1450;s:11:\"category_id\";i:1;s:11:\"description\";s:0:\"\";s:14:\"stock_quantity\";i:1;s:16:\"discount_percent\";i:0;s:16:\"is_special_offer\";i:0;s:24:\"special_offer_expires_at\";i:0;s:12:\"is_exclusive\";i:1;s:5:\"views\";i:4506;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:221;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:0;}}', '', 0, 1, 1, 1, 1, 0, 0, 0, '', '', 1784072549, '1405/04/24', 'ORD-1784072549-9824', '', NULL),
-(6, 'cs_test_e5ea57035e42d802795d847b8333a579', 'pi_test_604f5156cbfb2fe1', 1465, 'abbas', 0, 'Paris', 'paris', '75018', '0602234983', '0602238983', 1, 'a:1:{i:0;a:20:{s:5:\"tedad\";i:1;s:7:\"cartRow\";i:72;s:2:\"id\";i:1;s:5:\"title\";s:25:\"iPhone 15 Pro Max - 256Go\";s:5:\"price\";i:1450;s:11:\"category_id\";i:1;s:11:\"description\";s:0:\"\";s:14:\"stock_quantity\";i:1;s:16:\"discount_percent\";i:0;s:16:\"is_special_offer\";i:0;s:24:\"special_offer_expires_at\";i:0;s:12:\"is_exclusive\";i:1;s:5:\"views\";i:4506;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:221;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:0;}}', '106 boulevard ney', 15, 1, 1, 1, 1, 0, 0, 0, '', '', 1784073793, '2026-07-15 00:03:13', 'ORD-1784073793-9772', '', NULL),
-(7, 'cs_test_5d35d0398ee937391dba8a7f4a755421', 'pi_test_d1ad4ab8e29e3725', 1863, 'njknkj', 0, 'paris', 'paris', '75018', '0602238983', '0602238983', 1, 'a:1:{i:0;a:20:{s:5:\"tedad\";i:1;s:7:\"cartRow\";i:73;s:2:\"id\";i:6;s:5:\"title\";s:21:\"Asus ROG Zephyrus G14\";s:5:\"price\";i:2100;s:11:\"category_id\";i:2;s:11:\"description\";s:24:\"PC Gamer ultra-portable.\";s:14:\"stock_quantity\";i:20;s:16:\"discount_percent\";i:12;s:16:\"is_special_offer\";i:1;s:24:\"special_offer_expires_at\";i:1893456000;s:12:\"is_exclusive\";i:0;s:5:\"views\";i:1500;s:9:\"color_ids\";s:3:\"1,3\";s:13:\"guarantee_ids\";s:1:\"2\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:1600;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:252;}}', '106 boulevard ney', 15, 1, 1, 1, 1, 0, 0, 0, '', '', 1784099646, '2026-07-15 07:14:06', 'ORD-1784099646-6635', '', NULL),
-(8, 'cs_test_d516cf7a6372cb899d8cffb0a72d4fce', 'pi_test_1e602136ac6d2066', 1863, 'njknkj', 0, 'paris', 'paris', '75018', '0602238983', '0602238983', 1, 'a:1:{i:0;a:20:{s:5:\"\";i:1;s:7:\"cartRow\";i:74;s:2:\"id\";i:6;s:5:\"title\";s:21:\"Asus ROG Zephyrus G14\";s:5:\"price\";i:2100;s:11:\"category_id\";i:2;s:11:\"description\";s:24:\"PC Gamer ultra-portable.\";s:14:\"stock_quantity\";i:20;s:16:\"discount_percent\";i:12;s:16:\"is_special_offer\";i:1;s:24:\"special_offer_expires_at\";i:1893456000;s:12:\"is_exclusive\";i:0;s:5:\"views\";i:1500;s:9:\"color_ids\";s:3:\"1,3\";s:13:\"guarantee_ids\";s:1:\"2\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:1600;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:252;}}', '106 boulevard ney', 15, 1, 1, 1, 1, 0, 0, 0, '', '', 1784103108, '2026-07-15 08:11:48', 'ORD-1784103108-9162', '', NULL),
-(9, 'cs_test_4367dfe866f779e177a82e88b2c3bc26', 'pi_test_74be38c4d005519f', 313, 'njknkj', 0, 'paris', 'paris', '75018', '0602238983', '0602238983', 1, 'a:1:{i:0;a:20:{s:5:\"tedad\";i:1;s:7:\"cartRow\";i:75;s:2:\"id\";i:4;s:5:\"title\";s:15:\"sony wh-1000xm6\";s:5:\"price\";i:350;s:11:\"category_id\";i:4;s:11:\"description\";s:37:\"Casque à réduction de bruit active.\";s:14:\"stock_quantity\";i:100;s:16:\"discount_percent\";i:15;s:16:\"is_special_offer\";i:1;s:24:\"special_offer_expires_at\";i:1893456000;s:12:\"is_exclusive\";i:0;s:5:\"views\";i:2901;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:250;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";d:52.5;}}', '106 boulevard ney', 15, 1, 2, 1, 1, 0, 0, 0, '', '', 1784126463, '2026-07-15 14:41:03', 'ORD-1784126463-9007', '', NULL),
-(10, '', '', 3140, 'jawad zafari', 0, 'sfdghj', 'paris', '75018', '1234567890', '', 2, 'a:2:{i:0;a:20:{s:8:\"quantity\";i:4;s:7:\"cartRow\";i:170;s:2:\"id\";i:24;s:5:\"title\";s:21:\"Logitech MX Master 3S\";s:5:\"price\";i:110;s:11:\"category_id\";i:3;s:11:\"description\";s:37:\"La meilleure souris de productivité.\";s:14:\"stock_quantity\";i:95;s:16:\"discount_percent\";i:5;s:16:\"is_special_offer\";i:1;s:24:\"special_offer_expires_at\";i:1893456000;s:12:\"is_exclusive\";i:1;s:5:\"views\";i:2606;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:141;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";d:22;}i:1;a:20:{s:8:\"quantity\";i:2;s:7:\"cartRow\";i:171;s:2:\"id\";i:2;s:5:\"title\";s:24:\"Samsung Galaxy S25 Ultra\";s:5:\"price\";i:1350;s:11:\"category_id\";i:1;s:11:\"description\";s:36:\"Le smartphone IA ultime par Samsung.\";s:14:\"stock_quantity\";i:40;s:16:\"discount_percent\";i:10;s:16:\"is_special_offer\";i:1;s:24:\"special_offer_expires_at\";i:1893456000;s:12:\"is_exclusive\";i:0;s:5:\"views\";i:5202;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:232;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:270;}}', '106 boulevard ney', 0, 2, 1, 0, 1, 0, 0, 0, '', '', 1784841566, '2026-07-23 23:19:26', 'ORD-1784841566-5932', '', NULL),
-(11, '', '', 0, 'jawad zafari', 0, 'sfdghj', 'paris', '75018', '1234567890', '', 2, 'a:0:{}', '106 boulevard ney', 0, 2, 1, 0, 1, 0, 0, 0, '', '', 1784841615, '2026-07-23 23:20:15', 'ORD-1784841615-4810', '', NULL),
-(12, '', '', 110, 'jawad zafari', 0, 'sfdghj', 'paris', '75018', '1234567890', '', 2, 'a:1:{i:0;a:20:{s:8:\"quantity\";i:1;s:7:\"cartRow\";i:172;s:2:\"id\";i:24;s:5:\"title\";s:21:\"Logitech MX Master 3S\";s:5:\"price\";i:110;s:11:\"category_id\";i:3;s:11:\"description\";s:37:\"La meilleure souris de productivité.\";s:14:\"stock_quantity\";i:95;s:16:\"discount_percent\";i:5;s:16:\"is_special_offer\";i:1;s:24:\"special_offer_expires_at\";i:1893456000;s:12:\"is_exclusive\";i:1;s:5:\"views\";i:2606;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:141;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";d:5.5;}}', '106 boulevard ney', 0, 2, 1, 0, 1, 0, 0, 0, '', '', 1784841677, '2026-07-23 23:21:17', 'ORD-1784841677-2557', '', NULL),
-(13, 'cs_test_d83a32ff07921a864dc61e9ebfce4caf', 'pi_test_a22bd472eaf40112', 2100, 'jawad zafari', 0, 'sfdghj', 'paris', '75018', '1234567890', '', 2, 'a:1:{i:0;a:20:{s:8:\"quantity\";i:1;s:7:\"cartRow\";i:173;s:2:\"id\";i:6;s:5:\"title\";s:21:\"Asus ROG Zephyrus G16\";s:5:\"price\";i:2100;s:11:\"category_id\";i:2;s:11:\"description\";s:24:\"PC Gamer ultra-portable.\";s:14:\"stock_quantity\";i:20;s:16:\"discount_percent\";i:12;s:16:\"is_special_offer\";i:1;s:24:\"special_offer_expires_at\";i:1893456000;s:12:\"is_exclusive\";i:0;s:5:\"views\";i:1533;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:1600;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:252;}}', '106 boulevard ney', 0, 2, 4, 1, 1, 0, 0, 0, '', '', 1784842583, '2026-07-23 23:36:23', 'ORD-1784842583-4156', '', NULL),
-(14, 'cs_test_b0fb6822ee132973b483cd60443eb816', 'pi_test_0ebb0eee60194e52', 0, 'jawad zafari', 0, 'sfdghj', 'paris', '75018', '1234567890', '', 2, 'a:0:{}', '106 boulevard ney', 0, 2, 4, 1, 1, 0, 0, 0, '', '', 1784842860, '2026-07-23 23:41:00', 'ORD-1784842860-1363', '', NULL),
-(15, 'cs_test_4398d633c5fb89a626f5718b1e979042', 'pi_test_516bcdd1bb890e6c', 350, 'jawad zafari', 0, 'sfdghj', 'paris', '75018', '1234567890', '', 2, 'a:1:{i:0;a:20:{s:8:\"quantity\";i:1;s:7:\"cartRow\";i:175;s:2:\"id\";i:10;s:5:\"title\";s:21:\"Samsung Galaxy Watch8\";s:5:\"price\";i:350;s:11:\"category_id\";i:3;s:11:\"description\";s:224:\"Aperçu du produit : 2025 Couleur du corps Anthracite Anthracite Taille d’écran 1,3 pouces Résolution d\'écran 438 x 438 pixels Réseau sans GPS Unisexe Compatible Android Boîtier Aluminium Bracelet Silicone Écran OLED\";s:14:\"stock_quantity\";i:75;s:16:\"discount_percent\";i:10;s:16:\"is_special_offer\";i:1;s:24:\"special_offer_expires_at\";i:1893456000;s:12:\"is_exclusive\";i:0;s:5:\"views\";i:1904;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:50;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:35;}}', '106 boulevard ney', 0, 2, 4, 1, 1, 0, 0, 0, '', '', 1784843283, '2026-07-23 23:48:03', 'ORD-1784843283-4502', '', NULL);
+(1, '', 'TXN-20260801214711-6063', 1840, 'Cinetech', 0, 'paris', 'paris', '75018', '0602238983', '', 2, 'a:3:{i:0;a:20:{s:8:\"quantity\";i:1;s:7:\"cartRow\";i:1;s:2:\"id\";i:28;s:5:\"title\";s:12:\"AirTag Apple\";s:5:\"price\";i:35;s:11:\"category_id\";i:3;s:11:\"description\";s:30:\"Traceur Bluetooth intelligent.\";s:14:\"stock_quantity\";i:300;s:16:\"discount_percent\";i:0;s:16:\"is_special_offer\";i:0;s:24:\"special_offer_expires_at\";i:0;s:12:\"is_exclusive\";i:1;s:5:\"views\";i:4209;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:11;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:0;}i:1;a:20:{s:8:\"quantity\";i:1;s:7:\"cartRow\";i:2;s:2:\"id\";i:27;s:5:\"title\";s:12:\"HP Envy x360\";s:5:\"price\";i:1400;s:11:\"category_id\";i:2;s:11:\"description\";s:31:\"PC portable convertible 2-en-1.\";s:14:\"stock_quantity\";i:25;s:16:\"discount_percent\";i:0;s:16:\"is_special_offer\";i:0;s:24:\"special_offer_expires_at\";i:0;s:12:\"is_exclusive\";i:0;s:5:\"views\";i:781;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:1700;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:0;}i:2;a:20:{s:8:\"quantity\";i:1;s:7:\"cartRow\";i:3;s:2:\"id\";i:26;s:5:\"title\";s:18:\"Samsung Galaxy A55\";s:5:\"price\";i:450;s:11:\"category_id\";i:1;s:11:\"description\";s:27:\"Le milieu de gamme parfait.\";s:14:\"stock_quantity\";i:150;s:16:\"discount_percent\";i:10;s:16:\"is_special_offer\";i:0;s:24:\"special_offer_expires_at\";i:0;s:12:\"is_exclusive\";i:0;s:5:\"views\";i:3401;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:202;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:45;}}', '106 boulevard ney', 0, 3, 1, 1, 1, 0, 0, 0, '', 'Carte Bancaire', 1785620828, '2026-08-01 21:47:08', 'ORD-1785620828-658', '', NULL),
+(2, '', 'TXN-20260824121700-5143', 35, 'Paris\r\n', 0, 'paris', 'paris', '75018', '0602238983', '', 2, 'a:1:{i:0;a:20:{s:8:\"quantity\";i:1;s:7:\"cartRow\";i:7;s:2:\"id\";i:28;s:5:\"title\";s:12:\"AirTag Apple\";s:5:\"price\";i:35;s:11:\"category_id\";i:3;s:11:\"description\";s:30:\"Traceur Bluetooth intelligent.\";s:14:\"stock_quantity\";i:300;s:16:\"discount_percent\";i:0;s:16:\"is_special_offer\";i:0;s:24:\"special_offer_expires_at\";i:0;s:12:\"is_exclusive\";i:1;s:5:\"views\";i:4210;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:11;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:0;}}', '106 boulevard ney', 0, 3, 1, 1, 1, 0, 0, 0, '', 'Carte Bancaire', 1787573816, '2026-08-24 12:16:56', 'ORD-1787573816-639', '', NULL),
+(3, '', '', 5346, 'jawad zafari', 0, 'parus', 'paris', '75018', '132435467687987069', '', 2, 'a:3:{i:0;a:20:{s:8:\"quantity\";i:1;s:7:\"cartRow\";i:12;s:2:\"id\";i:6;s:5:\"title\";s:21:\"Asus ROG Zephyrus G16\";s:5:\"price\";i:2100;s:11:\"category_id\";i:2;s:11:\"description\";s:24:\"PC Gamer ultra-portable.\";s:14:\"stock_quantity\";i:20;s:16:\"discount_percent\";i:12;s:16:\"is_special_offer\";i:1;s:24:\"special_offer_expires_at\";i:1893456000;s:12:\"is_exclusive\";i:0;s:5:\"views\";i:1543;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:1600;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:252;}i:1;a:20:{s:8:\"quantity\";i:1;s:7:\"cartRow\";i:13;s:2:\"id\";i:4;s:5:\"title\";s:15:\"sony wh-1000xm6\";s:5:\"price\";i:350;s:11:\"category_id\";i:4;s:11:\"description\";s:37:\"Casque à réduction de bruit active.\";s:14:\"stock_quantity\";i:100;s:16:\"discount_percent\";i:15;s:16:\"is_special_offer\";i:1;s:24:\"special_offer_expires_at\";i:1893456000;s:12:\"is_exclusive\";i:0;s:5:\"views\";i:2970;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:250;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";d:52.5;}i:2;a:20:{s:8:\"quantity\";i:1;s:7:\"cartRow\";i:14;s:2:\"id\";i:3;s:5:\"title\";s:14:\"MacBook Pro 16\";s:5:\"price\";i:3200;s:11:\"category_id\";i:2;s:11:\"description\";s:33:\"Puissance extrême pour les pros.\";s:14:\"stock_quantity\";i:15;s:16:\"discount_percent\";i:0;s:16:\"is_special_offer\";i:0;s:24:\"special_offer_expires_at\";i:0;s:12:\"is_exclusive\";i:1;s:5:\"views\";i:3806;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:2100;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:0;}}', '106 boulevard ney', 0, 4, 1, 0, 1, 0, 0, 0, '', 'Carte Bancaire', 1788185056, '2026-08-31 14:04:16', 'ORD-1788185056-518', '', NULL),
+(4, '', 'TXN-20260831192245-4685', 1473, 'jawad zafari', 0, 'parus', 'paris', '75018', '132435467687987069', '', 2, 'a:3:{i:0;a:20:{s:8:\"quantity\";i:1;s:7:\"cartRow\";i:15;s:2:\"id\";i:28;s:5:\"title\";s:12:\"AirTag Apple\";s:5:\"price\";i:35;s:11:\"category_id\";i:3;s:11:\"description\";s:30:\"Traceur Bluetooth intelligent.\";s:14:\"stock_quantity\";i:300;s:16:\"discount_percent\";i:0;s:16:\"is_special_offer\";i:0;s:24:\"special_offer_expires_at\";i:0;s:12:\"is_exclusive\";i:1;s:5:\"views\";i:4215;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:11;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:0;}i:1;a:20:{s:8:\"quantity\";i:1;s:7:\"cartRow\";i:16;s:2:\"id\";i:27;s:5:\"title\";s:12:\"HP Envy x360\";s:5:\"price\";i:1400;s:11:\"category_id\";i:2;s:11:\"description\";s:31:\"PC portable convertible 2-en-1.\";s:14:\"stock_quantity\";i:25;s:16:\"discount_percent\";i:0;s:16:\"is_special_offer\";i:0;s:24:\"special_offer_expires_at\";i:0;s:12:\"is_exclusive\";i:0;s:5:\"views\";i:781;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:1700;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";i:0;}i:2;a:20:{s:8:\"quantity\";i:1;s:7:\"cartRow\";i:17;s:2:\"id\";i:29;s:5:\"title\";s:23:\"Support Ordinateur Alu1\";s:5:\"price\";i:45;s:11:\"category_id\";i:3;s:11:\"description\";s:32:\"Support ergonomique et ventilé.\";s:14:\"stock_quantity\";i:120;s:16:\"discount_percent\";i:15;s:16:\"is_special_offer\";i:1;s:24:\"special_offer_expires_at\";i:1893456000;s:12:\"is_exclusive\";i:0;s:5:\"views\";i:1366;s:9:\"color_ids\";s:0:\"\";s:13:\"guarantee_ids\";s:0:\"\";s:21:\"secondary_category_id\";i:0;s:6:\"weight\";i:600;s:10:\"colorTitle\";N;s:13:\"garanteeTitle\";N;s:13:\"discountTotal\";d:6.75;}}', '106 boulevard ney', 0, 4, 1, 1, 1, 0, 0, 0, '', 'Carte Bancaire', 1788204162, '2026-08-31 19:22:42', 'ORD-1788204162-965', '', NULL);
 
 -- --------------------------------------------------------
 
@@ -408,36 +396,36 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `title`, `price`, `category_id`, `description`, `stock_quantity`, `discount_percent`, `is_special_offer`, `special_offer_expires_at`, `is_exclusive`, `views`, `color_ids`, `guarantee_ids`, `secondary_category_id`, `weight`) VALUES
-(1, 'iPhone 17 Pro Max - 256Go', 1450, 1, '\r\nTéléphone Apple iPhone 17 Pro Max - Apple\r\nFabricant : Apple\r\nRéférence fabricant : MFYN4QL/A - MFYN4F/A\r\n\r\nProduit soumis à la Rémunération Pour Copie Privée. En savoir plus\r\nLa puissance fournie par le chargeur doit être entre, au minimum, 4,5 Watts requis par l\'équipement radioélectrique et, au maximum, 30 Watts pour atteindre la vitesse de chargement maximale.', 1, 0, 0, 0, 1, 4515, '', '', 0, 221),
+(1, 'iPhone 17 Pro Max - 256Go', 1450, 1, '\r\nTéléphone Apple iPhone 17 Pro Max - Apple\r\nFabricant : Apple\r\nRéférence fabricant : MFYN4QL/A - MFYN4F/A\r\n\r\nProduit soumis à la Rémunération Pour Copie Privée. En savoir plus\r\nLa puissance fournie par le chargeur doit être entre, au minimum, 4,5 Watts requis par l\'équipement radioélectrique et, au maximum, 30 Watts pour atteindre la vitesse de chargement maximale.', 1, 0, 0, 0, 1, 4516, '', '', 0, 221),
 (2, 'Samsung Galaxy S25 Ultra', 1350, 1, 'Le smartphone IA ultime par Samsung.', 40, 10, 1, 1893456000, 0, 5202, '', '', 0, 232),
-(3, 'MacBook Pro 16', 3200, 2, 'Puissance extrême pour les pros.', 15, 0, 0, 0, 1, 3805, '', '', 0, 2100),
-(4, 'sony wh-1000xm6', 350, 4, 'Casque à réduction de bruit active.', 100, 15, 1, 1893456000, 0, 2967, '', '', 0, 250),
+(3, 'MacBook Pro 16', 3200, 2, 'Puissance extrême pour les pros.', 15, 0, 0, 0, 1, 3806, '', '', 0, 2100),
+(4, 'sony wh-1000xm6', 350, 4, 'Casque à réduction de bruit active.', 100, 15, 1, 1893456000, 0, 2970, '', '', 0, 250),
 (5, 'AirPods Pro 4', 160, 4, 'Écouteurs sans fil Apple haute fidélité.', 80, 0, 0, 0, 0, 3101, '', '', 0, 50),
-(6, 'Asus ROG Zephyrus G16', 2100, 2, 'PC Gamer ultra-portable.', 20, 12, 1, 1893456000, 0, 1535, '', '', 0, 1600),
+(6, 'Asus ROG Zephyrus G16', 2100, 2, 'PC Gamer ultra-portable.', 20, 12, 1, 1893456000, 0, 1543, '', '', 0, 1600),
 (7, 'Google Pixel 10 Pro', 1100, 1, 'Le meilleur photophone Android.', 30, 8, 0, 0, 0, 2100, '', '', 0, 213),
-(8, 'iPad Air 13', 750, 2, 'Tablette Apple polyvalente.', 60, 5, 0, 0, 1, 1803, '', '', 0, 460),
+(8, 'iPad Air 13', 750, 2, 'Tablette Apple polyvalente.', 60, 5, 0, 0, 1, 1807, '', '', 0, 460),
 (9, 'Apple Watch Series 12', 450, 3, 'Montre connectée santé et sport.', 90, 0, 0, 0, 0, 4102, '', '', 0, 45),
-(10, 'Samsung Galaxy Watch8', 350, 3, 'Aperçu du produit : 2025 Couleur du corps Anthracite Anthracite Taille d’écran 1,3 pouces Résolution d\'écran 438 x 438 pixels Réseau sans GPS Unisexe Compatible Android Boîtier Aluminium Bracelet Silicone Écran OLED', 75, 10, 1, 1893456000, 0, 1904, '', '', 0, 50),
+(10, 'Samsung Galaxy Watch8', 350, 3, 'Aperçu du produit : 2025 Couleur du corps Anthracite Anthracite Taille d’écran 1,3 pouces Résolution d\'écran 438 x 438 pixels Réseau sans GPS Unisexe Compatible Android Boîtier Aluminium Bracelet Silicone Écran OLED', 75, 10, 1, 1893456000, 0, 1906, '', '', 0, 50),
 (11, 'Dell XPS 17', 2400, 2, 'L\'ordinateur portable Windows premium.', 25, 0, 0, 0, 1, 1200, '', '', 0, 1800),
-(12, 'Xiaomi Pixel Buds 5 Pro', 200, 4, 'Écouteurs intelligents.', 120, 20, 1, 1893456000, 0, 800, '', '', 0, 40),
+(12, 'Xiaomi Pixel Buds 5 Pro', 200, 4, 'Écouteurs intelligents.', 120, 20, 1, 1893456000, 0, 801, '', '', 0, 40),
 (13, 'Anker_Chargeur Rapide 100W', 45, 3, 'Chargeur ultra-rapide multi-ports.', 300, 0, 0, 0, 0, 3500, '', '', 0, 100),
 (14, 'Câble USB-C Tressé 2M', 20, 3, 'Câble ultra-résistant.', 500, 0, 0, 0, 0, 1101, '', '', 0, 50),
-(15, 'Samsung Galaxy Z Fold 8', 1800, 1, 'Le smartphone pliable premium.', 10, 15, 1, 1893456000, 1, 2802, '', '', 0, 253),
+(15, 'Samsung Galaxy Z Fold 8', 1800, 1, 'Le smartphone pliable premium.', 10, 15, 1, 1893456000, 1, 2803, '', '', 0, 253),
 (16, 'Lenovo ThinkPad T 490', 2600, 2, 'L\'ultime PC portable professionnel.', 18, 0, 0, 0, 0, 950, '', '', 0, 1100),
 (17, 'JBL Flip 6', 300, 4, 'Casque sans fil abordable et puissant.', 85, 10, 0, 0, 0, 1703, '', '', 0, 275),
 (18, 'Batterie externe Anker Prime (20 000 mAh, 200 W)', 60, 3, 'Powerbank haute capacité.', 150, 5, 0, 0, 0, 2300, '', '', 0, 400),
-(19, 'Coque Silicone iPhone 17', 35, 3, 'Protection souple et résistante.', 200, 0, 0, 0, 0, 3201, '', '', 0, 30),
+(19, 'Coque Silicone iPhone 17', 35, 3, 'Protection souple et résistante.', 200, 0, 0, 0, 0, 3203, '', '', 0, 30),
 (20, 'OnePlus 13 Pro', 950, 1, 'Le flagship killer de l\'année.', 45, 8, 1, 1893456000, 0, 1602, '', '', 0, 205),
 (21, 'Bose Charge 5', 140, 4, 'Enceinte Bluetooth étanche.', 110, 12, 0, 0, 1, 1451, '', '', 0, 960),
 (22, 'Ecran Dell UltraSharp 27\"', 600, 3, 'Moniteur 4K pour professionnels.', 35, 0, 0, 0, 0, 851, '', '', 0, 5500),
 (23, 'Microphone Blue Yeti', 120, 4, 'Micro USB pour streaming et podcasts.', 65, 0, 0, 0, 0, 1150, '', '', 0, 1000),
-(24, 'Logitech MX Master 3S', 110, 3, 'La meilleure souris de productivité.', 95, 5, 1, 1893456000, 1, 2606, '', '', 0, 141),
+(24, 'Logitech MX Master 3S', 110, 3, 'La meilleure souris de productivité.', 95, 5, 1, 1893456000, 1, 2607, '', '', 0, 141),
 (25, 'Clavier Mécanique Keychron', 150, 3, 'Clavier sans fil pour développeurs.', 55, 0, 0, 0, 0, 901, '', '', 0, 850),
 (26, 'Samsung Galaxy A55', 450, 1, 'Le milieu de gamme parfait.', 150, 10, 0, 0, 0, 3401, '', '', 0, 202),
 (27, 'HP Envy x360', 1400, 2, 'PC portable convertible 2-en-1.', 25, 0, 0, 0, 0, 781, '', '', 0, 1700),
-(28, 'AirTag Apple', 35, 3, 'Traceur Bluetooth intelligent.', 300, 0, 0, 0, 1, 4208, '', '', 0, 11),
-(29, 'Support Ordinateur Alu1', 45, 3, 'Support ergonomique et ventilé.', 120, 15, 1, 1893456000, 0, 1365, '', '', 0, 600),
-(30, 'Console PlayStation 5 Pro', 150, 4, 'Casque gaming sans perte.', 60, 0, 0, 0, 0, 2201, '', '', 0, 347);
+(28, 'AirTag Apple', 35, 3, 'Traceur Bluetooth intelligent.', 300, 0, 0, 0, 1, 4215, '', '', 0, 11),
+(29, 'Support Ordinateur Alu1', 45, 3, 'Support ergonomique et ventilé.', 120, 15, 1, 1893456000, 0, 1366, '', '', 0, 600),
+(30, 'Console PlayStation 5 p', 150, 4, 'Casque gaming sans perte.', 60, 0, 0, 0, 0, 2201, '', '', 0, 347);
 
 -- --------------------------------------------------------
 
@@ -558,14 +546,6 @@ CREATE TABLE `questions` (
   `is_approved` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `questions`
---
-
-INSERT INTO `questions` (`id`, `content`, `created_at`, `user_id`, `parent_id`, `product_id`, `is_approved`) VALUES
-(1, 'kqhcoqchsqocsqhcsochsiocshc', '2026-07-16 07:19:04', 1, 0, 4, 1),
-(2, 'kdsckdcndkcndckjdncdkjcnncdcndncdcncjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj', '2026-07-16 07:19:28', 1, 1, 4, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -610,7 +590,7 @@ INSERT INTO `settings` (`id`, `setting_key`, `setting_value`) VALUES
 (4, 'email', 'contact@maboutique.fr'),
 (5, 'root', 'http://localhost/MaBoutique/'),
 (6, 'banner_active', '1'),
-(7, 'banner_text', 'Vente flash dvjhvhjvjjjjjjjvhhjvu week-end : plus que'),
+(7, 'banner_text', 'Vente flash ce week-end : profitez de nos offres exceptionnelles !'),
 (8, 'banner_code', 'Code : WEEK'),
 (9, 'banner_endtime', '2026-07-20T23:59:59'),
 (10, 'maintenance_mode', '0'),
@@ -697,7 +677,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `username`, `password`, `last_name`, `national_id`, `phone`, `mobile`, `birth_date`, `address`, `city`, `postal_code`, `gender`, `newsletter`, `role_id`, `created_at`) VALUES
-(2, 'jzafari100@gmail.com', '', '$2y$12$i1c8QPefJgJU2oS2Zk5SzuxhwPFaQVGSU0/YDAlI4cl4vvahgrYHu', 'jawad zafari', '', '', '0602234983', '', '', '', '', 1, 0, 1, '2026/07/23');
+(2, 'jean.dupont@gmail.com', 'jean.dupont', '$2y$12$i1c8QPefJgJU2oS2Zk5SzuxhwPFaQVGSU0/YDAlI4cl4vvahgrYHu', 'Jean Dupont', '', '', '0602234983', '', '', '', '', 1, 0, 1, '2026/07/23'),
+(3, 'jzafari100@gmail.com', '', '$2y$12$S4kurS2GNjw5d36jTrXXk.23dTF3CmYeXQZOj3nr5o8vHzEyShYrO', 'jawad zafari', '', '', '0602234983', '', '', '', '', 1, 0, 1, '2026-08-01 20:07:08'),
+(4, 'abbb@gmail.com', '', '$2y$12$CrMaZM5koMf5EfLOul4o9OmO8Ehm0.pMxwBQ06Gm4/vPpOe2ZCADK', 'abbas', '', '', '0612237856', '', '', '', '', 1, 0, 3, '2026-08-28 09:11:28');
 
 -- --------------------------------------------------------
 
@@ -725,10 +707,8 @@ CREATE TABLE `user_addresses` (
 --
 
 INSERT INTO `user_addresses` (`id`, `user_id`, `last_name`, `mobile`, `phone`, `province_id`, `city_id`, `neighborhood`, `address`, `postal_code`, `province_name`, `city_name`) VALUES
-(2, 1, 'njknkj', '0602238983', '0602238983', '1', '1', '', '106 boulevard ney', '75018', 'paris', 'paris'),
-(3, 2, 'Cinetech', '0602238983', '', '', '', '', '106 boulevard ney', '75018', 'Paris', 'paris'),
-(4, 2, 'Cinetech', '0602238983', '', '', '', '', '106 boulevard ney', '75018', 'ouiouio', 'paris'),
-(5, 2, 'jawad zafari', '1234567890', '', '', '', '', '106 boulevard ney', '75018', 'sfdghj', 'paris');
+(1, 3, 'Paris\r\n', '0602238983', '', '', '', '', '106 boulevard ney', '75018', 'paris', 'paris'),
+(2, 4, 'jawad zafari', '132435467687987069', '', '', '', '', '106 boulevard ney', '75018', 'parus', 'paris');
 
 -- --------------------------------------------------------
 
@@ -948,13 +928,13 @@ ALTER TABLE `attribute_values`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=178;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `colors`
@@ -966,13 +946,13 @@ ALTER TABLE `colors`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `comment_scores`
 --
 ALTER TABLE `comment_scores`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `discount_codes`
@@ -984,7 +964,7 @@ ALTER TABLE `discount_codes`
 -- AUTO_INCREMENT for table `favorites`
 --
 ALTER TABLE `favorites`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT for table `guarantees`
@@ -1008,7 +988,7 @@ ALTER TABLE `news`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `order_statuses`
@@ -1062,7 +1042,7 @@ ALTER TABLE `product_reviews`
 -- AUTO_INCREMENT for table `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `review_parameters`
@@ -1092,13 +1072,13 @@ ALTER TABLE `sliders`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user_addresses`
 --
 ALTER TABLE `user_addresses`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user_roles`
