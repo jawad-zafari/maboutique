@@ -119,6 +119,26 @@ class ModelAdminSlider extends Model
         return true;
     }
 
-   
+    public function delete(array $data): void
+    {
+        $ids = $data['id'] ?? [];
+        if (!empty($ids) && is_array($ids)) {
+            
+            $safeIds = array_map('intval', $ids);
+            
+            foreach ($safeIds as $id) {
+                $sqlFind = "SELECT image_path FROM sliders WHERE id = ?";
+                $result = $this->doSelect($sqlFind, [$id], 'fetch');
+                
+                if ($result && !empty($result['image_path']) && file_exists($result['image_path'])) {
+                    unlink($result['image_path']);
+                }
+            }
+            
+            $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
+            $sql = "DELETE FROM sliders WHERE id IN ($placeholders)";
+            $this->doQuery($sql, $safeIds);
+        }
+    }
 }
 ?>
