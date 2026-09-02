@@ -9298,9 +9298,6 @@ div.alert-danger-modern[role=alert]:not(#jsLoginErrorMessage) {
   font-size: 1.2rem;
 }
 
-/* ========================================================
-   COMPOSANT : INTERRUPTEUR (TOGGLE SWITCH)
-   ======================================================== */
 .toggle-switch {
   display: inline-flex;
   align-items: center;
@@ -9367,9 +9364,6 @@ div.alert-danger-modern[role=alert]:not(#jsLoginErrorMessage) {
   line-height: 1.4;
 }
 
-/* ========================================================
-   CLASSES UTILITAIRES POUR LES PARAMÈTRES
-   ======================================================== */
 @media (min-width: 992px) {
   .grid-full-width {
     grid-column: 1/-1;
