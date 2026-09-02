@@ -52,6 +52,19 @@ class ModelAdminNews extends Model
         $this->uploadImage($files, $id, true);
     }
 
-    
+    public function deleteNews(int $id): void
+    {
+        $news = $this->getNewsById($id);
+        
+        // Supprimer physiquement l'image du serveur
+        if (!empty($news['image_path']) && file_exists($news['image_path'])) {
+            unlink($news['image_path']);
+        }
+
+        $sql = "DELETE FROM news WHERE id = ?";
+        $this->doQuery($sql, [$id]);
+    }
+
+   
 }
 ?>
