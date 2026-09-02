@@ -13,3 +13,25 @@ foreach ($result as $row) {
     }
 }
 ?>
+<div class="admin-container">
+    
+    <header class="admin-header">
+        <div class="admin-breadcrumb" aria-label="Fil d'Ariane">
+            <i class="fa-solid fa-chart-pie" aria-hidden="true"></i> Statistiques du 
+            <!-- SÉCURITÉ : Échappement des dates pour éviter les failles XSS -->
+            <strong class="text-highlight"><?= $this->e($stat['startDate'] ?? '') ?></strong> au 
+            <strong class="text-highlight"><?= $this->e($stat['endDate'] ?? '') ?></strong>
+        </div>
+        <div class="admin-actions">
+            <a href="#" class="btn-admin-back js-back-button" aria-label="Retourner au formulaire de filtre">
+                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour aux filtres
+            </a>
+        </div>
+    </header>
+
+   
+    </div>
+
+</div>
+
+<script src="<?= URL ?>public/assets/js/admin_statistics.js" defer></script>
