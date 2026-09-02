@@ -20,4 +20,24 @@ $sId = (int)($editSlider['id'] ?? 0);
         <?php endif; ?>
     </header>
 
-   
+    <?php if (isset($_GET['success'])): ?>
+        <div class="alert-sticky success" role="alert" aria-live="polite">
+            <i class="fa-solid fa-circle-check" aria-hidden="true"></i> 
+            <span>
+                <?php
+                if($_GET['success'] === 'add') echo "Le nouveau slide a été ajouté avec succès !";
+                elseif($_GET['success'] === 'update') echo "Le slide a été mis à jour avec succès !";
+                elseif($_GET['success'] === 'delete') echo "La suppression a été effectuée avec succès !";
+                ?>
+            </span>
+        </div>
+    <?php endif; ?>
+
+    <?php if (isset($_GET['error'])): ?>
+        <div class="alert-sticky danger" role="alert" aria-live="polite">
+            <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> 
+            <span>Erreur lors du téléchargement de l'image. Vérifiez le format (JPG/PNG/WEBP) et la taille (Max 5Mo).</span>
+        </div>
+    <?php endif; ?>
+
+    
