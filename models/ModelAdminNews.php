@@ -14,6 +14,13 @@ class ModelAdminNews extends Model
         return is_array($result) ? $result : [];
     }
 
-    
+    public function getNewsById(int $id): array
+    {
+        $sql = "SELECT * FROM news WHERE id = ?";
+        $result = $this->doSelect($sql, [$id]);
+        return $result[0] ?? [];
+    }
+
+   
 }
 ?>
