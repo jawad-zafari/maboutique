@@ -20,7 +20,13 @@ document.addEventListener("DOMContentLoaded", () => {
             const parentForm = this.closest('.form-delete-news');
             
             if (parentForm) {
-                
+                // Appel du modal global
+                showConfirm(
+                    "Êtes-vous sûr de vouloir supprimer définitivement cette actualité ? Cette action effacera également l'image associée sur le serveur.",
+                    () => {
+                        parentForm.submit(); // Soumission du formulaire après confirmation
+                    }
+                );
             }
         });
     });
