@@ -38,6 +38,20 @@ class ModelAdminNews extends Model
         $this->uploadImage($files, $newsId);
     }
 
+    public function editNews(int $id, array $data, array $files): void
+    {
+        $title = $data['title'] ?? '';
+        $shortDesc = $data['short_desc'] ?? '';
+        $createdAt = $data['created_at'] ?? date('Y-m-d');
+
+        if (empty($title)) return;
+
+        $sql = "UPDATE news SET title = ?, short_desc = ?, created_at = ? WHERE id = ?";
+        $this->doQuery($sql, [$title, $shortDesc, $createdAt, $id]);
+
+        $this->uploadImage($files, $id, true);
+    }
+
     
 }
 ?>
