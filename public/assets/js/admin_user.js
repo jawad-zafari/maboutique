@@ -54,7 +54,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
             }
 
-            
+            // Soumission du formulaire après confirmation
+            showConfirm(messageConfirmation, () => {
+                formUsersManage.action = baseUrl + urlAction;
+                formUsersManage.submit();
+            });
+        });
+    }
+
+    
+        
     }
 
 });
