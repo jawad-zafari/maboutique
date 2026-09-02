@@ -29,6 +29,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Gestion des boutons "Retour" pour revenir à la page précédente
+    const backButtons = document.querySelectorAll('.js-back-button');
     
+    backButtons.forEach(btn => {
+        btn.addEventListener('click', function(event) {
+            event.preventDefault();
+            window.history.back();
+        });
+    });
 
 });
