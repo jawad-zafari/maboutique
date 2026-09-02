@@ -97,3 +97,27 @@
     line-height: 1.4;
 }
 
+//    CLASSES UTILITAIRES POUR LES PARAMÈTRES
+.grid-full-width {
+    @media (min-width: $breakpoint-lg) {
+        grid-column: 1 / -1;
+    }
+}
+
+.form-row-double {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    
+    @media (min-width: $breakpoint-md) {
+        flex-direction: row;
+        .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+    }
+}
+
+.w-100 { width: 100% !important; }
+.mt-25 { margin-top: 25px; }
+.mb-25 { margin-bottom: 25px; }
