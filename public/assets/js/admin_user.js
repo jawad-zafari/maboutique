@@ -15,6 +15,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const formUsersManage = document.getElementById('formUsersManage');
     const actionSelect = document.getElementById('actionSelect');
 
-   
+    if (btnApplyUserAction && formUsersManage && actionSelect) {
+        
+        btnApplyUserAction.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            const checkboxes = formUsersManage.querySelectorAll('.row-checkbox:checked');
+            
+            // Au moins un utilisateur doit être sélectionné
+            if (checkboxes.length === 0) {
+                showToast("Veuillez sélectionner au moins un utilisateur pour appliquer une action.", "danger");
+                return;
+            }
+
+           
+    }
 
 });
