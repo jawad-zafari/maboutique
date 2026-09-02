@@ -1,0 +1,26 @@
+
+.settings-layout-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    
+    @media (min-width: $breakpoint-lg) {
+        grid-template-columns: repeat(2, 1fr);
+        align-items: stretch;
+    }
+}
+
+.settings-section-title {
+    font-size: 1.1rem;
+    color: $color-primary;
+    margin: 0 0 20px 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid $border-color;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    
+    i { font-size: 1.2rem; }
+}
+
