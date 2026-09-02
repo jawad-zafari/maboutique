@@ -59,6 +59,19 @@ class AdminNews extends Controller
         exit;
     }
 
+    public function edit(int $id): void
+    {
+        $newsInfo = $this->model->getNewsById($id);
+        
+        $data = [
+            'newsInfo' => $newsInfo, 
+            'activeMenu' => 'news',
+            'csrf_token' => $this->generateCsrfToken()
+        ];
+        
+        $this->view('admin/admin_news/edit', $data);
+    }
+
     
 }
 ?>
