@@ -49,20 +49,15 @@ class ModelAdminCategory extends Model
         return $this->doSelect($sql, [(int)$categoryId], true);
     }
 
-    public function addCategory($data, $parentId, $editId)
+    // Récupère les catégories principales (parent_id = 0)
+    public function addCategory(string $title, int $parentId, int $editId)
     {
-        // Les données sont stockées brutes. PDO empêche l'injection SQL.
-        $title = trim($data['title'] ?? '');
-        $parent = (int)($data['parent'] ?? $parentId);
-
-        if (empty($title)) return;
-
         if ($editId > 0) {
             $sql = "UPDATE categories SET title = ?, parent_id = ? WHERE id = ?";
-            $this->doQuery($sql, [$title, $parent, (int)$editId]);
+            $this->doQuery($sql, [$title, $parentId, $editId]);
         } else {
             $sql = "INSERT INTO categories (title, parent_id) VALUES (?, ?)";
-            $this->doQuery($sql, [$title, $parent]);
+            $this->doQuery($sql, [$title, $parentId]);
         }
     }
 
@@ -116,20 +111,15 @@ class ModelAdminCategory extends Model
         return $this->doSelect($sql, [(int)$categoryId, (int)$parentId]);
     }
 
-    public function addAttribute($data, $categoryId, $editId)
+    // Récupère les attributs principaux (parent_id = 0) pour une catégorie donnée
+    public function addAttribute(string $title, int $categoryId, int $parentId, int $editId)
     {
-        // Les données sont stockées brutes. PDO protège.
-        $title = trim($data['title'] ?? '');
-        $parentId = (int)($data['parent'] ?? 0);
-        
-        if (empty($title)) return;
-
         if ($editId > 0) {
             $sql = "UPDATE attributes SET title = ?, parent_id = ? WHERE id = ?";
-            $this->doQuery($sql, [$title, $parentId, (int)$editId]);
+            $this->doQuery($sql, [$title, $parentId, $editId]);
         } else {
             $sql = "INSERT INTO attributes (title, category_id, parent_id) VALUES (?, ?, ?)";
-            $this->doQuery($sql, [$title, (int)$categoryId, $parentId]);
+            $this->doQuery($sql, [$title, $categoryId, $parentId]);
         }
     }
 
@@ -153,34 +143,23 @@ class ModelAdminCategory extends Model
         return $this->doSelect($sql, [(int)$attrId]);
     }
 
-    public function saveAttrVal($data, $attrId)
+    // Récupère les valeurs d'attribut pour un attribut donné
+    public function saveAttrVal(array $newValues, array $existingValues, int $attrId)
     {
-        $safeAttrId = (int)$attrId;
-
-        // Insérer les nouvelles valeurs brutes
-        $attrValNew = array_filter($data['attrvalnew'] ?? []);
-        foreach ($attrValNew as $val) {
-            $rawVal = trim($val);
-            if (!empty($rawVal)) {
-                $sql = "INSERT INTO attribute_values (attribute_id, value) VALUES (?, ?)";
-                $this->doQuery($sql, [$safeAttrId, $rawVal]);
-            }
+        // Insérer les nouvelles valeurs
+        foreach ($newValues as $val) {
+            $sql = "INSERT INTO attribute_values (attribute_id, value) VALUES (?, ?)";
+            $this->doQuery($sql, [$attrId, $val]);
         }
         
-        //  Mettre à jour ou supprimer les valeurs existantes
-        foreach ($data as $key => $val) {
-            $keyParts = explode('-', $key);
-            if (isset($keyParts[1]) && is_numeric($keyParts[1])) {
-                $valId = (int)$keyParts[1];
-                $rawVal = trim($val);
-
-                if ($rawVal !== '') {
-                    $sql = "UPDATE attribute_values SET value = ? WHERE id = ?";
-                    $this->doQuery($sql, [$rawVal, $valId]);
-                } else {
-                    $sqlDelete = "DELETE FROM attribute_values WHERE id = ?";
-                    $this->doQuery($sqlDelete, [$valId]);
-                }
+        // Mettre à jour ou supprimer les valeurs existantes
+        foreach ($existingValues as $valId => $val) {
+            if ($val !== '') {
+                $sql = "UPDATE attribute_values SET value = ? WHERE id = ?";
+                $this->doQuery($sql, [$val, $valId]);
+            } else {
+                $sqlDelete = "DELETE FROM attribute_values WHERE id = ?";
+                $this->doQuery($sqlDelete, [$valId]);
             }
         }
     }
