@@ -55,86 +55,53 @@ class ModelAdminProduct extends Model
         return is_array($result) ? $result : [];
     }
 
-    public function addProductAction(array $data, int $productId, ?array $file): void
+    // Le modèle ne reçoit plus de variable globale, uniquement des données structurées et propres
+    public function addProductAction(int $productId, array $cleanData): int
     {
-        // Sauvegarde des données brutes (L'échappement XSS est délégué à la vue)
-        $title = trim($data['title'] ?? '');
-        
-        // Autorisation de tags spécifiques pour l'éditeur WYSIWYG
-        $description = strip_tags(trim($data['description'] ?? ''), '<b><i><strong><em><u><ul><li><ol><p><br>');
-        
-        $categoryId = (int)($data['categoryId'] ?? 0);
-        $price = (int)($data['price'] ?? 0);
-        $discount = (int)($data['discount'] ?? 0);
-
-        if (empty($title)) return;
-
         if (empty($productId)) {
             $sql = "INSERT INTO products (title, category_id, price, discount_percent, description) VALUES (?, ?, ?, ?, ?)";
-            $this->doQuery($sql, [$title, $categoryId, $price, $discount, $description]);
+            $this->doQuery($sql, [
+                $cleanData['title'], 
+                $cleanData['categoryId'], 
+                $cleanData['price'], 
+                $cleanData['discount'], 
+                $cleanData['description']
+            ]);
             $productId = (int)self::$conn->lastInsertId();
         } else {
             $sql = "UPDATE products SET title = ?, category_id = ?, price = ?, discount_percent = ?, description = ? WHERE id = ?";
-            $this->doQuery($sql, [$title, $categoryId, $price, $discount, $description, $productId]);
+            $this->doQuery($sql, [
+                $cleanData['title'], 
+                $cleanData['categoryId'], 
+                $cleanData['price'], 
+                $cleanData['discount'], 
+                $cleanData['description'], 
+                $productId
+            ]);
             
             $this->doQuery("DELETE FROM product_colors WHERE product_id = ?", [$productId]);
             $this->doQuery("DELETE FROM product_guarantees WHERE product_id = ?", [$productId]);
         }
 
-        if (!empty($data['color']) && is_array($data['color'])) {
-            foreach ($data['color'] as $colorId) {
-                $this->doQuery("INSERT INTO product_colors (product_id, color_id) VALUES (?, ?)", [$productId, (int)$colorId]);
-            }
+        foreach ($cleanData['color'] as $colorId) {
+            $this->doQuery("INSERT INTO product_colors (product_id, color_id) VALUES (?, ?)", [$productId, $colorId]);
         }
         
-        if (!empty($data['garantee']) && is_array($data['garantee'])) {
-            foreach ($data['garantee'] as $gId) {
-                $this->doQuery("INSERT INTO product_guarantees (product_id, guarantee_id) VALUES (?, ?)", [$productId, (int)$gId]);
-            }
+        foreach ($cleanData['garantee'] as $gId) {
+            $this->doQuery("INSERT INTO product_guarantees (product_id, guarantee_id) VALUES (?, ?)", [$productId, $gId]);
         }
 
-        if ($file !== null) {
-            $this->uploadProductImage($file, $productId);
-        }
+        return $productId;
     }
 
-    private function uploadProductImage(array $file, int $productId): void
+    public function deleteProduct(array $safeIds): void
     {
-        if (!empty($file['name']) && $file['error'] === 0) {
-            
-            $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
-            $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-            
-            if (!in_array($ext, $allowedExtensions)) return;
-            
-            $mime = mime_content_type($file['tmp_name']);
-            if (strpos($mime, 'image/') !== 0) return;
-
-            $folder = 'public/images/products/' . $productId . '/';
-            if (!file_exists($folder)) mkdir($folder, 0777, true);
-
-            $dest = $folder . 'product_220.' . $ext;
-            
-            if (move_uploaded_file($file['tmp_name'], $dest)) {
-                $this->create_thumbnail($dest, $folder . 'product_220.' . $ext, 220, 220);
-                $this->create_thumbnail($dest, $folder . 'product_350.' . $ext, 350, 350);
-            }
-        }
-    }
-
-    //   Supprime plusieurs produits
-    public function deleteProduct(array $ids): void
-    {
-        if (empty($ids)) return;
+        if (empty($safeIds)) return;
         
-        $safeIds = array_map('intval', $ids);
         $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
-        
         $sql = "DELETE FROM products WHERE id IN ($placeholders)";
         $this->doQuery($sql, $safeIds);
     }
-
-    // MÉTHODES DE LA GALERIE
 
     public function getGallery(int $productId): array
     {
@@ -142,59 +109,31 @@ class ModelAdminProduct extends Model
         return is_array($result) ? $result : [];
     }
 
-    public function addGallery(int $productId, ?array $files): void
+    public function addGallery(int $productId, array $fileNames): void
     {
-        if (empty($files['name'][0])) return;
-        
-        $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
-        $folder = 'public/images/products/' . $productId . '/gallery/large/';
-        $smallFolder = 'public/images/products/' . $productId . '/gallery/small/';
-        
-        if (!file_exists($folder)) mkdir($folder, 0777, true);
-        if (!file_exists($smallFolder)) mkdir($smallFolder, 0777, true);
-
-        for ($i = 0; $i < count($files['name']); $i++) {
-            if ($files['error'][$i] === 0) {
-                $ext = strtolower(pathinfo($files['name'][$i], PATHINFO_EXTENSION));
-                if (!in_array($ext, $allowedExtensions)) continue;
-                
-                $mime = mime_content_type($files['tmp_name'][$i]);
-                if (strpos($mime, 'image/') !== 0) continue;
-
-                $fileName = time() . '_' . rand(1000, 9999) . '.' . $ext;
-                $dest = $folder . $fileName;
-
-                if (move_uploaded_file($files['tmp_name'][$i], $dest)) {
-                    $this->create_thumbnail($dest, $smallFolder . $fileName, 115, 115);
-                    $this->doQuery("INSERT INTO product_galleries (product_id, image_name) VALUES (?, ?)", [$productId, $fileName]);
-                }
-            }
+        foreach ($fileNames as $fileName) {
+            $this->doQuery("INSERT INTO product_galleries (product_id, image_name) VALUES (?, ?)", [$productId, $fileName]);
         }
     }
 
-    public function deleteGallery(array $ids): void
+    // Le contrôleur a besoin des noms d'images pour supprimer les fichiers physiques
+    public function getGalleryImagesByIds(array $safeIds): array
     {
-        if (empty($ids)) return;
-        
-        $safeIds = array_map('intval', $ids);
-        
-        foreach ($safeIds as $galleryId) {
-            $result = $this->doSelect("SELECT * FROM product_galleries WHERE id=?", [$galleryId], 'fetch');
-            if (!empty($result) && $result['image_name']) {
-                $productId = $result['product_id'];
-                
-                $galleryLargePath = 'public/images/products/' . $productId . '/gallery/large/' . $result['image_name'];
-                @unlink('public/images/products/' . $productId . '/gallery/small/' . $result['image_name']);
-                @unlink($galleryLargePath);
-            }
-        }
+        if (empty($safeIds)) return [];
+        $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
+        $sql = "SELECT image_name FROM product_galleries WHERE id IN ($placeholders)";
+        $result = $this->doSelect($sql, $safeIds);
+        return is_array($result) ? $result : [];
+    }
+
+    public function deleteGallery(array $safeIds): void
+    {
+        if (empty($safeIds)) return;
         
         $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
         $sql = "DELETE FROM product_galleries WHERE id IN ($placeholders)";
         $this->doQuery($sql, $safeIds);
     }
-
-    // MÉTHODES DES ATTRIBUTS
 
     public function getProductAttr(int $productId): array
     {
@@ -216,23 +155,16 @@ class ModelAdminProduct extends Model
         return is_array($attributes) ? $attributes : [];
     }
 
-    public function editAttribute(array $data, int $productId): void
+    public function editAttribute(int $productId, array $cleanAttributes): void
     {
-        $ids = $data['id'] ?? [];
-        if (!is_array($ids)) return;
-
-        foreach ($ids as $attrId) {
-            $valId = $data['x' . $attrId] ?? '';
+        foreach ($cleanAttributes as $attrId => $valId) {
+            $this->doQuery("DELETE FROM product_attribute_values WHERE product_id = ? AND attribute_id = ?", [$productId, $attrId]);
             
-            $this->doQuery("DELETE FROM product_attribute_values WHERE product_id = ? AND attribute_id = ?", [$productId, (int)$attrId]);
-            
-            if (!empty($valId)) {
-                $this->doQuery("INSERT INTO product_attribute_values (product_id, attribute_id, value_id) VALUES (?, ?, ?)", [$productId, (int)$attrId, (int)$valId]);
+            if ($valId > 0) {
+                $this->doQuery("INSERT INTO product_attribute_values (product_id, attribute_id, value_id) VALUES (?, ?, ?)", [$productId, $attrId, $valId]);
             }
         }
     }
-
-    // MÉTHODES DES AVIS (REVIEWS)
 
     public function getReview(int $productId): array
     {
@@ -247,16 +179,8 @@ class ModelAdminProduct extends Model
         return is_array($result) ? $result : [];
     }
 
-    public function addReview(array $data, int $productId, int $reviewId): void
+    public function addReview(int $productId, int $reviewId, string $title, string $description): void
     {
-        // Données stockées à l'état brut. PDO protège de l'injection SQL.
-        $title = trim($data['title'] ?? '');
-        
-        // Autorisation de balises HTML pour la description via un éditeur riche
-        $description = strip_tags(trim($data['description'] ?? ''), '<b><i><strong><em><u><ul><li><ol><p><br>');
-
-        if (empty($title)) return;
-
         if (empty($reviewId)) {
             $sql = "INSERT INTO reviews (product_id, title, description) VALUES (?, ?, ?)";
             $this->doQuery($sql, [$productId, $title, $description]);
@@ -266,13 +190,11 @@ class ModelAdminProduct extends Model
         }
     }
 
-    public function deleteReview(array $ids): void
+    public function deleteReview(array $safeIds): void
     {
-        if (empty($ids)) return;
+        if (empty($safeIds)) return;
         
-        $safeIds = array_map('intval', $ids);
         $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
-        
         $sql = "DELETE FROM reviews WHERE id IN ($placeholders)";
         $this->doQuery($sql, $safeIds);
     }
