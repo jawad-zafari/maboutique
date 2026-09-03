@@ -22,18 +22,12 @@ class ModelAdminSetting extends Model
         return $settings;
     }
 
-    public function saveSetting(array $data): void
+    // Le modèle reçoit des données 100% propres et prêtes à être insérées
+    public function saveSetting(array $cleanData): void
     {
-        if (empty($data)) return;
+        if (empty($cleanData)) return;
 
-        foreach ($data as $settingKey => $value) {
-            
-            // 
-            if ($settingKey === 'csrf_token') {
-                continue;
-            }
-
-            // exécuter la requête préparée.
+        foreach ($cleanData as $settingKey => $value) {
             $sql = "UPDATE settings SET setting_value = ? WHERE setting_key = ?";
             $this->doQuery($sql, [$value, $settingKey]);
         }
