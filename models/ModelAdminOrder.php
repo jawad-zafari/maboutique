@@ -17,17 +17,16 @@ class ModelAdminOrder extends Model
         return is_array($result) ? $result : [];
     }
 
-    public function bulkUpdateStatus(array $ids, int $statusId): void
+    public function bulkUpdateStatus(array $safeIds, int $statusId): void
     {
-        if (empty($ids) || empty($statusId)) return;
+        if (empty($safeIds) || $statusId <= 0) return;
         
-        // Utilisation de placeholders dynamiques pour la clause IN
-        $safeIds = array_map('intval', $ids);
+        // Utilisation de marqueurs dynamiques pour la sécurité de la requête
         $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
         
         $sql = "UPDATE orders SET status_id = ? WHERE id IN ($placeholders)";
         
-        // Fusion du statusId avec le tableau d'IDs pour l'exécution PDO
+        // Fusion du statut avec le tableau d'identifiants
         $params = array_merge([$statusId], $safeIds);
         $this->doQuery($sql, $params);
     }
@@ -44,22 +43,21 @@ class ModelAdminOrder extends Model
         return is_array($result) ? $result : [];
     }
 
-    public function editOrder(int $orderId, array $data): void
+    public function editOrder(int $orderId, array $cleanData): void
     {
-        // Les données sont stockées brutes. PDO empêche l'injection SQL.
-        $address = trim($data['address'] ?? '');
-        $postalCode = trim($data['postal_code'] ?? '');
-        $phone = trim($data['phone'] ?? '');
-        $trackingCode = trim($data['tracking_code'] ?? '');
-        $adminNote = trim($data['admin_note'] ?? '');
-        
-        // Typage strict
-        $payStatus = (int)($data['pay_status'] ?? 0);
-        $orderStatus = (int)($data['order_status'] ?? 1);
-
+        // Le modèle reçoit des données déjà formatées par le contrôleur
         $sql = "UPDATE orders SET address_data = ?, postal_code = ?, phone = ?, is_paid = ?, status_id = ?, tracking_code = ?, admin_note = ? WHERE id = ?";
         
-        $this->doQuery($sql, [$address, $postalCode, $phone, $payStatus, $orderStatus, $trackingCode, $adminNote, $orderId]);
+        $this->doQuery($sql, [
+            $cleanData['address'], 
+            $cleanData['postal_code'], 
+            $cleanData['phone'], 
+            $cleanData['pay_status'], 
+            $cleanData['order_status'], 
+            $cleanData['tracking_code'], 
+            $cleanData['admin_note'], 
+            $orderId
+        ]);
     }
 
     public function orderStatus(): array
@@ -68,12 +66,11 @@ class ModelAdminOrder extends Model
         return is_array($result) ? $result : [];
     }
 
-    public function delete(array $data): void
+    public function delete(array $safeIds): void
     {
-        if (empty($data['id']) || !is_array($data['id'])) return;
+        if (empty($safeIds)) return;
         
-        // Placeholders dynamiques (?, ?, ?)
-        $safeIds = array_map('intval', $data['id']);
+        // Les identifiants sont déjà sécurisés, on prépare simplement la requête
         $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
         
         $sql = "DELETE FROM orders WHERE id IN ($placeholders)";
