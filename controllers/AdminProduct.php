@@ -105,7 +105,41 @@ class AdminProduct extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->checkCsrfToken($_POST['csrf_token'] ?? '');
             
-           
+            $uploadedImages = [];
+
+            if (!empty($_FILES['images']['name'][0])) {
+                $files = $_FILES['images'];
+                $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+                $folder = 'public/images/products/' . $productId . '/gallery/large/';
+                $smallFolder = 'public/images/products/' . $productId . '/gallery/small/';
+                
+                if (!file_exists($folder)) mkdir($folder, 0777, true);
+                if (!file_exists($smallFolder)) mkdir($smallFolder, 0777, true);
+
+                for ($i = 0; $i < count($files['name']); $i++) {
+                    if ($files['error'][$i] === 0) {
+                        $ext = strtolower(pathinfo($files['name'][$i], PATHINFO_EXTENSION));
+                        if (!in_array($ext, $allowedExtensions)) continue;
+                        
+                        $mime = mime_content_type($files['tmp_name'][$i]);
+                        if (strpos((string)$mime, 'image/') !== 0) continue;
+
+                        $fileName = time() . '_' . rand(1000, 9999) . '.' . $ext;
+                        $dest = $folder . $fileName;
+
+                        if (move_uploaded_file($files['tmp_name'][$i], $dest)) {
+                            $this->model->create_thumbnail($dest, $smallFolder . $fileName, 115, 115);
+                            $uploadedImages[] = $fileName;
+                        }
+                    }
+                }
+            }
+
+            // On ne donne que les noms des fichiers sécurisés au modèle
+            if (!empty($uploadedImages)) {
+                $this->model->addGallery($productId, $uploadedImages);
+            }
+        }
         header('Location: ' . URL . 'AdminProduct/gallery/' . $productId . '?success=image_added');
         exit;
     }
