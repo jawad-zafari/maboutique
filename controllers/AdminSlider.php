@@ -94,7 +94,34 @@ class AdminSlider extends Controller
 
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
             
-       
+        $title = trim(strip_tags($_POST['title'] ?? ''));
+        $link = filter_var(trim($_POST['link'] ?? '#'), FILTER_SANITIZE_URL);
+        $description = trim(strip_tags($_POST['description'] ?? ''));
+        $buttonText = trim(strip_tags($_POST['button_text'] ?? 'Découvrir'));
+        $textColor = trim(strip_tags($_POST['text_color'] ?? '#ffffff'));
+
+        if (empty($link)) $link = '#';
+        if (empty($buttonText)) $buttonText = 'Découvrir';
+        if (empty($textColor)) $textColor = '#ffffff';
+
+        // Récupération de l'ancienne image pour suppression éventuelle
+        $sliderInfo = $this->model->getSliderById($id);
+        $imagePath = $sliderInfo['image_path'] ?? '';
+
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
+            $newImagePath = $this->handleImageUpload($_FILES['image']);
+            
+            if ($newImagePath !== '') {
+                // Suppression physique de l'ancienne image par le contrôleur
+                if (!empty($imagePath) && file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+                $imagePath = $newImagePath;
+            } else {
+                header('Location: ' . URL . 'AdminSlider/edit/' . $id . '?error=upload');
+                exit;
+            }
+        }
 
         $this->model->updateSlider($id, $title, $link, $imagePath, $description, $buttonText, $textColor);
         
