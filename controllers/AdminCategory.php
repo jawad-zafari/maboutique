@@ -159,7 +159,27 @@ class AdminCategory extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submited'])) {
             $this->checkCsrfToken($_POST['csrf_token'] ?? '');
             
-            
+            // Nettoyage et validation des données
+            $newValues = [];
+            if (!empty($_POST['attrvalnew']) && is_array($_POST['attrvalnew'])) {
+                foreach ($_POST['attrvalnew'] as $val) {
+                    $trimmedVal = trim(strip_tags($val));
+                    if ($trimmedVal !== '') {
+                        $newValues[] = $trimmedVal;
+                    }
+                }
+            }
+
+            $existingValues = [];
+            foreach ($_POST as $key => $val) {
+                if (strpos($key, 'attrval-') === 0) {
+                    $keyParts = explode('-', $key);
+                    if (isset($keyParts[1]) && is_numeric($keyParts[1])) {
+                        $valId = (int)$keyParts[1];
+                        $existingValues[$valId] = trim(strip_tags($val));
+                    }
+                }
+            }
             
             // Envoi des données propres au modèle
             $this->model->saveAttrVal($newValues, $existingValues, (int)$attributeId);
