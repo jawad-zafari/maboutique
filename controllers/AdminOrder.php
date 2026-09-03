@@ -115,7 +115,12 @@ class AdminOrder extends Controller
 
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
-       
+        // Extraction et typage strict des identifiants
+        $ids = $_POST['id'] ?? [];
+        if (!empty($ids) && is_array($ids)) {
+            $safeIds = array_map('intval', $ids);
+            $this->model->delete($safeIds);
+        }
         
         header('Location: ' . URL . 'AdminOrder/index');
         exit;
