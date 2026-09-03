@@ -6,7 +6,7 @@ class AdminNews extends Controller
     {
         parent::__construct();
         
-        // Initialisation de la session pour vérifier le niveau d'accès
+        // On vérifie que l'utilisateur est bien admin ou employé
         Model::sessionInit();
         $userLevel = (int) Model::getUserLevel();
         
@@ -18,10 +18,8 @@ class AdminNews extends Controller
 
     public function index(): void
     {
-        $news = $this->model->getNews();
-        
         $data = [
-            'news' => $news, 
+            'news' => $this->model->getNews(), 
             'activeMenu' => 'news',
             'csrf_token' => $this->generateCsrfToken()
         ];
@@ -35,6 +33,7 @@ class AdminNews extends Controller
             'activeMenu' => 'news',
             'csrf_token' => $this->generateCsrfToken()
         ];
+        
         $this->view('admin/admin_news/add', $data);
     }
 
@@ -47,13 +46,24 @@ class AdminNews extends Controller
 
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
-        // Nettoyage des données POST pour éviter les injections et les entrées malveillantes
-        $cleanData = [];
-        foreach ($_POST as $key => $value) {
-            $cleanData[$key] = is_string($value) ? trim($value) : $value;
+        // On nettoie les textes saisis par l'utilisateur pour éviter les failles
+        $title = trim(strip_tags($_POST['title'] ?? ''));
+        $shortDesc = trim(strip_tags($_POST['short_desc'] ?? ''));
+        $createdAt = date('Y-m-d');
+        
+        if (empty($title) || empty($shortDesc)) {
+            header('Location: ' . URL . 'AdminNews/add?error=empty');
+            exit;
         }
 
-        $this->model->addNews($cleanData, $_FILES);
+        // Le contrôleur s'occupe de l'upload et récupère le chemin du fichier
+        $imagePath = '';
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
+            $imagePath = $this->handleImageUpload($_FILES['image']);
+        }
+
+        // On envoie des données 100% propres au modèle
+        $this->model->addNews($title, $shortDesc, $imagePath, $createdAt);
         
         header('Location: ' . URL . 'AdminNews/index');
         exit;
@@ -61,10 +71,8 @@ class AdminNews extends Controller
 
     public function edit(int $id): void
     {
-        $newsInfo = $this->model->getNewsById($id);
-        
         $data = [
-            'newsInfo' => $newsInfo, 
+            'newsInfo' => $this->model->getNewsById($id), 
             'activeMenu' => 'news',
             'csrf_token' => $this->generateCsrfToken()
         ];
@@ -81,12 +89,10 @@ class AdminNews extends Controller
 
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
-        $cleanData = [];
-        foreach ($_POST as $key => $value) {
-            $cleanData[$key] = is_string($value) ? trim($value) : $value;
+       
         }
 
-        $this->model->editNews($id, $cleanData, $_FILES);
+        $this->model->editNews($id, $title, $shortDesc, $imagePath, $createdAt);
         
         header('Location: ' . URL . 'AdminNews/index');
         exit;
@@ -101,10 +107,13 @@ class AdminNews extends Controller
 
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
+
         $this->model->deleteNews($id);
         
         header('Location: ' . URL . 'AdminNews/index');
         exit;
     }
-}
+
+    
+
 ?>
