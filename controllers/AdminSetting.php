@@ -32,15 +32,20 @@ class AdminSetting extends Controller
         // Bloquer tout accès direct via GET
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('HTTP/1.1 405 Method Not Allowed');
-            exit('Méthode non autorisée');
+            exit;
         }
             
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
         
-        // Nettoyage des données POST pour éviter les injections et les entrées malveillantes
+        // Le contrôleur nettoie toutes les données (Protection XSS)
         $cleanData = [];
         foreach ($_POST as $key => $value) {
-            $cleanData[$key] = is_string($value) ? trim($value) : $value;
+            $cleanData[$key] = is_string($value) ? trim(strip_tags($value)) : $value;
+        }
+
+        // Le contrôleur supprime le jeton CSRF avant d'envoyer les données au modèle
+        if (isset($cleanData['csrf_token'])) {
+            unset($cleanData['csrf_token']);
         }
 
         // Gestion spécifique de la case à cocher (checkbox)
@@ -48,7 +53,7 @@ class AdminSetting extends Controller
             $cleanData['maintenance_mode'] = '0';
         }
 
-        // Envoi des données propres au modèle
+        // Envoi d'un tableau de données parfaitement propre au modèle
         $this->model->saveSetting($cleanData);
         
         header('Location: ' . URL . 'AdminSetting/index?success=1');
