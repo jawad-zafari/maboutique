@@ -121,7 +121,20 @@ class AdminProduct extends Controller
         
         $ids = $_POST['id'] ?? [];
         if (!empty($ids) && is_array($ids)) {
-           
+            $safeIds = array_map('intval', $ids);
+            
+            // Le contrôleur supprime les fichiers physiques
+            $images = $this->model->getGalleryImagesByIds($safeIds);
+            foreach ($images as $img) {
+                $largePath = 'public/images/products/' . $productId . '/gallery/large/' . $img['image_name'];
+                $smallPath = 'public/images/products/' . $productId . '/gallery/small/' . $img['image_name'];
+                if (file_exists($largePath)) unlink($largePath);
+                if (file_exists($smallPath)) unlink($smallPath);
+            }
+            
+            // Ensuite, le modèle supprime les lignes en base de données
+            $this->model->deleteGallery($safeIds);
+        }
         
         header('Location: ' . URL . 'AdminProduct/gallery/' . $productId . '?success=image_deleted');
         exit;
