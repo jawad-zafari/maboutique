@@ -133,7 +133,34 @@ class AdminProduct extends Controller
             $this->checkCsrfToken($_POST['csrf_token'] ?? '');
             
            
-      
+        header('Location: ' . URL . 'AdminProduct/gallery/' . $productId . '?success=image_added');
+        exit;
+    }
+
+    public function deleteGallery(int $productId): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit('Méthode non autorisée');
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+        
+        $ids = $_POST['id'] ?? [];
+        if (!empty($ids) && is_array($ids)) {
+           
+        
+        header('Location: ' . URL . 'AdminProduct/gallery/' . $productId . '?success=image_deleted');
+        exit;
+    }
+
+    public function attributes(int $productId): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    $valId = (int)($_POST['x' . $attrId] ?? 0);
+                    $cleanAttributes[(int)$attrId] = $valId;
+                }
+            }
             
             $this->model->editAttribute($productId, $cleanAttributes);
             header('Location: ' . URL . 'AdminProduct/attributes/' . $productId . '?success=1');
