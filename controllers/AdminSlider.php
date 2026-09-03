@@ -116,6 +116,35 @@ class AdminSlider extends Controller
         exit;
     }
 
-   
+    // Méthode privée pour gérer l'upload des images (logique métier dans le contrôleur)
+    private function handleImageUpload(array $file): string
+    {
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+
+        if (!in_array($ext, $allowedExtensions)) {
+            return '';
+        }
+
+        $mimeType = mime_content_type($file['tmp_name']);
+        if (strpos((string)$mimeType, 'image/') !== 0 || (int)$file['size'] > 5242880) {
+            return '';
+        }
+
+        $targetMain = 'public/images/slider/';
+        $newName = uniqid('slide_') . '.' . $ext;
+        
+        if (!file_exists($targetMain)) {
+            mkdir($targetMain, 0777, true);
+        }
+        
+        $destination = $targetMain . $newName;
+        
+        if (move_uploaded_file($file['tmp_name'], $destination)) {
+            return $destination;
+        }
+
+        return '';
+    }
 }
 ?>
