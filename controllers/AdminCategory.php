@@ -45,7 +45,14 @@ class AdminCategory extends Controller
             // SÉCURITÉ : Vérification unifiée du jeton CSRF
             $this->checkCsrfToken($_POST['csrf_token'] ?? '');
             
-            $this->model->addCategory($_POST, (int)$parentId, (int)$editId);
+            // Nettoyage et validation des données  
+  $title = trim(strip_tags($_POST['title'] ?? ''));
+            $safeParentId = isset($_POST['parent']) ? (int)$_POST['parent'] : (int)$parentId;
+            
+            if (!empty($title)) {
+                $this->model->addCategory($title, $safeParentId, (int)$editId);
+            }
+            
             header('Location: ' . URL . 'AdminCategory/showChildren/' . (int)$parentId);
             exit;
         }
@@ -101,7 +108,14 @@ class AdminCategory extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->checkCsrfToken($_POST['csrf_token'] ?? '');
             
-            $this->model->addAttribute($_POST, (int)$categoryId, (int)$editId);
+            // Nettoyage et validation des données
+            $title = trim(strip_tags($_POST['title'] ?? ''));
+            $safeParentId = isset($_POST['parent']) ? (int)$_POST['parent'] : (int)$parentId;
+
+            if (!empty($title)) {
+                $this->model->addAttribute($title, (int)$categoryId, $safeParentId, (int)$editId);
+            }
+
             header('Location: ' . URL . 'AdminCategory/showAttributes/' . (int)$categoryId . '/' . (int)$parentId);
             exit;
         }
@@ -144,7 +158,11 @@ class AdminCategory extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submited'])) {
             $this->checkCsrfToken($_POST['csrf_token'] ?? '');
-            $this->model->saveAttrVal($_POST, (int)$attributeId);
+            
+            
+            
+            // Envoi des données propres au modèle
+            $this->model->saveAttrVal($newValues, $existingValues, (int)$attributeId);
             
             header('Location: ' . URL . 'AdminCategory/attributeValues/' . (int)$attributeId);
             exit;
