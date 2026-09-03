@@ -7,7 +7,8 @@ class ModelAdminLogin extends Model
         parent::__construct();
     }
 
-    public function checkUser($form)
+    // Vérifie les informations d'identification de l'utilisateur et gère la sécurité de la connexion
+    public function checkUser(string $email, string $password)
     {
         Model::sessionInit();
 
@@ -24,25 +25,9 @@ class ModelAdminLogin extends Model
             }
         }
 
-        // Nettoyage et validation stricte de l'e-mail
-        $emailRaw = $form['email'] ?? '';
-        $emailSanitized = filter_var($emailRaw, FILTER_SANITIZE_EMAIL);
-        
-        if (!filter_var($emailSanitized, FILTER_VALIDATE_EMAIL)) {
-            $this->recordFailedAttempt();
-            return false;
-        }
-
-        $password = $form['password'] ?? '';
-        
-        if (empty($emailSanitized) || empty($password)) {
-            $this->recordFailedAttempt();
-            return false;
-        }
-
         // Récupération de l'utilisateur par e-mail
         $sql = "SELECT id, password, role_id FROM users WHERE email = ?";
-        $user = $this->doSelect($sql, [$emailSanitized], true);
+        $user = $this->doSelect($sql, [$email], true);
 
         if (!empty($user)) {
             // Vérification du mot de passe haché et du contrôle d'accès (RBAC)
@@ -66,9 +51,11 @@ class ModelAdminLogin extends Model
         return false;
     }
 
-    //  Enregistre une tentative de connexion échouée dans la session
-    private function recordFailedAttempt()
+    // Enregistre une tentative de connexion échouée dans la session
+    // Rendue publique pour que le contrôleur puisse l'appeler en cas de validation échouée
+    public function recordFailedAttempt()
     {
+        Model::sessionInit();
         if (!isset($_SESSION['login_attempts'])) {
             $_SESSION['login_attempts'] = 0;
         }
