@@ -14,29 +14,36 @@ class ModelAdminComment extends Model
         return is_array($result) ? $result : [];
     }
 
-    public function confirm(array $data): void
+    public function confirm(array $cleanData): void
     {
-        if (empty($data['id']) || !is_array($data['id'])) return;
+        if (empty($cleanData)) return;
 
-        foreach ($data['id'] as $id) {
+        $safeIds = [];
+
+        foreach ($cleanData as $comment) {
             $sql = "UPDATE comments SET title = ?, positive_points = ?, negative_points = ?, content = ? WHERE id = ?";
             
-            // Les données sont déjà nettoyées par le contrôleur
-            $title = $data['title_' . $id] ?? '';
-            $positive = $data['positive_points_' . $id] ?? '';
-            $negative = $data['negative_points_' . $id] ?? '';
-            $content = $data['content_' . $id] ?? '';
-
-            $params = [$title, $positive, $negative, $content, (int)$id];
+            // Les données sont déjà nettoyées par le contrôleur. Le modèle exécute seulement la requête.
+            $params = [
+                $comment['title'], 
+                $comment['positive_points'], 
+                $comment['negative_points'], 
+                $comment['content'], 
+                $comment['id']
+            ];
+            
             $this->doQuery($sql, $params);
+            
+            // Stockage de l'ID pour la mise à jour globale du statut
+            $safeIds[] = $comment['id'];
         }
 
         // Utilisation de placeholders dynamiques pour la clause IN
-        $safeIds = array_map('intval', $data['id']);
-        $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
-        
-        $sqlApprove = "UPDATE comments SET is_approved = 1 WHERE id IN ($placeholders)";
-        $this->doQuery($sqlApprove, $safeIds);
+        if (!empty($safeIds)) {
+            $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
+            $sqlApprove = "UPDATE comments SET is_approved = 1 WHERE id IN ($placeholders)";
+            $this->doQuery($sqlApprove, $safeIds);
+        }
     }
 
     public function unconfirm(array $ids): void
