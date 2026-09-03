@@ -37,7 +37,8 @@
 
             <form action="<?= URL ?>AdminLogin/checkUser" method="post" id="adminLoginForm">
                 
-                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($data['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+               // Inclusion du token CSRF pour la protection contre les attaques CSRF
+                <input type="hidden" name="csrf_token" value="<?= $this->e($data['csrf_token'] ?? '') ?>">
                 
                 <div class="form-group">
                     <label for="email"><i class="fa-solid fa-envelope" aria-hidden="true"></i> Adresse e-mail :</label>
