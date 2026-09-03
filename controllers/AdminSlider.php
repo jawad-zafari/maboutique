@@ -6,7 +6,7 @@ class AdminSlider extends Controller
     {
         parent::__construct();
         
-        // Initialisation de la session pour vérifier le niveau d'accès
+        // Initialisation de la session et vérification des droits
         Model::sessionInit();
         $level = (int) Model::getUserLevel();
         if ($level !== 1) {
@@ -37,22 +37,32 @@ class AdminSlider extends Controller
 
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
-        // Nettoyage des données POST pour éviter les injections et les entrées malveillantes
-        $cleanData = [];
-        foreach ($_POST as $key => $value) {
-            if ($key === 'link') {
-                $cleanData[$key] = filter_var(trim((string)$value), FILTER_SANITIZE_URL);
-            } else {
-                $cleanData[$key] = is_string($value) ? trim($value) : $value;
-            }
+        // Le contrôleur nettoie et structure les données (Protection XSS)
+        $title = trim(strip_tags($_POST['title'] ?? ''));
+        $link = filter_var(trim($_POST['link'] ?? '#'), FILTER_SANITIZE_URL);
+        $description = trim(strip_tags($_POST['description'] ?? ''));
+        $buttonText = trim(strip_tags($_POST['button_text'] ?? 'Découvrir'));
+        $textColor = trim(strip_tags($_POST['text_color'] ?? '#ffffff'));
+
+        if (empty($link)) $link = '#';
+        if (empty($buttonText)) $buttonText = 'Découvrir';
+        if (empty($textColor)) $textColor = '#ffffff';
+
+        // Le contrôleur gère l'upload de l'image
+        $imagePath = '';
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
+            $imagePath = $this->handleImageUpload($_FILES['image']);
         }
 
-        $result = $this->model->addSlider($cleanData, $_FILES);
-        if ($result) {
-            header('Location: ' . URL . 'AdminSlider/index?success=add');
-        } else {
+        if (empty($imagePath)) {
             header('Location: ' . URL . 'AdminSlider/index?error=upload');
+            exit;
         }
+
+        // Le modèle reçoit des données 100% propres et le chemin textuel de l'image
+        $this->model->addSlider($title, $link, $imagePath, $description, $buttonText, $textColor);
+        
+        header('Location: ' . URL . 'AdminSlider/index?success=add');
         exit;
     }
 
@@ -84,21 +94,11 @@ class AdminSlider extends Controller
 
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
             
-        $cleanData = [];
-        foreach ($_POST as $key => $value) {
-            if ($key === 'link') {
-                $cleanData[$key] = filter_var(trim((string)$value), FILTER_SANITIZE_URL);
-            } else {
-                $cleanData[$key] = is_string($value) ? trim($value) : $value;
-            }
-        }
+       
 
-        $result = $this->model->updateSlider($id, $cleanData, $_FILES);
-        if ($result) {
-            header('Location: ' . URL . 'AdminSlider/index?success=update');
-        } else {
-            header('Location: ' . URL . 'AdminSlider/edit/' . $id . '?error=upload');
-        }
+        $this->model->updateSlider($id, $title, $link, $imagePath, $description, $buttonText, $textColor);
+        
+        header('Location: ' . URL . 'AdminSlider/index?success=update');
         exit;
     }
 
@@ -110,10 +110,12 @@ class AdminSlider extends Controller
         }
 
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
-            
-        $this->model->delete($_POST);
+      
+
         header('Location: ' . URL . 'AdminSlider/index?success=delete');
         exit;
     }
+
+   
 }
 ?>
