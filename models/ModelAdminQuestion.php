@@ -22,21 +22,20 @@ class ModelAdminQuestion extends Model
         return is_array($questions) ? $questions : [];
     }
 
-    public function confirm(array $data): void
+    // Le modèle reçoit des données parfaitement structurées et l'identifiant de l'admin
+    public function confirm(array $cleanData, int $adminId): void
     {
-        if (empty($data['id']) || !is_array($data['id'])) return;
+        if (empty($cleanData)) return;
 
-        foreach ($data['id'] as $id) {
-            $safeId = (int)$id;
-            
-            // Mettre à jour la question de l'utilisateur
-            $questionText = $data['question_' . $safeId] ?? '';
-            $answerText = $data['answer_' . $safeId] ?? '';
+        foreach ($cleanData as $item) {
+            $safeId = $item['id'];
+            $questionText = $item['question'];
+            $answerText = $item['answer'];
 
-            // SÉCURITÉ : Utilisation de requêtes préparées pour éviter les injections SQL
+            // Mise à jour de la question de l'utilisateur
             $this->doQuery("UPDATE questions SET content = ?, is_approved = 1 WHERE id = ?", [$questionText, $safeId]);
 
-            // SÉCURITÉ : Gestion de la réponse de l'administrateur
+            // Gestion de la réponse de l'administrateur
             if (!empty($answerText)) {
                 $sqlCheck = "SELECT id FROM questions WHERE parent_id = ?";
                 $exists = $this->doSelect($sqlCheck, [$safeId]);
@@ -50,37 +49,33 @@ class ModelAdminQuestion extends Model
                     $productId = (int)($qInfo['product_id'] ?? 0);
                     $createdAt = date('Y-m-d H:i:s');
                     
-                    Model::sessionInit();
-                    $adminId = (int)(Model::sessionGet('userId') ?? 1);
-
                     $this->doQuery("INSERT INTO questions (content, parent_id, product_id, user_id, created_at, is_approved) VALUES (?, ?, ?, ?, ?, 1)", [$answerText, $safeId, $productId, $adminId, $createdAt]);
                 }
             }
         }
     }
 
-    public function unconfirm(array $ids): void
+    // Le modèle traite directement un tableau d'entiers pour la requête SQL
+    public function unconfirm(array $safeIds): void
     {
-        if (empty($ids)) return;
+        if (empty($safeIds)) return;
         
-        // SÉCURITÉ : Nettoyage des IDs pour éviter les injections SQL
-        $safeIds = array_map('intval', $ids);
         $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
         
-        // SÉCURITÉ : Utilisation de requêtes préparées pour désapprouver les questions et leurs réponses
+        // Fusion des paramètres pour gérer la condition OR
         $params = array_merge($safeIds, $safeIds);
         
         $sql = "UPDATE questions SET is_approved = 0 WHERE id IN ($placeholders) OR parent_id IN ($placeholders)";
         $this->doQuery($sql, $params);
     }
 
-    public function delete(array $ids): void
+    public function delete(array $safeIds): void
     {
-        if (empty($ids)) return;
+        if (empty($safeIds)) return;
         
-        $safeIds = array_map('intval', $ids);
         $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
         
+        // Fusion des paramètres pour gérer la condition OR
         $params = array_merge($safeIds, $safeIds);
         
         $sql = "DELETE FROM questions WHERE id IN ($placeholders) OR parent_id IN ($placeholders)";
