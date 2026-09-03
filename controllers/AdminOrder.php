@@ -41,8 +41,13 @@ class AdminOrder extends Controller
 
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
-        if (isset($_POST['id']) && !empty($_POST['bulk_status_id'])) {
-            $this->model->bulkUpdateStatus($_POST['id'], (int)$_POST['bulk_status_id']);
+        // Extraction et sécurisation des identifiants dans le contrôleur
+        $ids = $_POST['id'] ?? [];
+        $statusId = (int)($_POST['bulk_status_id'] ?? 0);
+
+        if (!empty($ids) && is_array($ids) && $statusId > 0) {
+            $safeIds = array_map('intval', $ids);
+            $this->model->bulkUpdateStatus($safeIds, $statusId);
         }
         
         header('Location: ' . URL . 'AdminOrder/index');
@@ -73,7 +78,10 @@ class AdminOrder extends Controller
 
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
-        $this->model->editOrder($orderId, $_POST);
+       
+
+        // Le modèle reçoit un tableau parfaitement propre
+        $this->model->editOrder($orderId, $cleanData);
         
         header('Location: ' . URL . 'AdminOrder/detail/' . $orderId);
         exit;
@@ -98,9 +106,7 @@ class AdminOrder extends Controller
 
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
-        if (!empty($_POST['id'])) {
-            $this->model->delete($_POST);
-        }
+       
         
         header('Location: ' . URL . 'AdminOrder/index');
         exit;
