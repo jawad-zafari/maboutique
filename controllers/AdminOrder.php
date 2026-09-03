@@ -78,7 +78,16 @@ class AdminOrder extends Controller
 
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
-       
+        // Nettoyage et préparation des données avant de les transmettre au modèle
+        $cleanData = [
+            'address'       => trim(strip_tags($_POST['address'] ?? '')),
+            'postal_code'   => trim(strip_tags($_POST['postal_code'] ?? '')),
+            'phone'         => trim(strip_tags($_POST['phone'] ?? '')),
+            'tracking_code' => trim(strip_tags($_POST['tracking_code'] ?? '')),
+            'admin_note'    => trim(strip_tags($_POST['admin_note'] ?? '')),
+            'pay_status'    => (int)($_POST['pay_status'] ?? 0),
+            'order_status'  => (int)($_POST['order_status'] ?? 1)
+        ];
 
         // Le modèle reçoit un tableau parfaitement propre
         $this->model->editOrder($orderId, $cleanData);
