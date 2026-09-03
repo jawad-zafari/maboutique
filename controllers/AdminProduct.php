@@ -6,7 +6,7 @@ class AdminProduct extends Controller
     {
         parent::__construct();
         
-        // Vérification stricte des droits d'accès (Seul l'admin a accès)
+        // Vérification stricte des droits d'accès
         Model::sessionInit();
         $level = (int) Model::getUserLevel();
         if ($level !== 1) {
@@ -15,9 +15,6 @@ class AdminProduct extends Controller
         }
     }
 
-    
-    // Affiche la liste des produits
-     
     public function index(): void
     {
         $data = [
@@ -27,15 +24,35 @@ class AdminProduct extends Controller
         $this->view('admin/admin_product/products', $data);
     }
 
-    //  * Ajoute ou modifie un produit
     public function addProduct(int $productId = 0): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // VÉRIFICATION CSRF CENTRALISÉE
             $this->checkCsrfToken($_POST['csrf_token'] ?? '');
             
-            $image = $_FILES['image'] ?? null;
-            $this->model->addProductAction($_POST, $productId, $image);
+            // Le contrôleur nettoie et valide toutes les entrées
+            $cleanData = [
+                'title'       => trim(strip_tags($_POST['title'] ?? '')),
+                'description' => strip_tags(trim($_POST['description'] ?? ''), '<b><i><strong><em><u><ul><li><ol><p><br>'),
+                'categoryId'  => (int)($_POST['categoryId'] ?? 0),
+                'price'       => (int)($_POST['price'] ?? 0),
+                'discount'    => (int)($_POST['discount'] ?? 0),
+                'color'       => isset($_POST['color']) && is_array($_POST['color']) ? array_map('intval', $_POST['color']) : [],
+                'garantee'    => isset($_POST['garantee']) && is_array($_POST['garantee']) ? array_map('intval', $_POST['garantee']) : []
+            ];
+
+            if (empty($cleanData['title'])) {
+                header('Location: ' . URL . 'AdminProduct/addProduct/' . $productId);
+                exit;
+            }
+
+            // On demande au modèle de sauvegarder et on récupère l'ID du produit
+            $savedProductId = $this->model->addProductAction($productId, $cleanData);
+            $targetId = $productId > 0 ? $productId : $savedProductId;
+
+            // Le contrôleur s'occupe de l'upload des fichiers
+            if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
+                $this->handleProductImage($_FILES['image'], $targetId);
+            }
             
             header('Location: ' . URL . 'AdminProduct/index?success=product_saved');
             exit;
@@ -52,10 +69,10 @@ class AdminProduct extends Controller
         $this->view('admin/admin_product/add_product', $data);
     }
 
-    //  Supprime un ou plusieurs produits
+    
+
     public function deleteProduct(): void
     {
-        // Bloquer tout accès direct via GET
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('HTTP/1.1 405 Method Not Allowed');
             exit('Méthode non autorisée');
@@ -65,14 +82,13 @@ class AdminProduct extends Controller
         
         $ids = $_POST['id'] ?? [];
         if (!empty($ids) && is_array($ids)) {
-            $this->model->deleteProduct($ids);
+            $safeIds = array_map('intval', $ids);
+            $this->model->deleteProduct($safeIds);
         }
         
         header('Location: ' . URL . 'AdminProduct/index?success=product_deleted');
         exit;
     }
-
-    // GESTION DE LA GALERIE D'IMAGES
 
     public function gallery(int $productId): void
     {
@@ -88,8 +104,8 @@ class AdminProduct extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->checkCsrfToken($_POST['csrf_token'] ?? '');
-            $this->model->addGallery($productId, $_FILES['images'] ?? null);
-        }
+            
+           
         header('Location: ' . URL . 'AdminProduct/gallery/' . $productId . '?success=image_added');
         exit;
     }
@@ -105,21 +121,21 @@ class AdminProduct extends Controller
         
         $ids = $_POST['id'] ?? [];
         if (!empty($ids) && is_array($ids)) {
-            $this->model->deleteGallery($ids);
-        }
+           
         
         header('Location: ' . URL . 'AdminProduct/gallery/' . $productId . '?success=image_deleted');
         exit;
     }
-
-    // GESTION DES ATTRIBUTS
 
     public function attributes(int $productId): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->checkCsrfToken($_POST['csrf_token'] ?? '');
             
-            $this->model->editAttribute($_POST, $productId);
+           
+      
+            
+            $this->model->editAttribute($productId, $cleanAttributes);
             header('Location: ' . URL . 'AdminProduct/attributes/' . $productId . '?success=1');
             exit;
         }
@@ -131,8 +147,6 @@ class AdminProduct extends Controller
         ];
         $this->view('admin/admin_product/attributes', $data);
     }
-
-    // GESTION DES AVIS (REVIEWS)
 
     public function reviews(int $productId): void
     {
@@ -149,7 +163,13 @@ class AdminProduct extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->checkCsrfToken($_POST['csrf_token'] ?? '');
             
-            $this->model->addReview($_POST, $productId, $reviewId);
+            $title = trim(strip_tags($_POST['title'] ?? ''));
+            $description = strip_tags(trim($_POST['description'] ?? ''), '<b><i><strong><em><u><ul><li><ol><p><br>');
+
+            if (!empty($title) && !empty($description)) {
+                $this->model->addReview($productId, $reviewId, $title, $description);
+            }
+            
             header('Location: ' . URL . 'AdminProduct/reviews/' . $productId);
             exit;
         }
@@ -173,7 +193,8 @@ class AdminProduct extends Controller
         
         $ids = $_POST['id'] ?? [];
         if (!empty($ids) && is_array($ids)) {
-            $this->model->deleteReview($ids);
+            $safeIds = array_map('intval', $ids);
+            $this->model->deleteReview($safeIds);
         }
         
         header('Location: ' . URL . 'AdminProduct/reviews/' . $productId);
