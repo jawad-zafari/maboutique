@@ -29,7 +29,7 @@ class AdminQuestion extends Controller
 
     public function confirm(): void
     {
-        //  SÉCURITÉ : Vérification stricte de la méthode POST
+        // Vérification stricte de la méthode POST
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('HTTP/1.1 405 Method Not Allowed');
             exit;
@@ -37,17 +37,27 @@ class AdminQuestion extends Controller
 
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
-        // SÉCURITÉ : Nettoyage des données POST pour éviter les injections et les entrées malveillantes
-        $cleanData = [];
-        foreach ($_POST as $key => $value) {
-            if (is_array($value)) {
-                $cleanData[$key] = $value;
-            } else {
-                $cleanData[$key] = is_string($value) ? trim($value) : $value;
+        $ids = $_POST['id'] ?? [];
+        
+        if (!empty($ids) && is_array($ids)) {
+            $cleanData = [];
+            
+            // Le contrôleur extrait, nettoie et structure les données pour le modèle
+            foreach ($ids as $id) {
+                $safeId = (int)$id;
+                $cleanData[] = [
+                    'id'       => $safeId,
+                    'question' => trim(strip_tags($_POST['question_' . $safeId] ?? '')),
+                    'answer'   => trim(strip_tags($_POST['answer_' . $safeId] ?? ''))
+                ];
             }
-        }
 
-        $this->model->confirm($cleanData);
+            // Le contrôleur récupère l'identifiant de l'administrateur depuis la session
+            $adminId = (int)(Model::sessionGet('userId') ?? 1);
+
+            // On passe un tableau 100% propre et sécurisé au modèle
+            $this->model->confirm($cleanData, $adminId);
+        }
         
         header('Location: ' . URL . 'AdminQuestion/index');
         exit;
@@ -64,7 +74,9 @@ class AdminQuestion extends Controller
 
         $ids = $_POST['id'] ?? [];
         if (!empty($ids) && is_array($ids)) {
-            $this->model->unconfirm($ids);
+            // Le contrôleur s'assure que le tableau ne contient que des entiers
+            $safeIds = array_map('intval', $ids);
+            $this->model->unconfirm($safeIds);
         }
         
         header('Location: ' . URL . 'AdminQuestion/index');
@@ -82,7 +94,9 @@ class AdminQuestion extends Controller
 
         $ids = $_POST['id'] ?? [];
         if (!empty($ids) && is_array($ids)) {
-            $this->model->delete($ids);
+            // Le contrôleur s'assure que le tableau ne contient que des entiers
+            $safeIds = array_map('intval', $ids);
+            $this->model->delete($safeIds);
         }
         
         header('Location: ' . URL . 'AdminQuestion/index');
