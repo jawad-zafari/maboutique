@@ -41,8 +41,20 @@ class AdminLogin extends Controller
         // Bloquer les requêtes malveillantes externes
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
-        // Le modèle vérifie les identifiants et renvoie un statut
-        $loginStatus = $this->model->checkUser($_POST);
+        // Nettoyage strict des données du formulaire pour éviter les attaques XSS et l'injection SQL
+        $emailRaw = trim($_POST['email'] ?? '');
+        $emailSanitized = filter_var($emailRaw, FILTER_SANITIZE_EMAIL);
+        $password = $_POST['password'] ?? '';
+
+        // Validation stricte des données d'entrée
+        if (!filter_var($emailSanitized, FILTER_VALIDATE_EMAIL) || empty($password)) {
+            $this->model->recordFailedAttempt();
+            header('Location: ' . URL . 'AdminLogin/index?error=1');
+            exit;
+        }
+
+        // Le modèle reçoit des données validées et renvoie un statut
+        $loginStatus = $this->model->checkUser($emailSanitized, $password);
         
         if ($loginStatus === 'locked') {
             // Trop de tentatives échouées : Redirection avec message de blocage
