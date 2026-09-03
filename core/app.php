@@ -15,7 +15,7 @@ class App
             unset($url[0]);
         }
 
-        // SÉCURITÉ : Validation stricte du nom du contrôleur
+        //Validation stricte du nom du contrôleur
         if (!preg_match('/^[a-zA-Z0-9_]+$/', $this->controller)) {
             $this->controller = 'Error404';
         }
@@ -42,7 +42,7 @@ class App
             unset($url[1]);
         }
 
-        // SÉCURITÉ : Validation de la méthode
+        //Validation stricte du nom de la méthode
         if (!preg_match('/^[a-zA-Z0-9_]+$/', $this->method)) {
             $this->method = 'index';
         }
