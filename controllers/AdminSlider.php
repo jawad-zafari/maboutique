@@ -110,7 +110,22 @@ class AdminSlider extends Controller
         }
 
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
-      
+            
+        $ids = $_POST['id'] ?? [];
+        if (!empty($ids) && is_array($ids)) {
+            $safeIds = array_map('intval', $ids);
+            
+            // Le contrôleur supprime les fichiers physiques
+            $images = $this->model->getSliderImagesByIds($safeIds);
+            foreach ($images as $img) {
+                if (!empty($img['image_path']) && file_exists($img['image_path'])) {
+                    unlink($img['image_path']);
+                }
+            }
+            
+            // Le modèle supprime les lignes de la base de données
+            $this->model->delete($safeIds);
+        }
 
         header('Location: ' . URL . 'AdminSlider/index?success=delete');
         exit;
