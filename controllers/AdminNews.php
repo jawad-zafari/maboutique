@@ -141,6 +141,39 @@ class AdminNews extends Controller
         exit;
     }
 
-    
+    // Méthode privée pour gérer l'upload des images (logique métier dans le contrôleur)
+    private function handleImageUpload(array $file): string
+    {
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        $fileName = $file['name'];
+        $fileTmpName = $file['tmp_name'];
+        
+        $extension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+        // On vérifie l'extension et le type MIME pour la sécurité
+        if (!in_array($extension, $allowedExtensions)) {
+            return ''; 
+        }
+
+        $mimeType = mime_content_type($fileTmpName);
+        if (strpos((string)$mimeType, 'image/') !== 0) {
+            return '';
+        }
+
+        $uploadDir = 'public/images/news/';
+        if (!file_exists($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        // On génère un nom unique pour éviter d'écraser un autre fichier
+        $newFileName = 'news_' . uniqid() . '.' . $extension;
+        $destination = $uploadDir . $newFileName;
+
+        if (move_uploaded_file($fileTmpName, $destination)) {
+            return $destination;
+        }
+
+        return '';
+    }
 }
 ?>
