@@ -89,7 +89,29 @@ class AdminNews extends Controller
 
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
-       
+        $title = trim(strip_tags($_POST['title'] ?? ''));
+        $shortDesc = trim(strip_tags($_POST['short_desc'] ?? ''));
+        $createdAt = trim(strip_tags($_POST['created_at'] ?? date('Y-m-d')));
+
+        if (empty($title)) {
+            header('Location: ' . URL . 'AdminNews/edit/' . $id . '?error=empty');
+            exit;
+        }
+
+        // On récupère l'ancienne image pour pouvoir la supprimer si besoin
+        $newsInfo = $this->model->getNewsById($id);
+        $imagePath = $newsInfo['image_path'] ?? '';
+
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
+            $newImagePath = $this->handleImageUpload($_FILES['image']);
+            
+            if ($newImagePath !== '') {
+                // On supprime l'ancien fichier physique du serveur
+                if (!empty($imagePath) && file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+                $imagePath = $newImagePath;
+            }
         }
 
         $this->model->editNews($id, $title, $shortDesc, $imagePath, $createdAt);
@@ -107,6 +129,11 @@ class AdminNews extends Controller
 
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
+        // Le contrôleur supprime le fichier image avant de demander au modèle de supprimer la ligne
+        $newsInfo = $this->model->getNewsById($id);
+        if (!empty($newsInfo['image_path']) && file_exists($newsInfo['image_path'])) {
+            unlink($newsInfo['image_path']);
+        }
 
         $this->model->deleteNews($id);
         
@@ -115,5 +142,5 @@ class AdminNews extends Controller
     }
 
     
-
+}
 ?>
