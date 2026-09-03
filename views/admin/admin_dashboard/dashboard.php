@@ -7,16 +7,16 @@
     </header>
 
     <?php 
-    // Encodage strict JSON pour JavaScript
     $orderStat = $data['orderStat'] ?? [];
     $keys = array_keys($orderStat);
     $values = array_values($orderStat);
     
-    $jsonKeys = htmlspecialchars(json_encode($keys), ENT_QUOTES, 'UTF-8');
-    $jsonValues = htmlspecialchars(json_encode($values), ENT_QUOTES, 'UTF-8');
+    // Échappement des données pour éviter les attaques XSS
+    $jsonKeys = $this->e(json_encode($keys) ?: '[]');
+    $jsonValues = $this->e(json_encode($values) ?: '[]');
     ?>
 
-    <!-- Structure accessible pour les lecteurs d'écran -->
+    <!-- Structure accessible pour les lecteurs d'écran (Accessibilité) -->
     <div class="sr-only" aria-live="polite">
         <table aria-label="Données textuelles des statistiques de ventes des 7 derniers jours">
             <thead>
@@ -28,7 +28,8 @@
             <tbody>
                 <?php foreach($orderStat as $date => $count): ?>
                 <tr>
-                    <td><?= htmlspecialchars($date, ENT_QUOTES, 'UTF-8') ?></td>
+                    <!-- Échappement via e() -->
+                    <td><?= $this->e($date) ?></td>
                     <td><?= (int)$count ?></td>
                 </tr>
                 <?php endforeach; ?>
