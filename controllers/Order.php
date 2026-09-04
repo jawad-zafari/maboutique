@@ -241,6 +241,28 @@ class Order extends Controller
         $this->view('order/step4_payment', $data);
     }
 
-   
+    // Vérification AJAX du code promotionnel
+    public function checkPromoCode(): void 
+    {
+        $this->checkLogin();
+        header('Content-Type: application/json; charset=utf-8');
+        
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(['status' => 'error', 'message' => 'Méthode non autorisée.']);
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+        
+        $safeCode = trim(strip_tags($_POST['code'] ?? ''));
+        
+        $result = $this->model->verifyPromoCode($safeCode);
+        $totalPrice = $this->model->calculateTotalPrice($safeCode);
+
+        echo json_encode([$result, $totalPrice]);
+        exit;
+    }
+
+    
 }
 ?>
