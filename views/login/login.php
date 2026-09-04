@@ -1,8 +1,8 @@
 <?php
-// SÉCURITÉ : Récupération des données passées par le contrôleur
-$csrfToken    = $csrf_token ?? '';
-$oldInput     = $old_input ?? [];
-$currentError = $error_msg ?? ($_GET['error'] ?? null);
+// Récupération des données passées par le contrôleur
+$csrfToken    = $data['csrf_token'] ?? '';
+$oldInput     = $data['old_input'] ?? [];
+$currentError = $data['error_msg'] ?? ($_GET['error'] ?? null);
 
 // Récupération de l'URL de retour (Intended URL)
 $backUrl = $oldInput['back_url'] ?? ($_GET['back'] ?? '');
@@ -43,10 +43,10 @@ $backUrl = $oldInput['back_url'] ?? ($_GET['back'] ?? '');
                 </div>
             <?php endif; ?>
 
-            <!-- Action mise à jour vers la nouvelle méthode "authenticate" -->
+            <!-- Action mise à jour vers la méthode "authenticate" -->
             <form action="<?= URL ?>Login/authenticate" method="POST" id="formLogin" class="modern-form">
                 
-                <!-- SÉCURITÉ : Jeton CSRF -->
+                <!-- Jeton CSRF -->
                 <input type="hidden" name="csrf_token" value="<?= $this->e($csrfToken) ?>">
                 
                 <!-- Redirection post-connexion -->
@@ -56,13 +56,13 @@ $backUrl = $oldInput['back_url'] ?? ($_GET['back'] ?? '');
 
                 <div class="form-group">
                     <label for="email"><i class="fa-solid fa-envelope" aria-hidden="true"></i> Adresse E-mail :</label>
-                    <!-- SÉCURITÉ & UX : Repeuplement sécurisé de l'e-mail -->
+                    <!-- Remplissage sécurisé de l'e-mail -->
                     <input type="email" id="email" name="email" class="form-control" dir="ltr" placeholder="exemple@email.com" autocomplete="email" required value="<?= $this->e($oldInput['email'] ?? '') ?>">
                 </div>
                 
                 <div class="form-group">
                     <label for="password"><i class="fa-solid fa-lock" aria-hidden="true"></i> Mot de passe :</label>
-                    <!-- Le mot de passe n'est jamais repeuplé -->
+                    <!-- Le mot de passe n'est jamais repeuplé par mesure de sécurité -->
                     <input type="password" id="password" name="password" class="form-control" dir="ltr" placeholder="••••••••" autocomplete="current-password" required>
                 </div>
 
