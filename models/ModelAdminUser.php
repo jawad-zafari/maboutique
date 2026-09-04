@@ -18,45 +18,42 @@ class ModelAdminUser extends Model
         return is_array($result) ? $result : [];
     }
 
-    public function changeLevel1(array $ids): void
+    // variables propres, pas de $_POST
+    public function changeLevel1(array $safeIds): void
     {
-        if (empty($ids)) return;
+        if (empty($safeIds)) return;
         
-        // Génération dynamique des placeholders
-        $safeIds = array_map('intval', $ids);
+        // Génération dynamique des marqueurs pour la requête préparée
         $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
         
         $sql = "UPDATE users SET role_id = 1 WHERE id IN ($placeholders)";
         $this->doQuery($sql, $safeIds);
     }
     
-    public function changeLevel2(array $ids): void
+    public function changeLevel2(array $safeIds): void
     {
-        if (empty($ids)) return;
+        if (empty($safeIds)) return;
         
-        $safeIds = array_map('intval', $ids);
         $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
         
         $sql = "UPDATE users SET role_id = 2 WHERE id IN ($placeholders)";
         $this->doQuery($sql, $safeIds);
     }
 
-    public function changeLevel3(array $ids): void
+    public function changeLevel3(array $safeIds): void
     {
-        if (empty($ids)) return;
+        if (empty($safeIds)) return;
         
-        $safeIds = array_map('intval', $ids);
         $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
         
         $sql = "UPDATE users SET role_id = 3 WHERE id IN ($placeholders)";
         $this->doQuery($sql, $safeIds);
     }
 
-    public function delete(array $ids): void
+    public function delete(array $safeIds): void
     {
-        if (empty($ids)) return;
+        if (empty($safeIds)) return;
         
-        $safeIds = array_map('intval', $ids);
         $placeholders = rtrim(str_repeat('?,', count($safeIds)), ',');
         
         $sql = "DELETE FROM users WHERE id IN ($placeholders)";
