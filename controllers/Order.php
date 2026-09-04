@@ -205,6 +205,42 @@ class Order extends Controller
         $this->view('order/step3_summary', $data);
     }
 
-    
+    // Choix du mode de paiement
+    public function payment(): void 
+    {
+        $this->checkLogin();
+        $this->checkCartNotEmpty(); 
+
+        $addressId = (int)Model::sessionGet('selected_address_id');
+        $shippingTypeId = (int)Model::sessionGet('selected_shipping_type_id');
+        $userId = (int)Model::sessionGet('userId');
+
+        if (!$addressId || !$shippingTypeId) {
+            header('Location: ' . URL . 'Order/address?error=address_missing');
+            exit;
+        }
+
+        $addressInfo = $this->model->getAddressById($addressId, $userId);
+        if (!$addressInfo) {
+            header('Location: ' . URL . 'Order/address?error=unauthorized_address');
+            exit;
+        }
+
+        $shippingPrice = $this->model->getShippingPrice($shippingTypeId);
+        $status = $this->model->getPaymentStatus();
+
+        $data = [
+            'status'      => $status,
+            'cartData'    => $this->processCartData(),
+            'addressInfo' => $addressInfo,
+            'postPrice'   => $shippingPrice,
+            'postType'    => $shippingTypeId,
+            'csrf_token'  => $this->generateCsrfToken()
+        ];
+        
+        $this->view('order/step4_payment', $data);
+    }
+
+   
 }
 ?>
