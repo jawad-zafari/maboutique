@@ -1,5 +1,5 @@
 <?php
-// SÉCURITÉ : Initialisation sécurisée des variables passées par le contrôleur
+// Initialisation sécurisée des variables passées par le contrôleur
 $data        = $data ?? [];
 $type        = $data['type'] ?? 'latest';
 $products    = $data['products'] ?? [];
@@ -47,7 +47,8 @@ elseif ($type === 'category') { $pageTitle = $data['categoryTitle'] ? $data['cat
         <?php endif; ?>
     </div>
 
-    <form id="collectionFilterForm" aria-label="Filtres de la collection">
+    <!-- Filtres de la collection -->
+    <form id="collectionFilterForm" action="<?= URL ?>Collection/index/<?= $type ?>" method="GET" aria-label="Filtres de la collection">
         <div class="search-toolbar glass-panel">
             <label class="toggle-switch" title="Afficher uniquement les produits en stock">
                 <input type="checkbox" id="toggleInStock" name="in_stock" value="1" <?= $inStock === 1 ? 'checked' : '' ?>>
@@ -71,6 +72,9 @@ elseif ($type === 'category') { $pageTitle = $data['categoryTitle'] ? $data['cat
                 <option value="40" <?= $limitVal === 40 ? 'selected' : '' ?>>40 / page</option>
                 <option value="60" <?= $limitVal === 60 ? 'selected' : '' ?>>60 / page</option>
             </select>
+            
+            <!-- Bouton de soumission -->
+            <button type="submit" class="sr-only" aria-label="Appliquer les filtres">Appliquer les filtres</button>
         </div>
     </form>
 
