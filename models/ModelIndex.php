@@ -7,120 +7,66 @@ class ModelIndex extends Model
         parent::__construct();
     }
 
-    public function getMainSliders()
+    public function getMainSliders(): array
     {
         $sql = "SELECT * FROM sliders";
-        return $this->doSelect($sql);
+        $result = $this->doSelect($sql);
+        return is_array($result) ? $result : [];
     }
 
-    public function getSpecialOffers()
+    public function getSpecialOffers(): array
     {
-        // Utilisation de requête préparée avec PDO (?)
+        // La variable est fortement typée et ne provient pas d'une source externe
         $sql = "SELECT * FROM products WHERE is_special_offer = ?";
         $result = $this->doSelect($sql, [1]);
-
-        foreach ($result as $key => $row) {
-            $priceCalculate = $this->calculateDiscount($row['price'], $row['discount_percent']);
-            $result[$key]['price_total'] = $priceCalculate[1];
-        }
-
-        $firstRow = $result[0] ?? [];
-        $timeSpecial = $firstRow['special_offer_expires_at'] ?? 0;
-
-        $options = self::getoption(); 
-        $durationSpecial = $options['special_time'] ?? 0;
-
-        $timeEnd = $timeSpecial + $durationSpecial;
-        
-        date_default_timezone_set('Europe/Paris'); 
-        $date = date('F d,Y H:i:s', $timeEnd);
-
-        return [$result, $date];
+        return is_array($result) ? $result : [];
     }
 
-    public function getExclusiveProducts()
+    public function getExclusiveProducts(): array
     {
-        // Utilisation de requête préparée
         $sql = "SELECT * FROM products WHERE is_exclusive = ?";
         $result = $this->doSelect($sql, [1]);
-
-        foreach ($result as $key => $row) {
-            $priceCalculate = $this->calculateDiscount($row['price'], $row['discount_percent']);
-            $result[$key]['price_total'] = $priceCalculate[1];
-        }
-        return $result;
+        return is_array($result) ? $result : [];
     }
 
-    public function getMostViewedProducts()
+    public function getMostViewedProducts(int $limit): array
     {
-        // SÉCURITÉ : Requête préparée pour récupérer la limite
-        $sqlLimit = "SELECT * FROM settings WHERE setting_key = ?";
-        $resultLimit = $this->doSelect($sqlLimit, ['limit_slider'], true);
-        
-        // SÉCURITÉ : Forçage du type en entier (Integer) pour prévenir l'injection SQL
-        $limit = isset($resultLimit['setting_value']) ? (int)$resultLimit['setting_value'] : 10;
-
+        // La variable $limit est fortement typée et ne provient pas d'une source externe
         $sql = "SELECT * FROM products ORDER BY views DESC LIMIT " . $limit;
         $result = $this->doSelect($sql);
-
-        foreach ($result as $key => $row) {
-            $priceCalculate = $this->calculateDiscount($row['price'], $row['discount_percent']);
-            $result[$key]['price_total'] = $priceCalculate[1];
-        }
-        return $result;
+        return is_array($result) ? $result : [];
     }
 
-    public function getLatestProducts()
+    public function getLatestProducts(int $limit): array
     {
-        // SÉCURITÉ : Requête préparée
-        $sqlLimit = "SELECT * FROM settings WHERE setting_key = ?";
-        $resultLimit = $this->doSelect($sqlLimit, ['limit_slider'], true);
-        
-        // SÉCURITÉ : Forçage du type (Integer)
-        $limit = isset($resultLimit['setting_value']) ? (int)$resultLimit['setting_value'] : 10;
-
         $sql = "SELECT * FROM products ORDER BY id DESC LIMIT " . $limit;
         $result = $this->doSelect($sql);
-
-        foreach ($result as $key => $row) {
-            $priceCalculate = $this->calculateDiscount($row['price'], $row['discount_percent']);
-            $result[$key]['price_total'] = $priceCalculate[1];
-        }
-        return $result;
+        return is_array($result) ? $result : [];
     }
-
-    
-    //   Récupère les dernières actualités (News)
-     
-    public function getLatestNews($limit = 3)
+    public function getLatestNews(int $limit = 3): array
     {
-        // SÉCURITÉ : Forçage du type (Integer)
-        $safeLimit = (int)$limit;
-        $sql = "SELECT * FROM news ORDER BY id DESC LIMIT " . $safeLimit;
-        return $this->doSelect($sql);
+        $sql = "SELECT * FROM news ORDER BY id DESC LIMIT " . $limit;
+        $result = $this->doSelect($sql);
+        return is_array($result) ? $result : [];
     }
 
-    //  Récupère les marques (Catégories définies comme marques)
-     
-    public function getBrands($limit = 6)
+    public function getBrands(int $limit = 6): array
     {
-        // SÉCURITÉ : Forçage du type (Integer)
-        $safeLimit = (int)$limit;
-        // SÉCURITÉ : Utilisation de requête préparée
-        $sql = "SELECT * FROM categories WHERE is_brand = ? ORDER BY id DESC LIMIT " . $safeLimit;
-        return $this->doSelect($sql, [1]);
+        $sql = "SELECT * FROM categories WHERE is_brand = ? ORDER BY id DESC LIMIT " . $limit;
+        $result = $this->doSelect($sql, [1]);
+        return is_array($result) ? $result : [];
     }
 
-    // Récupère les paramètres de la Boutique TV
-    
-    public function getTvSettings()
+    public function getTvSettings(): array
     {
         $sql = "SELECT * FROM settings WHERE setting_key IN ('tv_video_link', 'tv_cover_image')";
         $results = $this->doSelect($sql);
         
         $settings = [];
-        foreach ($results as $row) {
-            $settings[$row['setting_key']] = $row['setting_value'];
+        if (is_array($results)) {
+            foreach ($results as $row) {
+                $settings[$row['setting_key']] = $row['setting_value'];
+            }
         }
         return $settings;
     }
