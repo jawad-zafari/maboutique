@@ -1,29 +1,20 @@
-
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Empêche les exécutions multiples du script lors de rechargements partiels
     if (window.productScriptEventsBound) return;
     window.productScriptEventsBound = true;
 
-    // Détermination dynamique de l'URL de base pour garantir le bon fonctionnement du routage
     const baseTag = document.querySelector('base');
     const baseUrl = baseTag ? baseTag.getAttribute('href') : '/';
 
-    // SÉCURITÉ : Récupération du jeton CSRF injecté de manière sécurisée dans la vue
     const productWrapper = document.getElementById('mainProductWrapper');
     const csrfToken = productWrapper ? productWrapper.getAttribute('data-csrf') : '';
-
-    // SYSTÈME DE NOTIFICATION TOAST (SÉCURITÉ ANTI-XSS CRITIQUE)
 
     function showProductToast(message, type = 'success') {
         let toast = document.getElementById('productToastNotification');
         
-        // Création dynamique du composant s'il n'existe pas
         if (!toast) {
             toast = document.createElement('div');
             toast.id = 'productToastNotification';
-            
-            // Configuration des styles de base 
             toast.style.position = 'fixed';
             toast.style.bottom = '20px';
             toast.style.right = '20px';
@@ -38,32 +29,26 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
         toast.style.backgroundColor = (type === 'danger') ? '#e03131' : '#2b8a3e';
-        
-        // Nettoyage propre et sécurisé
         toast.textContent = ''; 
         
         const icon = document.createElement('i');
         icon.className = (type === 'danger') ? 'fa-solid fa-circle-exclamation' : 'fa-solid fa-circle-check';
         icon.style.marginRight = '10px';
         
-        // Utilisation de createTextNode pour prévenir toute injection XSS 
         const textNode = document.createTextNode(message);
-
         toast.appendChild(icon);
         toast.appendChild(textNode);
         
         toast.style.display = 'block';
-        // Petit délai pour permettre à la transition CSS de s'appliquer
         setTimeout(() => { toast.style.opacity = '1'; }, 10);
         
-        // Disparition automatique après 3 secondes
         setTimeout(() => {
             toast.style.opacity = '0';
             setTimeout(() => { toast.style.display = 'none'; }, 300);
         }, 3000);
     }
 
-    //  GESTION DE LA GALERIE D'IMAGES
+    // Gestion de la galerie d'images
     const mainImageNode = document.getElementById('mainProductImageNode');
     const thumbnails = document.querySelectorAll('.thumb-item-box');
 
@@ -73,8 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const newSrc = this.getAttribute('data-src');
                 if (newSrc) {
                     mainImageNode.src = newSrc;
-                    
-                    // Gestion de l'état visuel actif
                     thumbnails.forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
                 }
@@ -82,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    //  GESTION DU MODAL DE ZOOM (ACCESSIBILITÉ)
+    // Gestion du modal de zoom
     const zoomModal = document.getElementById('imageZoomModal');
     const zoomedImage = document.getElementById('zoomedImage');
     const btnTriggerImageZoom = document.getElementById('btnTriggerImageZoom');
@@ -105,11 +88,11 @@ document.addEventListener("DOMContentLoaded", () => {
         
         if (closeZoomModal) closeZoomModal.addEventListener('click', closeZoom);
         zoomModal.addEventListener('click', (e) => {
-            if (e.target === zoomModal) closeZoom(); // Ferme si on clique à l'extérieur
+            if (e.target === zoomModal) closeZoom();
         });
     }
 
-    // GESTION DYNAMIQUE DES ONGLETS (TABS)
+    // Gestion des onglets
     const tabButtons = document.querySelectorAll('.btn-tab');
     const tabPanes = document.querySelectorAll('.tab-pane');
 
@@ -117,15 +100,12 @@ document.addEventListener("DOMContentLoaded", () => {
         tabButtons.forEach(btn => {
             btn.addEventListener('click', function() {
                 const targetId = this.getAttribute('data-target');
-                
-                // Réinitialisation des états
                 tabButtons.forEach(b => {
                     b.classList.remove('active');
                     b.setAttribute('aria-selected', 'false');
                 });
                 tabPanes.forEach(p => p.classList.remove('active'));
                 
-                // Activation de la cible
                 this.classList.add('active');
                 this.setAttribute('aria-selected', 'true');
                 
@@ -135,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // AJOUT AU PANIER (AJAX SÉCURISÉ & ROBUSTE)
+    // Gestion de l'ajout au panier
     const btnAddToCart = document.getElementById('btnAddToCart');
 
     if (btnAddToCart) {
@@ -144,7 +124,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const productId = this.getAttribute('data-id');
             if (!productId) return;
 
-            // Feedback visuel de chargement
+            const colorSelect = document.getElementById('productColorSelect');
+            const guaranteeSelect = document.getElementById('productGuaranteeSelect');
+
+            const colorId = colorSelect ? colorSelect.value : '0';
+            const guaranteeId = guaranteeSelect ? guaranteeSelect.value : '0';
+
             const originalIcon = this.innerHTML;
             this.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Traitement...';
             this.disabled = true;
@@ -152,28 +137,27 @@ document.addEventListener("DOMContentLoaded", () => {
             try {
                 const formData = new URLSearchParams();
                 formData.append('quantity', '1');
-                formData.append('colorId', '0');
-                formData.append('guaranteeId', '0');
-                formData.append('csrf_token', csrfToken); //Validation de l'origine
+                formData.append('colorId', colorId);
+                formData.append('guaranteeId', guaranteeId);
+                formData.append('csrf_token', csrfToken);
 
-                const response = await fetch(`${baseUrl}Product/addToCart/${productId}`, {
+                // Injection du jeton CSRF pour prouver que la requête est légitime
+                const response = await fetch(`${baseUrl}Cart/addToCart/${productId}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: formData.toString()
                 });
 
-                // Gestion sécurisée du parsing JSON pour éviter les crashs de l'interface
                 let result;
                 try {
                     result = await response.json();
                 } catch (jsonError) {
-                    throw new Error("Format de réponse inattendu du serveur (Erreur 500 possible).");
+                    throw new Error("Format de réponse inattendu du serveur.");
                 }
 
                 if (response.ok && result.status !== 'error') {
                     showProductToast("Le produit a été ajouté à votre panier avec succès !");
                     
-                    // Mise à jour de l'icône du panier dans le header
                     const badge = document.getElementById('navCartCounterBadge');
                     if (badge && result.totalItems !== undefined) {
                         badge.textContent = result.totalItems;
@@ -188,14 +172,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("Erreur d'ajout au panier :", error);
                 showProductToast("Erreur de communication avec le serveur.", "danger");
             } finally {
-                // Restauration de l'état du bouton
                 this.innerHTML = originalIcon;
                 this.disabled = false;
             }
         });
     }
 
-    // SOUMISSION DES QUESTIONS (AJAX SÉCURISÉ & ROBUSTE)
+    // Gestion de la soumission de questions
     const btnSubmitQuestion = document.getElementById('btnSubmitQuestion');
     const textareaQuestion = document.getElementById('questionText');
 
@@ -214,21 +197,19 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!productId) return;
 
             try {
-                // Feedback utilisateur
                 btnSubmitQuestion.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Envoi...';
                 btnSubmitQuestion.disabled = true;
 
                 const formData = new URLSearchParams();
                 formData.append('question', questionText);
-                formData.append('csrf_token', csrfToken); // SÉCURITÉ : Protection CSRF
+                formData.append('csrf_token', csrfToken);
 
-                const response = await fetch(`${baseUrl}Product/addQuestion/${productId}`, {
+                const response = await fetch(`${baseUrl}Product/addQuestionAjax/${productId}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: formData.toString()
                 });
 
-                //  Gestion sécurisée des erreurs serveur (HTML non désiré)
                 let result;
                 try {
                     result = await response.json();
@@ -246,7 +227,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("Erreur Q&A:", error);
                 showProductToast(error.message || "Erreur de réseau.", "danger");
             } finally {
-                // Restauration du bouton
                 btnSubmitQuestion.innerHTML = '<i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Soumettre la question';
                 btnSubmitQuestion.disabled = false;
             }
