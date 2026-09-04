@@ -1,10 +1,10 @@
 <?php
-// SÉCURITÉ : Récupération des données passées par le contrôleur
-$csrfToken = $csrf_token ?? '';
-$oldInput  = $old_input ?? [];
+// variables strictement typées
+$csrfToken = $data['csrf_token'] ?? '';
+$oldInput  = $data['old_input'] ?? [];
 
-// Gestion d'erreur unifiée (depuis le contrôleur ou l'URL)
-$currentError = $error_msg ?? ($_GET['error'] ?? null);
+// Gestion d'erreur unifiée
+$currentError = $data['error_msg'] ?? ($_GET['error'] ?? null);
 ?>
 
 <div class="register-container">
@@ -94,7 +94,7 @@ $currentError = $error_msg ?? ($_GET['error'] ?? null);
                 </div>
 
                 <div class="checkbox-group">
-                    <input type="checkbox" id="newsletter" name="newsletter" value="1" <?= isset($oldInput['newsletter']) ? 'checked' : '' ?>>
+                    <input type="checkbox" id="newsletter" name="newsletter" value="1" <?= !empty($oldInput['newsletter']) ? 'checked' : '' ?>>
                     <label for="newsletter">S'abonner à la newsletter pour recevoir nos offres</label>
                 </div>
 
