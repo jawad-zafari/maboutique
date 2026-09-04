@@ -263,6 +263,35 @@ class Order extends Controller
         exit;
     }
 
-    
+    // Validation finale de la commande
+    public function saveOrder(): void 
+    {
+        $this->checkLogin();
+        $this->checkCartNotEmpty(); 
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        // Récupération des informations depuis la session côté serveur
+        $userId = (int)Model::sessionGet('userId');
+        $addressId = (int)Model::sessionGet('selected_address_id');
+        $shippingMethodId = (int)Model::sessionGet('selected_shipping_type_id');
+
+        if (!$userId || !$addressId || !$shippingMethodId) {
+            header('Location: ' . URL . 'Order/address?error=address_missing');
+            exit;
+        }
+
+        $cleanData = [
+            'code_promo'     => trim(strip_tags($_POST['code_promo'] ?? '')),
+            'payment_method' => (int)($_POST['payment_method'] ?? 1),
+            'card_number'    => trim(strip_tags($_POST['card_number'] ?? ''))
+        ];
+
+        
 }
 ?>
