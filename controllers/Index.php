@@ -8,29 +8,27 @@ class Index extends Controller
         Model::sessionInit();
     }
 
-    public function index() : void
+    public function index(): void
     {
-        // Récupération des données dynamiques via le modèle
-        $slider1 = $this->model->getMainSliders();
-        $slider2 = $this->model->getSpecialOffers();
-        $exclusives = $this->model->getExclusiveProducts();
-        $mostViewed = $this->model->getMostViewedProducts();
-        $latestProducts = $this->model->getLatestProducts();
+        // Récupération des options depuis le modèle
+        $options = Model::getoption();
+        $limitSlider = (int)($options['limit_slider'] ?? 10);
+        $durationSpecial = (int)($options['special_time'] ?? 0);
+
+        // Gère la session et les droits d'accès
+        $slider1           = $this->model->getMainSliders();
+        $specialOffersRaw  = $this->model->getSpecialOffers();
+        $exclusivesRaw     = $this->model->getExclusiveProducts();
+        
+        // Récupération des produits les plus vus et des derniers produits
+        $mostViewedRaw     = $this->model->getMostViewedProducts($limitSlider);
+        $latestProductsRaw = $this->model->getLatestProducts($limitSlider);
         
         // Actualités, Marques, Boutique TV
         $latestNews = $this->model->getLatestNews();
-        $brands = $this->model->getBrands();
+        $brands     = $this->model->getBrands();
         $tvSettings = $this->model->getTvSettings();
-        
-        // Séparation des données du slider des offres spéciales
-        $slider2Items = $slider2[0] ?? [];
-        $dateEnd = $slider2[1] ?? '';
 
-        // Calcul des prix et réductions via le modèle
-        $slider2Items = $this->model->calculateProductsPrices($slider2Items);
-        $latestProducts = $this->model->calculateProductsPrices($latestProducts);
-        $exclusives = $this->model->calculateProductsPrices($exclusives);
-        $mostViewed = $this->model->calculateProductsPrices($mostViewed);
 
         // Préparation du tableau de données à envoyer à la Vue
         $data = [
@@ -43,7 +41,7 @@ class Index extends Controller
             'latest_news'     => $latestNews,
             'brands'          => $brands,
             'tv_settings'     => $tvSettings,
-            // Génération du jeton pour protéger les actions sur la page d'accueil
+            // Génération du jeton pour protéger les actions AJAX sur la page d'accueil
             'csrf_token'      => $this->generateCsrfToken()
         ];
 
