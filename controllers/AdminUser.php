@@ -38,7 +38,9 @@ class AdminUser extends Controller
             
         $ids = $_POST['id'] ?? [];
         if (!empty($ids) && is_array($ids)) {
-            $this->model->changeLevel1($ids);
+            // conversion des données en entiers
+            $safeIds = array_map('intval', $ids);
+            $this->model->changeLevel1($safeIds);
         }
         
         header('Location: ' . URL . 'AdminUser/index');
@@ -56,7 +58,9 @@ class AdminUser extends Controller
             
         $ids = $_POST['id'] ?? [];
         if (!empty($ids) && is_array($ids)) {
-            $this->model->changeLevel2($ids);
+            // conversion des données en entiers
+            $safeIds = array_map('intval', $ids);
+            $this->model->changeLevel2($safeIds);
         }
         
         header('Location: ' . URL . 'AdminUser/index');
@@ -74,7 +78,9 @@ class AdminUser extends Controller
             
         $ids = $_POST['id'] ?? [];
         if (!empty($ids) && is_array($ids)) {
-            $this->model->changeLevel3($ids);
+            // conversion des données en entiers
+            $safeIds = array_map('intval', $ids);
+            $this->model->changeLevel3($safeIds);
         }
         
         header('Location: ' . URL . 'AdminUser/index');
@@ -92,7 +98,9 @@ class AdminUser extends Controller
 
         $ids = $_POST['id'] ?? [];
         if (!empty($ids) && is_array($ids)) {
-            $this->model->delete($ids);
+            // conversion des données en entiers
+            $safeIds = array_map('intval', $ids);
+            $this->model->delete($safeIds);
         }
         
         header('Location: ' . URL . 'AdminUser/index');
