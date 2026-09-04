@@ -144,6 +144,67 @@ class Order extends Controller
         exit;
     }
 
+    // Sauvegarde les choix de l'utilisateur dans la session via AJAX
+    public function saveAddressSession(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            echo json_encode(['status' => 'error', 'message' => 'Méthode non autorisée.']);
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        $addressId = (int)($_POST['addressId'] ?? 0);
+        $shippingId = (int)($_POST['shippingId'] ?? 0);
+
+        if ($addressId > 0 && $shippingId > 0) {
+            Model::sessionSet('selected_address_id', $addressId);
+            Model::sessionSet('selected_shipping_type_id', $shippingId);
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Données invalides.']);
+        }
+        exit;
+    }
+
+    // Résumé de la commande (Correction du bug de redirection)
+    public function summary(): void 
+    {
+        $this->checkLogin();
+        $this->checkCartNotEmpty();
+
+        $addressId = (int)Model::sessionGet('selected_address_id');
+        $shippingTypeId = (int)Model::sessionGet('selected_shipping_type_id');
+        $userId = (int)Model::sessionGet('userId');
+
+        if (!$addressId || !$shippingTypeId) {
+            header('Location: ' . URL . 'Order/address?error=address_missing');
+            exit;
+        }
+
+        $addressInfo = $this->model->getAddressById($addressId, $userId);
+        if (!$addressInfo) {
+            header('Location: ' . URL . 'Order/address?error=unauthorized_address');
+            exit;
+        }
+
+        $shippingPrice = $this->model->getShippingPrice($shippingTypeId);
+
+        $data = [
+            'cartData'    => $this->processCartData(),
+            'addressInfo' => $addressInfo,
+            'postPrice'   => $shippingPrice,
+            'postType'    => $shippingTypeId,
+            'csrf_token'  => $this->generateCsrfToken()
+        ];
+        
+        // Affichage correct de la vue du résumé
+        $this->view('order/step3_summary', $data);
+    }
+
     
 }
 ?>
