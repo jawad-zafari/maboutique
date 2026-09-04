@@ -292,6 +292,18 @@ class Order extends Controller
             'card_number'    => trim(strip_tags($_POST['card_number'] ?? ''))
         ];
 
+        // Le contrôleur passe explicitement toutes les dépendances au modèle
+        $orderId = $this->model->saveOrder($cleanData, $userId, $addressId, $shippingMethodId);
         
+        if ($orderId > 0) {
+            Model::sessionSet('selected_address_id', null);
+            Model::sessionSet('selected_shipping_type_id', null);
+            
+            header('Location: ' . URL . 'Checkout/index/' . $orderId);
+        } else {
+            header('Location: ' . URL . 'Checkout/showError?error=' . urlencode("Erreur lors de la création de la commande."));
+        }
+        exit;
+    }
 }
 ?>
