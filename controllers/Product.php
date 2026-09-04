@@ -74,6 +74,39 @@ class Product extends Controller
         $this->view('product/product', $data);
     }
 
-   
+    // Traitement AJAX de l'ajout de question
+    public function addQuestionAjax(string $productId): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            echo json_encode(['status' => 'error', 'message' => 'Méthode non autorisée.']);
+            exit;
+        }
+
+        $this->checkCsrfToken($_POST['csrf_token'] ?? '');
+
+        $userId = (int)Model::sessionGet('userId');
+        if ($userId <= 0) {
+            echo json_encode(['status' => 'error', 'message' => 'Veuillez vous connecter pour poser une question.']);
+            exit;
+        }
+
+        $questionText = trim(strip_tags($_POST['question'] ?? ''));
+        if (empty($questionText)) {
+            echo json_encode(['status' => 'error', 'message' => 'La question ne peut pas être vide.']);
+            exit;
+        }
+
+        $prodIdInt = (int)$productId;
+        $this->model->addQuestion($prodIdInt, $userId, $questionText);
+
+        echo json_encode([
+            'status'  => 'success',
+            'message' => 'Votre question a été enregistrée avec succès et sera affichée après validation.'
+        ]);
+        exit;
+    }
 }
 ?>
