@@ -8,24 +8,37 @@ class Product extends Controller
         Model::sessionInit(); 
     }
 
-    
-    //  Affiche la page principale d'un produit
-    
-    public function index($id, $activeTab = 'reviews')
+    // Affiche la page principale d'un produit
+    public function index($id, $activeTab = 'reviews'): void
     {
-        // PROTECTION CSRF
-        $csrf_token = $this->generateCsrfToken();
-
+        $csrfToken = $this->generateCsrfToken();
         $productId = (int)$id;
+        
+        // Récupération des données brutes du produit
         $productInfo = $this->model->productInfo($productId);
         
-        // Gestion d'erreur
         if (empty($productInfo)) {
             header('Location: ' . URL . 'Index/index');
             exit;
         }
 
-        // Récupération des données associées au produit
+        // Logique métier : Calcul des prix et des remises dans le contrôleur
+        $price = (float)($productInfo['price'] ?? 0);
+        $discount = (int)($productInfo['discount_percent'] ?? 0);
+        $priceCalculate = $this->model->calculateDiscount($price, $discount);
+        $productInfo['price_discount'] = $priceCalculate[0];
+        $productInfo['price_total'] = $priceCalculate[1];
+
+        // Calcul de la date d'expiration si c'est une offre spéciale
+        $options = Model::getoption();
+        $durationSpecial = (int)($options['special_time'] ?? 0);
+        $timeSpecial = (int)($productInfo['special_offer_expires_at'] ?? 0);
+        $timeEnd = $timeSpecial + $durationSpecial;
+        
+        date_default_timezone_set('Europe/Paris');
+        $productInfo['date_special'] = date('F d,Y H:i:s', $timeEnd);
+
+        // Récupération des données associées
         $exclusives = $this->model->getExclusiveProducts();
         $gallery = $this->model->getGallery($productId);
 
@@ -33,19 +46,16 @@ class Product extends Controller
         $expertReviews = $this->model->getExpertReviews($productId);
         $specifications = $this->model->getTechnicalSpecs($idCategory, $productId);
         
-        // Récupération des paramètres et des scores pour les avis clients
         $commentParam = $this->model->getCommentParameters($idCategory, $productId);
         $commentParamNames = $commentParam[0] ?? [];
         $commentParamScores = $commentParam[1] ?? [];
         
         $comments = $this->model->getProductComments($productId);
         
-        // Récupération des questions et des réponses associées
         $qaData = $this->model->getQuestionsAndAnswers($productId);
         $questions = $qaData[0] ?? [];
         $answers = $qaData[1] ?? [];
 
-        // Préparation des données pour la vue 
         $data = [
             'productInfo'    => $productInfo,
             'exclusives'     => $exclusives,
@@ -57,16 +67,13 @@ class Product extends Controller
             'comments'       => $comments,
             'questions'      => $questions,
             'answers'        => $answers,
-            // Protection XSS sur la variable de l'onglet actif
             'activeTab'      => htmlspecialchars($activeTab, ENT_QUOTES, 'UTF-8'),
-            'csrf_token'     => $csrf_token
+            'csrf_token'     => $csrfToken
         ];
 
-        // Chargement de la vue
         $this->view('product/product', $data);
     }
 
-    
-    
+   
 }
 ?>
