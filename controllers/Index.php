@@ -29,6 +29,20 @@ class Index extends Controller
         $brands     = $this->model->getBrands();
         $tvSettings = $this->model->getTvSettings();
 
+        // Calcul de la date de fin de l'offre spéciale
+        $firstSpecialOffer = $specialOffersRaw[0] ?? [];
+        $timeSpecial = (int)($firstSpecialOffer['special_offer_expires_at'] ?? 0);
+        $timeEnd = $timeSpecial + $durationSpecial;
+        
+        // Définition du fuseau horaire pour l'affichage de la date
+        date_default_timezone_set('Europe/Paris');
+        $dateEnd = date('F d,Y H:i:s', $timeEnd);
+
+        //Calcul des prix pour les produits récupérés
+        $slider2Items   = $this->model->calculateProductsPrices($specialOffersRaw);
+        $latestProducts = $this->model->calculateProductsPrices($latestProductsRaw);
+        $exclusives     = $this->model->calculateProductsPrices($exclusivesRaw);
+        $mostViewed     = $this->model->calculateProductsPrices($mostViewedRaw);
 
         // Préparation du tableau de données à envoyer à la Vue
         $data = [
