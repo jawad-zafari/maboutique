@@ -1,15 +1,10 @@
 <?php
-
-// Récupération et sécurisation des données transmises par le contrôleur
 $product = $data['productInfo'] ?? [];
 $gallery = $data['gallery'] ?? [];
 $csrfToken = $data['csrf_token'] ?? '';
 $userId = Model::sessionGet('userId');
-
-//  Récupération de l'état "Favori" calculé par le contrôleur 
 $isFavorite = $data['isFavorite'] ?? false;
 
-// Préparation de la galerie d'images (Image principale + images secondaires)
 $allImages = [];
 $productId = (int)($product['id'] ?? 0);
 $mainImage = URL . 'public/images/products/' . $productId . '/product_350.jpg';
@@ -26,6 +21,9 @@ if (!empty($gallery)) {
         ];
     }
 }
+
+$colors = $product['colors'] ?? [];
+$guarantees = $product['guarantees'] ?? [];
 ?>
 
 <div id="mainProductWrapper" class="product-page-container" data-csrf="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
@@ -76,7 +74,31 @@ if (!empty($gallery)) {
                 <p><?= htmlspecialchars($product['description'] ?? 'Aucune description disponible pour ce produit.', ENT_QUOTES, 'UTF-8') ?></p>
             </div>
 
-            <div class="product-purchase-box">
+            <!-- Options de couleur et garantie -->
+            <?php if (!empty($colors)): ?>
+                <div class="product-option-group">
+                    <label for="productColorSelect">Couleur :</label>
+                    <select id="productColorSelect" class="form-control">
+                        <?php foreach ($colors as $col): ?>
+                            <option value="<?= (int)$col['color_id'] ?>"><?= htmlspecialchars($col['title'], ENT_QUOTES, 'UTF-8') ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            <?php endif; ?>
+
+            <?php if (!empty($guarantees)): ?>
+                <div class="product-option-group margin-top-sm">
+                    <label for="productGuaranteeSelect">Garantie :</label>
+                    <select id="productGuaranteeSelect" class="form-control">
+                        <option value="0">Aucune garantie supplémentaire</option>
+                        <?php foreach ($guarantees as $guar): ?>
+                            <option value="<?= (int)$guar['guarantee_id'] ?>"><?= htmlspecialchars($guar['title'], ENT_QUOTES, 'UTF-8') ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            <?php endif; ?>
+
+            <div class="product-purchase-box margin-top-md">
                 <div class="product-pricing">
                     <?php 
                     $price = (float)($product['price'] ?? 0);
