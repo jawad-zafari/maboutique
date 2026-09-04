@@ -46,22 +46,24 @@ class AdminStat extends Controller
         $m2 = (int)($_POST['month2'] ?? 0);
         $d2 = (int)($_POST['day2'] ?? 0);
 
-        if ($y1 === 0 || $m1 === 0 || $d1 === 0) {
-            $startDate = '';
-            $endDate = '';
+        if ($y1 === 0 || $m1 === 0 || $d1 === 0 || $y2 === 0 || $m2 === 0 || $d2 === 0) {
+            $startDateRaw = '';
+            $endDateRaw   = '';
+            $startDateTime = '';
+            $endDateTime   = '';
         } else {
-            // Formatage standard des dates (YYYY-MM-DD)
-            $startDate = sprintf('%04d-%02d-%02d', $y1, $m1, $d1);
-            $endDate = sprintf('%04d-%02d-%02d', $y2, $m2, $d2);
+            // Le contrôleur gère la logique métier des dates et des heures
+            $startDateRaw = sprintf('%04d-%02d-%02d', $y1, $m1, $d1);
+            $endDateRaw   = sprintf('%04d-%02d-%02d', $y2, $m2, $d2);
+            
+            $startDateTime = $startDateRaw . ' 00:00:00';
+            $endDateTime   = $endDateRaw . ' 23:59:59';
         }
         
-        // Envoi des données propres au modèle
-        $statistics = $this->model->order($startDate, $endDate);
+        //récupération des données au modèle
+        $result = $this->model->order($startDateTime, $endDateTime);
         
-        $data = [
-            'stat' => $statistics,
-            'csrf_token' => $this->generateCsrfToken()
-        ];
+       
         
         $this->view('admin/admin_statistics/results', $data);
     }
