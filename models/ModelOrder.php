@@ -7,11 +7,10 @@ class ModelOrder extends Model
         parent::__construct();
     }
 
-    public function getAddresses(): array 
+    // variables propres et fortement typées
+    public function getAddresses(int $userId): array 
     {
         $sql = "SELECT * FROM user_addresses WHERE user_id = ?";
-        Model::sessionInit();
-        $userId = (int)Model::sessionGet('userId');
         return $this->doSelect($sql, [$userId]);
     }
 
@@ -22,12 +21,8 @@ class ModelOrder extends Model
         return $result ?: [];
     }
 
-    // Le contrôleur a déjà nettoyé $cleanData via strip_tags et trim
-    public function addAddress(array $cleanData): int
+    public function addAddress(array $cleanData, int $userId): int
     {
-        Model::sessionInit();
-        $userId = (int)Model::sessionGet('userId');
-
         $lastName     = $cleanData['last_name'] ?? '';
         $mobile       = $cleanData['mobile'] ?? '';
         $provinceName = $cleanData['province_name'] ?? '';
@@ -69,7 +64,7 @@ class ModelOrder extends Model
         return $result ?: [];
     }
 
-    public function verifyPromoCode(string $code)
+    public function verifyPromoCode(string $code): array|false
     {
         $sql = "SELECT * FROM discount_codes WHERE code = ? AND is_used = 0 AND expires_at > ?";
         $currentDate = date('Y-m-d');
@@ -93,20 +88,9 @@ class ModelOrder extends Model
         return max(0, $totalPrice - $discountTotal);
     }
 
-    
-    //  Enregistrement sécurisé de la commande.
-    
-    public function saveOrder(array $cleanData): int
+    // variables propres et fortement typées
+    public function saveOrder(array $cleanData, int $userId, int $addressId, int $shippingMethodId): int
     {
-        Model::sessionInit();
-        $userId = (int)Model::sessionGet('userId');
-        $addressId = (int)Model::sessionGet('selected_address_id');
-        $shippingMethodId = (int)Model::sessionGet('selected_shipping_type_id');
-
-        if (!$userId || !$addressId || !$shippingMethodId) {
-            return 0;
-        }
-
         $addressInfo = $this->getAddressById($addressId, $userId);
         if (!$addressInfo) {
             return 0;
@@ -140,7 +124,7 @@ class ModelOrder extends Model
 
         if ($paymentMethodId === 1) {
             $payBankName = 'Carte Bancaire';
-            // SÉCURITÉ PCI-DSS : Masquage de la carte
+            // SÉCURITÉ PCI-DSS : Masquage de la carte bancaire
             $rawCardNumber = preg_replace('/\D/', '', $cleanData['card_number'] ?? '');
             if (!empty($rawCardNumber)) {
                 $last4Digits = substr($rawCardNumber, -4);
@@ -178,7 +162,7 @@ class ModelOrder extends Model
         $this->doQuery($sql, $params);
         $orderId = (int)self::$conn->lastInsertId();
 
-        // Vidage du panier après succès
+        // Vidage du panier après succès de l'enregistrement
         if ($orderId > 0) {
             $cookie = parent::getCartCookie();
             $sqlEmptyCart = "DELETE FROM cart_items WHERE session_cookie = ?";
