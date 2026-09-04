@@ -98,7 +98,7 @@ class AdminUser extends Controller
 
         $ids = $_POST['id'] ?? [];
         if (!empty($ids) && is_array($ids)) {
-            // conversion des données en entiers
+            // conversion des identifiants en entiers
             $safeIds = array_map('intval', $ids);
             $this->model->delete($safeIds);
         }
