@@ -7,43 +7,18 @@ class ModelAdminStat extends Model
         parent::__construct();
     }
 
-    public function order(string $startDate, string $endDate): array
+    // Récupère les commandes entre deux dates
+    public function order(string $startDateTime, string $endDateTime): array
     {
-        // Validation stricte des dates pour éviter les injections SQL
-        if (empty($startDate) || empty($endDate)) {
-            return [
-                'result' => [], 
-                'order_paied' => 0, 
-                'startDate' => 'Invalide', 
-                'endDate' => 'Invalide'
-            ];
+        if (empty($startDateTime) || empty($endDateTime)) {
+            return [];
         }
 
-        // Ajout des heures pour couvrir la journée complète
-        $startDateTime = $startDate . ' 00:00:00';
-        $endDateTime = $endDate . ' 23:59:59';
-
-        // Requête SQL sécurisée pour récupérer les commandes entre les deux dates
+        // Requête SQL sécurisée avec des paramètres préparés
         $sql = "SELECT * FROM orders WHERE created_date BETWEEN ? AND ? ORDER BY created_date DESC";
         $result = $this->doSelect($sql, [$startDateTime, $endDateTime]);
         
-        $ordersPaid = 0;
-
-        if (!empty($result) && is_array($result)) {
-            foreach ($result as $row) {
-                // Compter uniquement les commandes payées
-                if (isset($row['is_paid']) && (int)$row['is_paid'] === 1) {
-                    $ordersPaid++;
-                }
-            }
-        }
-
-        return [
-            'result' => is_array($result) ? $result : [],
-            'order_paied' => $ordersPaid,
-            'startDate' => $startDate,
-            'endDate' => $endDate
-        ];
+        return is_array($result) ? $result : [];
     }
 }
 ?>
