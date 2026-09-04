@@ -7,12 +7,12 @@ class ModelRegister extends Model
         parent::__construct();
     }
     
-    // Insère un nouvel utilisateur dans la base de données
-    public function insertUser(array $cleanData): bool 
+    // variables propres et fortement typées
+    public function insertUser(string $email, string $password, string $lastName, string $mobile, int $newsletter, int $roleId, string $createdAt): bool 
     {
         // Étape 1 : Vérification de l'existence de l'e-mail pour éviter les doublons
         $sqlCheck = "SELECT id FROM users WHERE email = ?";
-        $result = $this->doSelect($sqlCheck, [$cleanData['email']], 'fetch', PDO::FETCH_ASSOC);
+        $result = $this->doSelect($sqlCheck, [$email], 'fetch', PDO::FETCH_ASSOC);
 
         if (!empty($result)) {
             // Un compte avec cet e-mail existe déjà
@@ -25,21 +25,21 @@ class ModelRegister extends Model
         
         // Configuration des valeurs par défaut pour les champs vides
         $values = [
-            $cleanData['email'], 
-            '', // username
-            $cleanData['password'], 
-            $cleanData['last_name'], 
+            $email, 
+            '', // username vide par défaut
+            $password, 
+            $lastName, 
             '', // national_id
             '', // phone
-            $cleanData['mobile'], 
+            $mobile, 
             '', // birth_date
             '', // address
             '', // city
             '', // postal_code
             1,  // gender (par défaut)
-            $cleanData['newsletter'], 
-            $cleanData['role_id'], 
-            $cleanData['created_at']
+            $newsletter, 
+            $roleId, 
+            $createdAt
         ];
 
         // Exécution de la requête d'insertion
