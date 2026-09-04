@@ -7,58 +7,44 @@ class ModelSearch extends Model
         parent::__construct();
     }
 
-    // Récupère les attributs de filtre pour la catégorie donnée
     public function getAttr(int $categoryId): array
     {
         $sql = "SELECT * FROM attributes WHERE category_id = ? AND is_filter = 1";
         $result = $this->doSelect($sql, [$categoryId]);
         
-        foreach ($result as $key => $row) {
-            $sqlValues = "SELECT * FROM attribute_values WHERE attribute_id = ?";
-            $result[$key]['values'] = $this->doSelect($sqlValues, [(int)$row['id']]);
+        if (is_array($result)) {
+            foreach ($result as $key => $row) {
+                $sqlValues = "SELECT * FROM attribute_values WHERE attribute_id = ?";
+                $result[$key]['values'] = $this->doSelect($sqlValues, [(int)$row['id']]);
+            }
         }
-        return $result;
+        return is_array($result) ? $result : [];
     }
 
-    // Récupère les attributs secondaires de filtre
     public function getAttrRight(int $categoryId): array
     {
         $sql = "SELECT * FROM attributes WHERE category_id = ? AND is_right_filter = 1";
         $result = $this->doSelect($sql, [$categoryId]);
 
-        foreach ($result as $key => $row) {
-            $sqlValues = "SELECT * FROM attribute_values WHERE attribute_id = ?";
-            $result[$key]['values'] = $this->doSelect($sqlValues, [(int)$row['id']]);
+        if (is_array($result)) {
+            foreach ($result as $key => $row) {
+                $sqlValues = "SELECT * FROM attribute_values WHERE attribute_id = ?";
+                $result[$key]['values'] = $this->doSelect($sqlValues, [(int)$row['id']]);
+            }
         }
-        return $result;
+        return is_array($result) ? $result : [];
     }
 
-    // Récupère la liste de toutes les couleurs disponibles
     public function getColors(): array
     {
         $sql = "SELECT * FROM colors";
-        return $this->doSelect($sql);
+        $result = $this->doSelect($sql);
+        return is_array($result) ? $result : [];
     }
 
-    // Moteur de recherche principal avec filtrage dynamique et pagination
-    public function doSearch(array $cleanData): array
+    // variables propres et fortement typées
+    public function doSearch(string $keyword, int $categoryId, int $inStock, int $orderType1, int $orderType2, int $limit, int $offset): array
     {
-        // Les données sont déjà assainies par le contrôleur (Architecture MVC stricte)
-        $keyword     = $cleanData['keyword'] ?? '';
-        $categoryId  = $cleanData['categoryId'] ?? 0;
-        $inStock     = $cleanData['in_stock'] ?? 0;
-        $orderType1  = $cleanData['orderType1'] ?? 3; 
-        $orderType2  = $cleanData['orderType2'] ?? 2; 
-
-        $currentPage = $cleanData['current_page'] ?? 1;
-        if ($currentPage < 1) { $currentPage = 1; }
-
-        $limit = $cleanData['limit'] ?? 20;
-        if (!in_array($limit, [20, 40, 60])) { $limit = 20; }
-
-        $offset = ($currentPage - 1) * $limit;
-
-        // Construction dynamique des clauses WHERE
         $whereClauses = ["1=1"];
         $params = [];
 
@@ -79,34 +65,30 @@ class ModelSearch extends Model
 
         $whereSql = implode(" AND ", $whereClauses);
 
-        // Calcul du nombre total de résultats
+        // Calcul du nombre total de résultats pour la pagination
         $sqlCount = "SELECT COUNT(id) as total FROM products WHERE $whereSql";
         $resultCount = $this->doSelect($sqlCount, $params, 'fetch');
         $totalProducts = (int)($resultCount['total'] ?? 0);
 
-        // Tri et récupération (Validation stricte pour éviter l'injection SQL)
+        // Définition des colonnes de tri (Whitelisting pour la sécurité)
         $orderBy = "id";
         if ($orderType1 === 1) { $orderBy = "price"; }
         if ($orderType1 === 2) { $orderBy = "views"; }
         
         $orderDir = ($orderType2 === 2) ? "DESC" : "ASC";
         
+        // Requête principale
         $sqlData = "SELECT * FROM products WHERE $whereSql ORDER BY $orderBy $orderDir LIMIT $limit OFFSET $offset";
         $productsRaw = $this->doSelect($sqlData, $params);
         
-        // Calcul des remises
-        $products = $this->calculateProductsPrices($productsRaw);
-
-        // Calcul du nombre de pages
         $pageNumber = ($totalProducts > 0) ? (int) ceil($totalProducts / $limit) : 1;
 
-        return [$products, $pageNumber];
+        // Retourne un tableau contenant les produits et le nombre de pages pour la pagination
+        return [is_array($productsRaw) ? $productsRaw : [], $pageNumber];
     }
 
-    // Recherche instantanée (Auto-suggestion)
     public function suggestProducts(string $keyword): array
     {
-        // Utilisation de mb_strlen pour supporter l'UTF-8
         if (mb_strlen($keyword, 'UTF-8') < 2) {
             return [];
         }
@@ -114,27 +96,7 @@ class ModelSearch extends Model
         $sql = "SELECT * FROM products WHERE title LIKE ? LIMIT 5";
         $results = $this->doSelect($sql, ['%' . $keyword . '%']);
         
-        return $this->calculateProductsPrices($results);
-    }
-
-    // Méthode auxiliaire pour calculer les prix remisés
-    public function calculateProductsPrices( $products): array
-    {
-        if (empty($products)) {
-            return [];
-        }
-
-        foreach ($products as $key => $product) {
-            $price    = (float)($product['price'] ?? 0);
-            $discount = (float)($product['discount_percent'] ?? 0);
-            
-            $priceCalculate = $this->calculateDiscount($price, $discount);
-            
-            $products[$key]['price_discount'] = $priceCalculate[0];
-            $products[$key]['price_total'] = $priceCalculate[1];
-        }
-
-        return $products;
+        return is_array($results) ? $results : [];
     }
 }
 ?>
