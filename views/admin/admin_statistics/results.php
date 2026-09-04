@@ -1,26 +1,19 @@
 <?php
-$stat = $data['stat'] ?? [];
-$result = $stat['result'] ?? [];
-$totalOrders = count($result);
-$paiedOrders = (int)($stat['order_paied'] ?? 0);
-$paiedPercentage = $totalOrders > 0 ? round(($paiedOrders / $totalOrders) * 100, 2) : 0;
-
-// Calcul du chiffre d'affaires total pour les commandes payées
-$totalRevenue = 0;
-foreach ($result as $row) {
-    if (isset($row['is_paid']) && (int)$row['is_paid'] === 1) {
-        $totalRevenue += (float)($row['total_price'] ?? $row['amount'] ?? 0);
-    }
-}
+// Vérification de l'existence des données avant de les utiliser
+$result = $data['result'] ?? [];
+$totalOrders = (int)($data['totalOrders'] ?? 0);
+$ordersPaid = (int)($data['ordersPaid'] ?? 0);
+$paidPercentage = (float)($data['paidPercentage'] ?? 0);
+$totalRevenue = (float)($data['totalRevenue'] ?? 0);
 ?>
 <div class="admin-container">
     
     <header class="admin-header">
         <div class="admin-breadcrumb" aria-label="Fil d'Ariane">
             <i class="fa-solid fa-chart-pie" aria-hidden="true"></i> Statistiques du 
-            <!-- SÉCURITÉ : Échappement des dates pour éviter les failles XSS -->
-            <strong class="text-highlight"><?= $this->e($stat['startDate'] ?? '') ?></strong> au 
-            <strong class="text-highlight"><?= $this->e($stat['endDate'] ?? '') ?></strong>
+            <!-- Sécurisation de l'affichage avec la méthode e() -->
+            <strong class="text-highlight"><?= $this->e($data['startDate'] ?? 'Invalide') ?></strong> au 
+            <strong class="text-highlight"><?= $this->e($data['endDate'] ?? 'Invalide') ?></strong>
         </div>
         <div class="admin-actions">
             <a href="#" class="btn-admin-back js-back-button" aria-label="Retourner au formulaire de filtre">
@@ -31,21 +24,21 @@ foreach ($result as $row) {
 
     <div class="stats-summary-grid">
         <div class="stat-card">
-            <div class="stat-icon"><i class="fa-solid fa-shopping-cart"></i></div>
+            <div class="stat-icon"><i class="fa-solid fa-shopping-cart" aria-hidden="true"></i></div>
             <div class="stat-content">
                 <span class="stat-title">Total des commandes</span>
                 <span class="stat-value"><?= $totalOrders ?></span>
             </div>
         </div>
         <div class="stat-card">
-            <div class="stat-icon success"><i class="fa-solid fa-check-circle"></i></div>
+            <div class="stat-icon success"><i class="fa-solid fa-check-circle" aria-hidden="true"></i></div>
             <div class="stat-content">
                 <span class="stat-title">Commandes payées</span>
-                <span class="stat-value"><?= $paiedOrders ?> <small>(<?= $paiedPercentage ?>%)</small></span>
+                <span class="stat-value"><?= $ordersPaid ?> <small>(<?= $paidPercentage ?>%)</small></span>
             </div>
         </div>
         <div class="stat-card">
-            <div class="stat-icon primary"><i class="fa-solid fa-euro-sign"></i></div>
+            <div class="stat-icon primary"><i class="fa-solid fa-euro-sign" aria-hidden="true"></i></div>
             <div class="stat-content">
                 <span class="stat-title">Chiffre d'affaires</span>
                 <span class="stat-value"><?= number_format($totalRevenue, 2, ',', ' ') ?> €</span>
@@ -72,7 +65,7 @@ foreach ($result as $row) {
                 ?>
                 <tr>
                     <td class="text-center"><strong>#<?= (int)$row['id']; ?></strong></td>
-                    // Échappement des données pour éviter les failles XSS
+                    <!-- Échappement des données pour éviter les failles XSS -->
                     <td><?= $this->e($row['created_date'] ?? '') ?></td>
                     <td><?= $this->e($row['last_name'] ?? 'Client') ?></td>
                     <td><strong><?= number_format((float)($row['total_price'] ?? $row['amount'] ?? 0), 2, ',', ' '); ?> €</strong></td>
