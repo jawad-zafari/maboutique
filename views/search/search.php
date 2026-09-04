@@ -1,5 +1,5 @@
 <?php
-
+// Extraction sécurisée des variables depuis le tableau $data
 $sideFilters = $data['attrRight'] ?? [];
 $colors      = $data['colors'] ?? [];
 $topFilters  = $data['attr'] ?? [];
@@ -59,6 +59,8 @@ $csrfToken   = $data['csrf_token'] ?? '';
             </select>
             <?php endif; ?>
             
+            <!-- Bouton de soumission pour les lecteurs d'écran -->
+            <button type="submit" class="sr-only" aria-label="Lancer la recherche">Rechercher</button>
         </div>
         
         <div class="product-grid-wrapper" aria-live="polite">
