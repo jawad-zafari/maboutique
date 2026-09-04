@@ -58,19 +58,13 @@ class Register extends Controller
             return;
         }
 
-        // Préparation d'un tableau de données propre et sécurisé pour le Model
-        $cleanData = [
-            'email'      => $email,
-            'password'   => password_hash($password, PASSWORD_DEFAULT), // Hachage du mot de passe
-            'last_name'  => $lastName,
-            'mobile'     => $mobile,
-            'newsletter' => $newsletter,
-            'role_id'    => 3, // Rôle client standard par défaut
-            'created_at' => date('Y-m-d H:i:s')
-        ];
+        // Hachage du mot de passe avant l'insertion en base de données
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $roleId = 3; // Rôle client standard par défaut
+        $createdAt = date('Y-m-d H:i:s');
 
-        // Appel au modèle pour insérer les données nettoyées
-        $isRegistered = $this->model->insertUser($cleanData);
+        // Appel au modèle pour insérer l'utilisateur dans la base de données
+        $isRegistered = $this->model->insertUser($email, $hashedPassword, $lastName, $mobile, $newsletter, $roleId, $createdAt);
         
         if ($isRegistered) {
             // Redirection vers la page de connexion après une inscription réussie
