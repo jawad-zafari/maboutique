@@ -63,7 +63,31 @@ class AdminStat extends Controller
         //récupération des données au modèle
         $result = $this->model->order($startDateTime, $endDateTime);
         
-       
+        // Calcul des statistiques à partir des résultats récupérés du modèle
+        $totalOrders = count($result);
+        $ordersPaid = 0;
+        $totalRevenue = 0.0;
+
+        foreach ($result as $row) {
+            if (isset($row['is_paid']) && (int)$row['is_paid'] === 1) {
+                $ordersPaid++;
+                $totalRevenue += (float)($row['total_price'] ?? $row['amount'] ?? 0);
+            }
+        }
+
+        $paidPercentage = $totalOrders > 0 ? round(($ordersPaid / $totalOrders) * 100, 2) : 0;
+        
+        // Préparation d'un tableau de données parfaitement propre pour la vue
+        $data = [
+            'result'         => $result,
+            'totalOrders'    => $totalOrders,
+            'ordersPaid'     => $ordersPaid,
+            'paidPercentage' => $paidPercentage,
+            'totalRevenue'   => $totalRevenue,
+            'startDate'      => $startDateRaw,
+            'endDate'        => $endDateRaw,
+            'csrf_token'     => $this->generateCsrfToken()
+        ];
         
         $this->view('admin/admin_statistics/results', $data);
     }
