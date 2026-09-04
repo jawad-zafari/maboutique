@@ -27,9 +27,10 @@ class Cart extends Controller
     // Suppression d'un article (Validation POST + CSRF)
     public function deleteCart(string $cartRowId): void
     {
-        // Bloquer les requêtes GET pour éviter les suppressions accidentelles ou malveillantes
+        // Bloquer les requêtes GET pour éviter les suppressions accidentelles
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('HTTP/1.1 405 Method Not Allowed');
+            header('Content-Type: application/json; charset=utf-8');
             echo json_encode(['status' => 'error', 'message' => 'Méthode non autorisée.']);
             exit;
         }
@@ -39,8 +40,11 @@ class Cart extends Controller
 
         $this->model->deleteCartItem((int)$cartRowId);
         
-        // Renvoie les nouvelles données du panier au format JSON pour AJAX
+        // Renvoie les nouvelles données au format JSON
         $cartData = $this->model->getCartData();
+        
+        // Renvoie les données du panier mises à jour au format JSON
+        header('Content-Type: application/json; charset=utf-8');
         echo json_encode($cartData);
         exit;
     }
@@ -50,13 +54,14 @@ class Cart extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('HTTP/1.1 405 Method Not Allowed');
+            header('Content-Type: application/json; charset=utf-8');
             echo json_encode(['status' => 'error', 'message' => 'Méthode non autorisée.']);
             exit;
         }
 
         $this->checkCsrfToken($_POST['csrf_token'] ?? '');
 
-        // SÉCURITÉ (Anti Mass-Assignment) : Extraction manuelle et typage strict
+        // Extraction manuelle et typage strict
         $cartRowId = isset($_POST['cartRow']) ? (int)$_POST['cartRow'] : 0;
         $quantity  = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
 
@@ -66,6 +71,8 @@ class Cart extends Controller
         }
         
         $cartData = $this->model->getCartData();
+        
+        header('Content-Type: application/json; charset=utf-8');
         echo json_encode($cartData);
         exit;
     }
@@ -75,6 +82,7 @@ class Cart extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('HTTP/1.1 405 Method Not Allowed');
+            header('Content-Type: application/json; charset=utf-8');
             echo json_encode(['status' => 'error', 'message' => 'Méthode non autorisée.']);
             exit;
         }
@@ -93,6 +101,8 @@ class Cart extends Controller
         }
         
         $cartData = $this->model->getCartData();
+        
+        header('Content-Type: application/json; charset=utf-8');
         echo json_encode($cartData);
         exit;
     }
